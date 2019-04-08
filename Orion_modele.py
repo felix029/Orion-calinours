@@ -191,8 +191,6 @@ class Modele():
                 
         for i in self.joueurs:
             self.joueurs[i].prochaineaction()
-            
-        modifRessource()
 
         # IA- appelle prochaine action
         for i in self.ias:
