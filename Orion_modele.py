@@ -15,8 +15,7 @@ class Planete():
         self.batiment=[]
 
 class Batiment(): #Ajouter le 8 avril par nic
-    def __init__(self,parent,typeBatiment,x,y):
-        self.parent = parent
+    def __init__(self,typeBatiment,x,y):
         self.type = typeBatiment
         self.x = x
         self.y = y
@@ -77,7 +76,7 @@ class Joueur():
 
     def creerBatiment(self,typeBatiment,x,y): #Ajouter le 8 avril par nic
 
-        b = Batiment(self,typeBatiment,x,y)
+        b = Batiment(typeBatiment,x,y)
         print("Batiment",b)
         self.batiment.append(b)
 
