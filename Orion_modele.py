@@ -81,7 +81,7 @@ class Joueur():
         self.batiment.append(b)
 
     def deleteBatiment(self,idPlanet,batiment) #Ajouter le 8 avril par nic
-        self.planetescontrolees[idPlanet].remove(batiment)
+        self.planetescontrolees[idPlanet].batiment.remove(batiment)
         
     def ciblerflotte(self,ids):
         idori,iddesti=ids
@@ -190,6 +190,8 @@ class Modele():
         for i in self.joueurs:
             self.joueurs[i].prochaineaction()
             
+        modifRessource()
+
         # IA- appelle prochaine action
         for i in self.ias:
             i.prochaineaction()
