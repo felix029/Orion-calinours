@@ -22,6 +22,7 @@ class Batiment(): #Ajouter le 8 avril par nic
         self.niveau = 1
         self.cout = 100
         self.nom=""
+        self.etat
 
         
 class Vaisseau():
@@ -48,7 +49,7 @@ class Vaisseau():
                 self.cible=None
                 #print("Change cible")
         else:
-            print("PAS DE CIBLE")               
+            print("PAS DE CIBLE")
               
 class Joueur():
     def __init__(self,parent,nom,planetemere,couleur):
@@ -80,8 +81,9 @@ class Joueur():
         print("Batiment",b)
         self.batiment.append(b)
 
-    def deleteBatiment(self,idPlanet,batiment) #Ajouter le 8 avril par nic
-        self.planetescontrolees[idPlanet].batiment.remove(batiment)
+    #Ajouter le 8 avril par nic
+    def deleteBatiment(self,batiment): 
+        batiment.etat="detruit"
         
     def ciblerflotte(self,ids):
         idori,iddesti=ids
