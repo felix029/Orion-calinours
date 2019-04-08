@@ -14,7 +14,7 @@ class Planete():
         self.gaz = 1000
         self.batiment=[]
 
-class Batiment():
+class Batiment(): #Ajouter le 8 avril par nic
     def __init__(self,parent,typeBatiment,x,y):
         self.parent = parent
         self.type = typeBatiment
@@ -75,13 +75,13 @@ class Joueur():
         print("Vaisseau",v.id)
         self.flotte.append(v)
 
-    def creerBatiment(self,typeBatiment,x,y):
+    def creerBatiment(self,typeBatiment,x,y): #Ajouter le 8 avril par nic
 
         b = Batiment(self,typeBatiment,x,y)
         print("Batiment",b)
         self.batiment.append(b)
 
-    def deleteBatiment(self,idPlanet,batiment)
+    def deleteBatiment(self,idPlanet,batiment) #Ajouter le 8 avril par nic
         self.planetescontrolees[idPlanet].remove(batiment)
         
     def ciblerflotte(self,ids):
@@ -195,7 +195,7 @@ class Modele():
         for i in self.ias:
             i.prochaineaction()
 
-    def modifRessource(self):
+    def modifRessource(self): #Ajouter le 8 avril par nic
 
         for j in self.joueurs:
             for p in j.planetes:
