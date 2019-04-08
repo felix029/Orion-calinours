@@ -10,7 +10,20 @@ class Planete():
         self.x=x
         self.y=y
         self.taille=random.randrange(4,6)
-        self.ressource=random.randrange(10)
+        self.minerai = 1000
+        self.gaz = 1000
+        self.batiment=[]
+
+class Batiment():
+    def __init__(self,parent,typeBatiment,x,y):
+        self.parent = parent
+        self.type = typeBatiment
+        self.x = x
+        self.y = y
+        self.niveau = 1
+        self.cout = 100
+        self.nom=""
+
         
 class Vaisseau():
     def __init__(self,nom,x,y):
@@ -31,30 +44,12 @@ class Vaisseau():
             x1,y1=hlp.getAngledPoint(ang,self.vitesse,self.x,self.y)
             self.x,self.y=x1,y1 #int(x1),int(y1)
             if hlp.calcDistance(self.x,self.y,x,y) <=self.vitesse:
-                print("RESSOURCES...",self.cible.id,self.cible.ressource,self.cible.proprietaire)
                 self.cible.proprietaire=self.proprietaire
                 #tempo=input("Continuersvp")
                 self.cible=None
                 #print("Change cible")
         else:
-            print("PAS DE CIBLE")
-    
-    def avancer1(self):
-        if self.cible:
-            x=self.cible.x
-            if self.x>x:
-                self.x-=self.vitesse
-            elif self.x<x:
-                self.x+=self.vitesse
-            
-            y=self.cible.y
-            if self.y>y:
-                self.y-=self.vitesse
-            elif self.y<y:
-                self.y+=self.vitesse
-            if abs(self.x-x)<(2*self.cible.taille) and abs(self.y-y)<(2*self.cible.taille):
-                self.cible=None
-                    
+            print("PAS DE CIBLE")               
               
 class Joueur():
     def __init__(self,parent,nom,planetemere,couleur):
@@ -65,8 +60,12 @@ class Joueur():
         self.planetemere.proprietaire=self.nom
         self.couleur=couleur
         self.planetescontrolees=[planetemere]
+        self.minerai = 0
+        self.energie = 0
+        self.gaz = 0
         self.flotte=[]
         self.actions={"creervaisseau":self.creervaisseau,
+                      "creerBatiment":self.creerBatiment,
                       "ciblerflotte":self.ciblerflotte}
         
     def creervaisseau(self,params):
@@ -75,6 +74,15 @@ class Joueur():
         v=Vaisseau(self.nom,self.planetemere.x+10,self.planetemere.y)
         print("Vaisseau",v.id)
         self.flotte.append(v)
+
+    def creerBatiment(self,typeBatiment,x,y):
+
+        b = Batiment(self,typeBatiment,x,y)
+        print("Batiment",b)
+        self.batiment.append(b)
+
+    def deleteBatiment(self,idPlanet,batiment)
+        self.planetescontrolees[idPlanet].remove(batiment)
         
     def ciblerflotte(self,ids):
         idori,iddesti=ids
@@ -92,7 +100,7 @@ class Joueur():
             if i.cible:
                 i.avancer()
             #else:
-            #    i.cible=random.choice(self.parent.planetes)
+                #i.cible=random.choice(self.parent.planetes)
             
     def prochaineaction2(self):
         for i in self.flotte:
@@ -163,7 +171,6 @@ class Modele():
         couleursia=["orange","green"]
         for i in range(ias):
             self.ias.append(IA(self,"IA_"+str(i),planes.pop(0),couleursia.pop(0)))  
-        
             
     def prochaineaction(self,cadre):
         if cadre in self.actionsafaire:
@@ -187,5 +194,19 @@ class Modele():
         # IA- appelle prochaine action
         for i in self.ias:
             i.prochaineaction()
-            
+
+    def modifRessource(self):
+
+        for j in self.joueurs:
+            for p in j.planetes:
+                for b in p.batiment:
+                    if b.typeBatiment == "minerai":
+                        j.minerai += b.niveau
+                        p.minerai -= b.niveau
+                    elif b.typeBatiment == "gaz":
+                        j.gaz += b.niveau
+                        p.gaz -= b.niveau
+                    elif b.typeBatiment == "energie":
+                        j.energie += b.niveau
+        
  
