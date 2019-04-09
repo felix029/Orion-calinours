@@ -23,7 +23,7 @@ class Vue():
         self.creercadresplash(ip,nom)
         self.creercadrelobby()
         self.changecadre(self.cadresplash)
-        self.vueactive = 2 # 0: vue planétaire, 1: vue systeme planetaire, 2: vue galaxy
+        self.vueactive = 0 # 0: vue planétaire, 1: vue systeme planetaire, 2: vue galaxy
         self.etoileselect=None
         self.planeteselect=None
 
@@ -131,7 +131,6 @@ class Vue():
         self.canevasMini.bind("<Button>",self.moveCanevas)
         self.canevasMini.pack(padx=0, pady=0)
         self.cadreminimap.pack(padx=0, pady=0)
-        self.afficherdecor(self.mod)
 
         #try de bouton zoom
         self.boutonZoom = Button(self.cadreminimap,text="Zoom", bg="green2", width= 25, height=3, cursor="hand2", activebackground="red")
@@ -143,7 +142,8 @@ class Vue():
         self.boutonDzoom.bind("<Button>")
         self.boutonDzoom.pack(padx=1, pady=1)
         #fin du try de bouton
-
+        self.bindWidgets()
+        self.afficherdecor(self.mod)
         self.changecadre(self.cadrepartie)
 
     def moveCanevas(self,evt):
@@ -156,12 +156,14 @@ class Vue():
         print("SCROLL",px,py)
 
     def zoom (self, mod):
-        self.vueactive-=1
-        self.afficherdecor(self.mod)
+        #self.vueactive-=1
+        self.vueactive = 1
+        self.afficherdecor(mod)
 
     def dezoom (self, mod):
-        self.vueactive+=1
-        self.afficherdecor(self.mod)
+        #self.vueactive+=1
+        self.vueactive=2
+        self.afficherdecor(mod)
 
     def bindWidgets(self):
         self.boutonZoom.config(command = self.zoom(self.mod))
