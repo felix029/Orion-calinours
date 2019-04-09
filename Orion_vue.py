@@ -5,6 +5,7 @@ import random
 import os,os.path
 
 class Vue():
+
     def __init__(self,parent,ip,nom):
         self.parent=parent
         self.root=Tk()
@@ -21,8 +22,8 @@ class Vue():
         self.cadreapp.pack()
         self.creercadresplash(ip,nom)
         self.creercadrelobby()
-        self.changecadre(self.cadresplash)        
-        self.vueactive = 1 # 0: vue planétaire, 1: vue systeme planetaire, 2: vue galaxy
+        self.changecadre(self.cadresplash)
+        self.vueactive = 2 # 0: vue planétaire, 1: vue systeme planetaire, 2: vue galaxy
         self.etoileselect=None
         self.planeteselect=None
 
@@ -133,14 +134,14 @@ class Vue():
         self.afficherdecor(self.mod)
 
         #try de bouton zoom
-        #self.boutonZoom=Button(self.cadreminimap,text="Zoom",fg=mod.joueurs[self.nom].couleur, width= 25, height=3)
-        #self.boutonZoom.bind("<Button>",self.afficherdecor(self.mod))
-        #self.boutonZoom.pack(padx=1, pady=1)
+        self.boutonZoom = Button(self.cadreminimap,text="Zoom", bg="green2", width= 25, height=3, cursor="hand2", activebackground="red")
+        self.boutonZoom.bind("<Button>")
+        self.boutonZoom.pack(padx=1, pady=1)
 
         #try dde bouton dé-zomm
-        #self.boutonDzoom=Button(self.cadreminimap,text="Dé-zoom",fg=mod.joueurs[self.nom].couleur, width= 25, height=3)
-        #self.boutonDzoom.bind("<Button>",self.afficherdecor(self.mod))
-        #self.boutonDzoom.pack(padx=1, pady=1)
+        self.boutonDzoom=Button(self.cadreminimap,text="Dé-zoom", bg="green2", width= 25, height=3, cursor="hand2", activebackground="red")
+        self.boutonDzoom.bind("<Button>")
+        self.boutonDzoom.pack(padx=1, pady=1)
         #fin du try de bouton
 
         self.changecadre(self.cadrepartie)
@@ -153,28 +154,39 @@ class Vue():
         self.canevas.xview(MOVETO,px)
         self.canevas.yview(MOVETO,py)
         print("SCROLL",px,py)
-         
+
+    def zoom (self, mod):
+        self.vueactive-=1
+        self.afficherdecor(self.mod)
+
+    def dezoom (self, mod):
+        self.vueactive+=1
+        self.afficherdecor(self.mod)
+
+    def bindWidgets(self):
+        self.boutonZoom.config(command = self.zoom(self.mod))
+        self.boutonDzoom.config(command = self.dezoom(self.mod))
+
     def afficherdecor(self, mod):
-        
+
         if self.vueactive == 2: #vue de la galaxy
             for i in range(len(mod.etoiles)*3):
                 x=random.randrange(mod.largeur)
                 y=random.randrange(mod.hauteur)
                 self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond",))
-        
+
             for i in mod.etoiles:
                 t=i.taille
                 self.canevas.create_oval(i.x-t,i.y-t,i.x+t,i.y+t,fill="grey80",
                                         tags=("etoile",str(i.id)))
-        
-        if self.vueactive == 1: #vue systeme planétaire
-            self.etoileselect = random.choice(mod.etoiles)
 
+        if self.vueactive == 1: #vue systeme solaire
+            self.etoileselect = random.choice(mod.etoiles)
             for i in self.etoileselect.planetes:
                 t=i.taille
                 self.canevas.create_oval(i.x-t,i.y-t,i.x+t,i.y+t,fill="grey80",
                                         tags=(i.proprietaire,"planete",str(i.id)))
-            
+
             for i in mod.joueurs.keys():
                 for j in mod.joueurs[i].planetescontrolees:
                     if j in self.etoileselect.planetes:
@@ -182,7 +194,7 @@ class Vue():
                         self.canevas.create_oval(j.x-t,j.y-t,j.x+t,j.y+t,fill=mod.joueurs[i].couleur,
                                             tags=(j.proprietaire,"planete",str(j.id),"possession"))
             # dessine IAs
-        
+
             for i in mod.ias:
                 for j in i.planetescontrolees:
                     if j in self.etoileselect.planetes:
@@ -192,7 +204,7 @@ class Vue():
 
         if self.vueactive == 0: #vue planète
             self.vueactive = 2
-                
+
         #self.afficherpartie(mod)
 
     def afficherplanetemere(self,evt):
