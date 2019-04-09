@@ -26,10 +26,10 @@ class Vue():
         self.vueactive = 0 # 0: vue planétaire, 1: vue systeme planetaire, 2: vue galaxy
         self.etoileselect=None
         self.planeteselect=None
-        
-        
-        
-      
+
+
+
+
 
     def fermerfenetre(self):
         self.parent.fermefenetre()
@@ -43,45 +43,45 @@ class Vue():
     def creercadresplash(self,ip,nom):
         #Variables
         self.texteTitre = "Helvetica 20 bold"
-        
+
         self.cadresplash=Frame(self.cadreapp)
-        
+
         #Affichage d'un titre
         self.champ_Titre = Label(self.cadresplash,font = self.texteTitre,text = "ORION", anchor = W)
         self.champ_Titre.pack(side = TOP)
-        
+
         self.canevassplash=Canvas(self.cadresplash,width=640,height=480,bg="dark blue")
         self.canevassplash.pack()
-       
+
         self.nomsplash=Entry(bg="light grey")
         self.nomsplash.insert(0, nom)
-        
+
         self.ipsplash=Entry(bg="light grey")
         self.ipsplash.insert(0, ip)
-        
+
         labip=Label(text=ip,bg="light grey",borderwidth=0,relief=RIDGE)
         btncreerpartie=Button(text="Creer partie",bg="light grey",command=self.creerpartie)
         btnconnecterpartie=Button(text="Connecter partie",bg="light grey",command=self.connecterpartie)
-        
-        
+
+
         self.canevassplash.create_window(310,150,window=self.nomsplash,width=100,height=30)
         self.canevassplash.create_window(310,210,window=self.ipsplash,width=100,height=30)
         self.canevassplash.create_window(310,270,window=labip,width=100,height=30)
         self.canevassplash.create_window(310,330,window=btncreerpartie,width=100,height=30)
         self.canevassplash.create_window(310,390,window=btnconnecterpartie,width=100,height=30)
-        
+
 
     def creercadrelobby(self):
-         
+
         self.cadrelobby=Frame(self.cadreapp)
-        
+
         #Affichage d'un titre
         self.champ_Titre = Label(self.cadrelobby,font = self.texteTitre,text = "Creation d'une partie", anchor = W)
         self.champ_Titre.pack(side = TOP)
-        
+
         self.canevaslobby=Canvas(self.cadrelobby,width=640,height=480,bg="dark blue")
         self.canevaslobby.pack()
-        
+
         self.listelobby=Listbox(bg="light grey",borderwidth=0,relief=FLAT)
         self.nbetoile=Entry(bg="light grey")
         self.nbetoile.insert(0, 100)
@@ -106,7 +106,7 @@ class Vue():
             self.parent.boucleattente()
 
     def creerpartie(self):
-        
+
         nom=self.nomsplash.get()
         ip=self.ipsplash.get()
         if nom and ip:
@@ -126,49 +126,96 @@ class Vue():
     def creeraffichercadrepartie(self,mod):
         self.nom=self.parent.monnom
         self.mod=mod
+
+        ##########################################################################
+        #Zone globale
         self.cadrepartie=Frame(self.cadreapp)
         self.cadrejeu=Frame(self.cadrepartie)
-        #self.scrollX=Scrollbar(self.cadrepartie,orientation=HORIZONTAL)
-        #self.scrollY=Scrollbar(self.cadrepartie,orientation=VERTICAL)
-        self.canevas=Canvas(self.cadrepartie,width=800,height=600,scrollregion=(0,0,mod.largeur,mod.hauteur),bg="grey11")
-        #self.scrollX.
-        self.canevas.pack(side=LEFT)
-        self.canevas.bind("<Button>",self.cliquecosmos)
+        ##########################################################################
+        #Zone Dessus
+        #Cadre Statistiques (upperFrame)
+        self.upperFrame=Frame(self.cadrepartie,width=1100,height=50,bg="black")
+        self.upperFrame.grid(row=0, column=0, sticky="we")
 
-        self.cadreoutils=Frame(self.cadrepartie,width=200,height=200,bg="darkgrey")
-        self.cadreoutils.pack(side=LEFT,fill=Y)
+        #Zone Dessous
+        #Cadre perspectives (lowerFrame)
+        self.lowerFrame=Frame(self.cadrepartie,width=1100,height=625,bg="red")
+        self.lowerFrame.grid(row=2, column=0, sticky="ns")
+        ###########################################################################
+        #Sous-Zone Dessous
 
-        self.cadreinfo=Frame(self.cadreoutils,width=200,height=200,bg="darkgrey")
-        self.cadreinfo.pack(fill=Y)
-        self.cadreinfogen=Frame(self.cadreinfo,width=200,height=200,bg="grey50")
-        self.cadreinfogen.pack(padx=0, pady=0)
+        #Zone Dessous-Gauche
+        #Cadre fonctionnalités (lowerLeftFrame)
+        self.lowerLeftFrame=Frame(self.lowerFrame,width=150,height=625,bg="green")
+        self.lowerLeftFrame.grid(row=0, column=0, rowspan=2, sticky="ns")
+
+        #Zone Dessous-Droite
+        #Cadre fonctionnalités (lowerRightFrame)
+        self.lowerRightFrame=Frame(self.lowerFrame,width=150,height=625,bg="green")
+        self.lowerRightFrame.grid(row=0, column=2, rowspan=2, sticky="ns")
+
+        #Zone Dessous-Centre
+        #Aire de jeu - Interstellaire
+        self.canevas=Canvas(self.lowerFrame,width=800,height=600,bg="grey11")
+        self.canevas.grid(row=0, column=1, sticky="ns")
+
+        self.canevas.bind("<Button>",self.cliquecosmos) # Event MouseClick lié au canevas (Aire de jeu)
+
+        #Zone Dessous-Dessous
+        #Cadre fonctionnalités (lowerRightFrame)
+        self.lowerLowerFrame=Frame(self.lowerFrame,width=800,height=75,bg="blue")
+        self.lowerLowerFrame.grid(row=1, column=1, sticky="ns")
+        ###############################################################################
+        #Sous-Zone Dessous-Gauche
+
+        self.lowerLeftFrame.columnconfigure(0, minsize=150)
+
+        #left Buttons
+        self.btncreervaisseau=Button(self.lowerLeftFrame,text="Vaisseau",command=self.creervaisseau)
+        self.btncreervaisseau.grid(row=0, column=0, sticky="we")
+
+        #self.cadreinfo=Frame(self.rightFrame,width=200,height=200,bg="blue")
+        #self.cadreinfo.grid(row=0, column=0, sticky="we")
+
+        self.cadreinfogen=Frame(self.lowerRightFrame,width=150,height=200,bg="pink")
+        self.cadreinfogen.grid(row=0, column=0, sticky="we")
+
         self.labid=Label(self.cadreinfogen,text=self.nom,fg=mod.joueurs[self.nom].couleur)
+        self.labid.grid(row=0, column=0, sticky="we")
         self.labid.bind("<Button>",self.afficherplanetemere)
-        self.labid.pack(padx=0, pady=0)
 
-        self.cadreinfochoix=Frame(self.cadreinfo,height=200,width=200,bg="grey30")
-        self.cadreinfochoix.pack(padx=1, pady=1)
-        self.btncreervaisseau=Button(self.cadreinfo,text="Vaisseau",command=self.creervaisseau)
-        self.lbselectecible=Label(self.cadreinfo,text="Choisir cible",bg="darkgrey")
-        self.lbselectecible.pack(padx=1, pady=1)
+        #self.cadreinfochoix=Frame(self.cadreinfo,height=200,width=200,bg="red")
+        #self.cadreinfochoix.grid(row=1, column=0, sticky="we")
 
-        self.cadreminimap=Frame(self.cadreoutils,height=200,width=200,bg="black")
-        self.canevasMini=Canvas(self.cadreminimap,width=200,height=200,bg="pink")
+
+        #self.lbselectecible=Label(self.cadreinfo,text="Choisir cible",bg="yellow")
+        #self.lbselectecible.grid(row=3, column=0, sticky="we")
+
+
+        self.cadreminimap=Frame(self.lowerRightFrame,height=150,width=200,bg="green")
+        self.cadreminimap.grid(row=1, column=0, sticky="we")
+        self.canevasMini=Canvas(self.cadreminimap,width=200,height=200,bg="orange")
+        self.canevasMini.grid(row=0, column=0, sticky="we")
         self.canevasMini.bind("<Button>",self.moveCanevas)
-        self.canevasMini.pack(padx=0, pady=0)
-        self.cadreminimap.pack(padx=0, pady=0)
+
+
+        self.afficherdecor(mod)
+
+        self.changecadre(self.cadrepartie)
 
         #try de bouton zoom
         #self.boutonZoom = Button(self.cadreminimap,text="Zoom", bg="LightCyan3", borderwidth=None,font=self.simpleFont, pady=2, width= 25, height=3, cursor="hand2")
         self.boutonZoom = Button(self.cadreminimap,text="Zoom", bg="green2", width= 25, height=3, cursor="hand2", activebackground="red")
         self.boutonZoom.bind("<Button>")
-        self.boutonZoom.pack(padx=1, pady=1)
+        self.boutonZoom.grid(row=1, column=0, sticky="we")
+        #self.boutonZoom.pack(padx=1, pady=1)
 
         #try dde bouton dé-zomm
         #self.boutonZoom = Button(self.cadreminimap,text="Dé-zoom", bg="LightCyan3", borderwidth=None,font=self.simpleFont, pady=2, width= 25, height=3, cursor="hand2")
         self.boutonDzoom=Button(self.cadreminimap,text="Dé-zoom", bg="green2", width= 25, height=3, cursor="hand2", activebackground="red")
         self.boutonDzoom.bind("<Button>")
-        self.boutonDzoom.pack(padx=1, pady=1)
+        self.boutonDzoom.grid(row=2, column=0, sticky="we")
+        #self.boutonDzoom.pack(padx=1, pady=1)
         #fin du try de bouton
         self.bindWidgets()
         self.afficherdecor(self.mod)
