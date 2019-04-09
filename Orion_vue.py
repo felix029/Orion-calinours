@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from tkinter import *
-
 import random
 import os,os.path
 
@@ -27,6 +26,10 @@ class Vue():
         self.vueactive = 0 # 0: vue planétaire, 1: vue systeme planetaire, 2: vue galaxy
         self.etoileselect=None
         self.planeteselect=None
+        
+        
+        
+      
 
     def fermerfenetre(self):
         self.parent.fermefenetre()
@@ -38,34 +41,55 @@ class Vue():
         self.cadreactif.pack()
 
     def creercadresplash(self,ip,nom):
+        #Variables
+        self.texteTitre = "Helvetica 20 bold"
+        
         self.cadresplash=Frame(self.cadreapp)
-        self.canevassplash=Canvas(self.cadresplash,width=640,height=480,bg="red")
+        
+        #Affichage d'un titre
+        self.champ_Titre = Label(self.cadresplash,font = self.texteTitre,text = "ORION", anchor = W)
+        self.champ_Titre.pack(side = TOP)
+        
+        self.canevassplash=Canvas(self.cadresplash,width=640,height=480,bg="dark blue")
         self.canevassplash.pack()
-        self.nomsplash=Entry(bg="pink")
+       
+        self.nomsplash=Entry(bg="light grey")
         self.nomsplash.insert(0, nom)
-        self.ipsplash=Entry(bg="pink")
+        
+        self.ipsplash=Entry(bg="light grey")
         self.ipsplash.insert(0, ip)
-        labip=Label(text=ip,bg="red",borderwidth=0,relief=RIDGE)
-        btncreerpartie=Button(text="Creer partie",bg="pink",command=self.creerpartie)
-        btnconnecterpartie=Button(text="Connecter partie",bg="pink",command=self.connecterpartie)
-        self.canevassplash.create_window(200,200,window=self.nomsplash,width=100,height=30)
-        self.canevassplash.create_window(200,250,window=self.ipsplash,width=100,height=30)
-        self.canevassplash.create_window(200,300,window=labip,width=100,height=30)
-        self.canevassplash.create_window(200,350,window=btncreerpartie,width=100,height=30)
-        self.canevassplash.create_window(200,400,window=btnconnecterpartie,width=100,height=30)
+        
+        labip=Label(text=ip,bg="light grey",borderwidth=0,relief=RIDGE)
+        btncreerpartie=Button(text="Creer partie",bg="light grey",command=self.creerpartie)
+        btnconnecterpartie=Button(text="Connecter partie",bg="light grey",command=self.connecterpartie)
+        
+        
+        self.canevassplash.create_window(310,150,window=self.nomsplash,width=100,height=30)
+        self.canevassplash.create_window(310,210,window=self.ipsplash,width=100,height=30)
+        self.canevassplash.create_window(310,270,window=labip,width=100,height=30)
+        self.canevassplash.create_window(310,330,window=btncreerpartie,width=100,height=30)
+        self.canevassplash.create_window(310,390,window=btnconnecterpartie,width=100,height=30)
+        
 
     def creercadrelobby(self):
+         
         self.cadrelobby=Frame(self.cadreapp)
-        self.canevaslobby=Canvas(self.cadrelobby,width=640,height=480,bg="lightblue")
+        
+        #Affichage d'un titre
+        self.champ_Titre = Label(self.cadrelobby,font = self.texteTitre,text = "Creation d'une partie", anchor = W)
+        self.champ_Titre.pack(side = TOP)
+        
+        self.canevaslobby=Canvas(self.cadrelobby,width=640,height=480,bg="dark blue")
         self.canevaslobby.pack()
-        self.listelobby=Listbox(bg="red",borderwidth=0,relief=FLAT)
-        self.nbetoile=Entry(bg="pink")
+        
+        self.listelobby=Listbox(bg="light grey",borderwidth=0,relief=FLAT)
+        self.nbetoile=Entry(bg="light grey")
         self.nbetoile.insert(0, 100)
-        self.largeespace=Entry(bg="pink")
+        self.largeespace=Entry(bg="light grey")
         self.largeespace.insert(0, 1000)
-        self.hautespace=Entry(bg="pink")
+        self.hautespace=Entry(bg="light grey")
         self.hautespace.insert(0, 800)
-        btnlancerpartie=Button(text="Lancer partie",bg="pink",command=self.lancerpartie)
+        btnlancerpartie=Button(text="Lancer partie",bg="light grey",command=self.lancerpartie)
         self.canevaslobby.create_window(440,240,window=self.listelobby,width=200,height=400)
         self.canevaslobby.create_window(200,200,window=self.largeespace,width=100,height=30)
         self.canevaslobby.create_window(200,250,window=self.hautespace,width=100,height=30)
@@ -82,6 +106,7 @@ class Vue():
             self.parent.boucleattente()
 
     def creerpartie(self):
+        
         nom=self.nomsplash.get()
         ip=self.ipsplash.get()
         if nom and ip:
