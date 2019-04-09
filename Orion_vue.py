@@ -15,6 +15,7 @@ class Vue():
         self.terrain=[]
         self.cadreactif=None
         self.maselection=None
+        #self.posSouris=None
         self.root.title(os.path.basename(sys.argv[0]))
         self.modele=None
         self.nom=""
@@ -133,11 +134,13 @@ class Vue():
         self.cadreminimap.pack(padx=0, pady=0)
 
         #try de bouton zoom
+        #self.boutonZoom = Button(self.cadreminimap,text="Zoom", bg="LightCyan3", borderwidth=None,font=self.simpleFont, pady=2, width= 25, height=3, cursor="hand2")
         self.boutonZoom = Button(self.cadreminimap,text="Zoom", bg="green2", width= 25, height=3, cursor="hand2", activebackground="red")
         self.boutonZoom.bind("<Button>")
         self.boutonZoom.pack(padx=1, pady=1)
 
         #try dde bouton dé-zomm
+        #self.boutonZoom = Button(self.cadreminimap,text="Dé-zoom", bg="LightCyan3", borderwidth=None,font=self.simpleFont, pady=2, width= 25, height=3, cursor="hand2")
         self.boutonDzoom=Button(self.cadreminimap,text="Dé-zoom", bg="green2", width= 25, height=3, cursor="hand2", activebackground="red")
         self.boutonDzoom.bind("<Button>")
         self.boutonDzoom.pack(padx=1, pady=1)
@@ -155,15 +158,22 @@ class Vue():
         self.canevas.yview(MOVETO,py)
         print("SCROLL",px,py)
 
+    def souris(self, event):
+        self.posSouris = self.normInterprePos(COORD(event.x, event.y))
+
     def zoom (self, mod):
-        #self.vueactive-=1
-        self.vueactive = 1
-        self.afficherdecor(self.mod)
+        if self.vueactive == 0:
+            self.afficherdecor(self.mod)
+        else:
+            self.vueactive-=1
+            self.afficherdecor(self.mod)
 
     def dezoom (self, mod):
-        #self.vueactive+=1
-        self.vueactive=2
-        self.afficherdecor(self.mod)
+        if self.vueactive ==2:
+            self.afficherdecor(self.mod)
+        else:
+            self.vueactive+=1
+            self.afficherdecor(self.mod)
 
     def bindWidgets(self):
         self.boutonZoom.config(command = lambda: self.zoom(self.mod))
@@ -214,6 +224,55 @@ class Vue():
                                     tags=(self.planeteselect.proprietaire, "planete", str(self.planeteselect.id), "possession"))
 
         #self.afficherpartie(mod)
+
+##############################################################################################################################
+    def clearSelection(self, event=None):
+        self.selection=None
+        self.afficherdecor(self.mod)
+
+    def clickAireJeu(self, event):
+        posClick=self.normInterprePos(event)
+        posModel=COORD(int(posClick.x/3), int(posClick.y/3))
+        o=self.aireJeu.find_withtag(CURRENT) # trouver obj pese
+
+        if self.selection.__class__ in self.etoile[]: # obj tour
+        #     if "tour" in self.aireJeu.gettags(o): # if (not o) or ("sentier" in self.aireJeu.gettags(o)):
+        #         for tour in self.data.entites.tours:
+        #             if tour.pos == posModel:
+        #                 self.selection=tour
+        #                 self.tourSelectionner = self.selection
+        #                 self.menuContextuelTour(tour)
+        #                 self.placerCurseur(posClick)
+        #                 self.actualiserUpgradeTour(self.data.joueur.argent, self.tourSelectionner)
+        #                 break
+        #     else:
+        #         self.clearSelection()
+
+        # elif self.selection in self.data.choixTours: #typeTour
+        #     reponse=self.parent.ajoutTour(posModel, self.selection)
+        #     if type(reponse) is tuple: # error
+        #         print(reponse[1])
+        #         if reponse[0] in (-1, -2):
+        #             taille = 10*self.stretchRatio
+        #             td_graphics.rectangle(self.aireJeu, (posClick*self.stretchRatio), largeur=taille, hauteur=taille, fill='red', tags=("curseur"))
+        #     else: #if reponse.__class__ in self.data.choixTours:
+        #         self.afficherTour(reponse)
+
+        # elif self.selection is None:
+        #     if "tour" in self.aireJeu.gettags(o):
+        #         for tour in self.data.entites.tours:
+        #             if tour.pos == posModel:
+        #                 self.selection=tour
+        #                 self.tourSelectionner = self.selection
+        #                 self.menuContextuelTour(tour)
+        #                 self.placerCurseur(posClick)
+        #                 self.actualiserUpgradeTour(self.data.joueur.argent, self.tourSelectionner)
+        #                 break
+
+    def normInterprePos(self, pos):
+        op=lambda val: val - (int(val) % (self.stretchRatio*10)) + (self.stretchRatio*5)
+        return COORD(op(pos.x), op(pos.y))
+###############################################################################################################################
 
     def afficherplanetemere(self,evt):
         j=self.mod.joueurs[self.nom]
