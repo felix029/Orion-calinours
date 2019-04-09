@@ -166,8 +166,8 @@ class Vue():
         self.afficherdecor(self.mod)
 
     def bindWidgets(self):
-        self.boutonZoom.config(command = self.zoom(self.mod))
-        self.boutonDzoom.config(command = self.dezoom(self.mod))
+        self.boutonZoom.config(command = lambda: self.zoom(self.mod))
+        self.boutonDzoom.config(command = lambda: self.dezoom(self.mod))
 
     def afficherdecor(self, mod):
 
