@@ -23,7 +23,7 @@ class Vue():
         self.creercadresplash(ip,nom)
         self.creercadrelobby()
         self.changecadre(self.cadresplash)
-        self.vueactive = 0 # 0: vue planétaire, 1: vue systeme planetaire, 2: vue galaxy
+        self.vueactive = 1 # 0: vue planétaire, 1: vue systeme planetaire, 2: vue galaxy
         self.etoileselect=None
         self.planeteselect=None
 
@@ -171,6 +171,7 @@ class Vue():
 
     def afficherdecor(self, mod):
 
+        self.canevas.delete(ALL)
         if self.vueactive == 2: #vue de la galaxy
             for i in range(len(mod.etoiles)*3):
                 x=random.randrange(mod.largeur)
