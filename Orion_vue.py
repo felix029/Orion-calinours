@@ -236,8 +236,18 @@ class Vue():
         for i in mod.joueurs.keys():
             i=mod.joueurs[i]
             for j in i.flotte:
-                self.canevas.create_rectangle(j.x-3,j.y-3,j.x+3,j.y+3,fill=i.couleur,
-                                     tags=(j.proprietaire,"flotte",str(j.id),"artefact"))
+                if self.vueactive == 2:
+                    if j.sysplanetecur == None and j.planetecur == None:
+                        self.canevas.create_rectangle(j.x-3,j.y-3,j.x+3,j.y+3,fill=i.couleur,
+                                            tags=(j.proprietaire,"flotte",str(j.id),"artefact"))
+                if self.vueactive == 1:
+                    if j.sysplanetecur == self.etoileselect and j.planetecur == None:
+                        self.canevas.create_rectangle(j.x-3,j.y-3,j.x+3,j.y+3,fill=i.couleur,
+                                            tags=(j.proprietaire,"flotte",str(j.id),"artefact"))
+                if self.vueactive == 0:
+                    if j.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
+                        self.canevas.create_rectangle(j.x-3,j.y-3,j.x+3,j.y+3,fill=i.couleur,
+                                            tags=(j.proprietaire,"flotte",str(j.id),"artefact"))
 
                 #self.canevas.create_rectangle(j.x,j.y,image=self.imgs["vaiss"],
                 #                     tags=(j.proprietaire,"flotte",str(j.id),"artefact"))
@@ -245,8 +255,18 @@ class Vue():
 
         for i in mod.ias:
             for j in i.flotte:
-                self.canevas.create_rectangle(j.x-3,j.y-3,j.x+3,j.y+3,fill=i.couleur,
-                                     tags=(j.proprietaire,"flotte",str(j.id),"artefact"))
+                if self.vueactive == 2:
+                    if j.sysplanetecur == None and j.planetecur == None:
+                        self.canevas.create_rectangle(j.x-3,j.y-3,j.x+3,j.y+3,fill=i.couleur,
+                                            tags=(j.proprietaire,"flotte",str(j.id),"artefact"))
+                if self.vueactive == 1:
+                    if j.sysplanetecur == self.etoileselect and j.planetecur == None:
+                        self.canevas.create_rectangle(j.x-3,j.y-3,j.x+3,j.y+3,fill=i.couleur,
+                                            tags=(j.proprietaire,"flotte",str(j.id),"artefact"))
+                if self.vueactive == 0:
+                    if j.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
+                        self.canevas.create_rectangle(j.x-3,j.y-3,j.x+3,j.y+3,fill=i.couleur,
+                                            tags=(j.proprietaire,"flotte",str(j.id),"artefact"))
 
     def cliquecosmos(self,evt):
         self.btncreervaisseau.pack_forget()

@@ -41,7 +41,9 @@ class Vaisseau():
         self.cargo=0
         self.energie=100
         self.vitesse=2
-        self.cible=None 
+        self.cible=None
+        self.sysplanetecur=None
+        self.planetecur=None
         
     def avancer(self):
         if self.cible:
