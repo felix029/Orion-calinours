@@ -5,12 +5,12 @@ import sys
 import xmlrpc.client
 import socket
 import random
-from subprocess import Popen 
+from subprocess import Popen
 from helper import Helper as hlp
 from Orion_modele import *
 from Orion_vue import *
 
-               
+
 class Controleur():
     def __init__(self):
 
@@ -29,14 +29,14 @@ class Controleur():
         self.serveur=None
         self.vue=Vue(self,self.monip,self.monnom)
         self.vue.root.mainloop()
-        
+
     def trouverIP(self): # fonction pour trouver le IP en 'pignant' gmail
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # on cree un socket
         s.connect(("gmail.com",80))    # on envoie le ping
-        monip=s.getsockname()[0] # on analyse la reponse qui contient l'IP en position 0 
+        monip=s.getsockname()[0] # on analyse la reponse qui contient l'IP en position 0
         s.close() # ferme le socket
         return monip
-    
+
     def generernom(self):  # generateur de nouveau nom - accelere l'entree de nom pour les tests - parfois � peut generer le meme nom mais c'est rare
         monnom="jmd_"+str(random.randrange(1000))
         return monnom
@@ -45,7 +45,7 @@ class Controleur():
         if self.egoserveur==0:
             pid = Popen(["C:\\Python 36\\Python.exe", "./Orion_serveur.py"],shell=1).pid # on lance l'application serveur
             self.egoserveur=1 # on note que c'est soi qui, ayant demarre le serveur, aura le privilege de lancer la simulation
-            self.tempo=1 # on change d'etat pour s'inscrire automatiquement 
+            self.tempo=1 # on change d'etat pour s'inscrire automatiquement
                          # (parce que dans ce type de programme on prend pour acquis que celui qui prepare la simulation veut aussi y participer)
 
     # NOTE si on demarre le serveur, cette fonction est appellee pour nous (voir timer et variable tempo)
@@ -61,15 +61,15 @@ class Controleur():
             #tester retour pour erreur de nom
             self.statut=1 # statut 1 == attente de lancement de partie
             random.seed(rep[2])
-            
+
     ## ----------- FONCTION POUR CELUI QUI A CREE LA PARTIE SEULEMENT
     def lancerpartie(self): # reponse du bouton de lancement de simulation (pour celui qui a parti le serveur seulement)
-        rep=self.serveur.lancerpartie() 
+        rep=self.serveur.lancerpartie()
         print("REP DU LANCER",rep)
         if rep==1:
             self.statut=3 # il change son statut pour lui permettre d'initer la simulation, les autres sont en 1 (attente) - voir timer.py
     ## ----------- FIN --
-    
+
     def initierpartie(self,rep):  # initalisation locale de la simulation, creation du modele, generation des assets et suppression du layout de lobby
         if rep[1][0][0]=="lancerpartie":
             self.modele=Modele(self,rep[1][0][1]) # on cree le modele
@@ -92,28 +92,28 @@ class Controleur():
         elif rep[0]==0:
             self.vue.affichelisteparticipants(rep[2])
             self.vue.root.after(1000,self.boucleattente)
-        
+
     def prochaintour(self): # la boucle de jeu principale, qui sera appelle par la fonction bouclejeu du timer
         if self.serveur: # s'il existe un serveur
             self.cadre=self.cadre+1 # increment du compteur de cadre
             if self.attente==0:
                 self.modele.prochaineaction(self.cadre)    # mise a jour du modele
                 self.vue.afficherpartie(self.modele) # mise a jour de la vue
-            if self.actions: # si on a des actions a partager 
-                rep=self.serveur.faireaction([self.monnom,self.cadre,self.actions]) # on les envoie 
+            if self.actions: # si on a des actions a partager
+                rep=self.serveur.faireaction([self.monnom,self.cadre,self.actions]) # on les envoie
             else:
-                rep=self.serveur.faireaction([self.monnom,self.cadre,0]) # sinon on envoie rien au serveur on ne fait que le pigner 
+                rep=self.serveur.faireaction([self.monnom,self.cadre,0]) # sinon on envoie rien au serveur on ne fait que le pigner
                                                                         # (HTTP requiert une requete du client pour envoyer une reponse)
             self.actions=[] # on s'assure que les actions a`envoyer sont maintenant supprimer (on ne veut pas les envoyer 2 fois)
             if rep[0]: # si le premier element de reponse n'est pas vide
-                
+
                 # PATCH de dico in xmlrpc (vs Pyro utilise avant)
                 cle=list(rep[2].keys())[0]
                 #print("AVANT",rep[2])
                 rep[2]={int(cle):rep[2][cle]}
                 #print("APRES",rep[2])
                 # FIN DE PATCH
-                
+
                 for i in rep[2]:   # pour chaque action a faire (rep[2] est dictionnaire d'actions en provenance des participants
                                    # dont les cles sont les cadres durant lesquels ses actions devront etre effectuees
                     if i not in self.modele.actionsafaire.keys(): # si la cle i n'existe pas
@@ -129,18 +129,18 @@ class Controleur():
             self.vue.root.after(20,self.prochaintour)
         else:
             print("Aucun serveur connu")
-            
+
     def fermefenetre(self):
         if self.serveur:
             self.serveur.jequitte(self.monnom)
         self.vue.root.destroy()
-            
+
     def creervaisseau(self):
         self.actions.append([self.monnom,"creervaisseau",""])
-        
+
     def ciblerflotte(self,idorigine,iddestination):
         self.actions.append([self.monnom,"ciblerflotte",[idorigine,iddestination]])
-        
+
 if __name__=="__main__":
     c=Controleur()
     print("End Orion_mini")
