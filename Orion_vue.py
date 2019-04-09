@@ -376,6 +376,19 @@ class Vue():
     def cliquecosmos(self,evt):
         self.btncreervaisseau.pack_forget()
         t=self.canevas.gettags(CURRENT)
+
+        ############################################################
+        #
+        #   Section à Charles: Pour la sélection d'une étpoile ou d'une planète avec de cliquer sur le bouton zoom
+        #
+        #       - Il va falloir écrire plusieurs if et else pour attendre le but visé
+        #       - Il va faloir créer une variable au début du code de la vue qui aura seulement comme valeur sois une planète ou sois une étoile
+        #       - Il va falloir vérifier si la variable de sélection "self.maselection" est pleine
+        #       - Il va falloir débolquer et bloquer les boutons de zoom et de dé-zoom selon l'état de la partie
+        #       - Il va falloir changer les strings contenu dans les boutons pour indiqués dans quel monde le joueur veuet aller
+        #
+        ############################################################
+
         if t and t[0]==self.nom:
             #self.maselection=self.canevas.find_withtag(CURRENT)#[0]
             self.maselection=[self.nom,t[1],t[2]]  #self.canevas.find_withtag(CURRENT)#[0]
