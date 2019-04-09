@@ -12,7 +12,9 @@ class Planete():
         self.gas=random.randrange(4000, 10000)
         self.minerals=random.randrange(4000, 10000)
         self.proprietaire = ""
-
+        self.colorsTab = [str(99%self.minerals), str(random.randrange(0,99)), str(99%self.gas)] 
+        self.color = "#" + random.choice(self.colorsTab) + random.choice(self.colorsTab) + random.choice(self.colorsTab)
+        
 class Etoile():
     def __init__(self,x,y,parent):
         self.id=Id.prochainid()
@@ -187,7 +189,7 @@ class Modele():
                 np-=1
             else:
                 np = np
-                
+
         couleurs=["red","blue","lightgreen","yellow",
                   "lightblue","pink","gold","purple"]
         for i in joueurs:

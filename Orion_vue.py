@@ -186,7 +186,7 @@ class Vue():
             for i in range(len(mod.etoiles)*3):
                 x=random.randrange(mod.largeur)
                 y=random.randrange(mod.hauteur)
-                self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond",))
+                self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond"))
 
             for i in mod.etoiles:
                 t=i.taille
@@ -219,8 +219,7 @@ class Vue():
             self.etoileselect = random.choice(mod.etoiles)
             self.planeteselect = random.choice(self.etoileselect.planetes)
             t=self.planeteselect.taille
-
-            self.canevas.create_oval(mod.largeur/2-(t*25),mod.hauteur/2-(t*25),mod.largeur/2+(t*25),mod.hauteur/2+(t*25), fill="gray",
+            self.canevas.create_oval(mod.largeur/2-(t*25),mod.hauteur/2-(t*25),mod.largeur/2+(t*25),mod.hauteur/2+(t*25), fill=self.planeteselect.color,
                                     tags=(self.planeteselect.proprietaire, "planete", str(self.planeteselect.id), "possession"))
 
         #self.afficherpartie(mod)
@@ -235,7 +234,7 @@ class Vue():
         posModel=COORD(int(posClick.x/3), int(posClick.y/3))
         o=self.aireJeu.find_withtag(CURRENT) # trouver obj pese
 
-        if self.selection.__class__ in self.etoile[]: # obj tour
+        #if self.selection.__class__ in self.etoile[]: # obj tour
         #     if "tour" in self.aireJeu.gettags(o): # if (not o) or ("sentier" in self.aireJeu.gettags(o)):
         #         for tour in self.data.entites.tours:
         #             if tour.pos == posModel:
