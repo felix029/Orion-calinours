@@ -12,9 +12,20 @@ class Planete():
         self.gas=random.randrange(4000, 10000)
         self.minerals=random.randrange(4000, 10000)
         self.proprietaire = ""
-        self.colorsTab = [str(99%self.minerals), str(random.randrange(0,99)), str(99%self.gas)] 
+        self.colorsTab = [str((self.minerals%99) + 10), str(random.randrange(10,99)), str((self.gas%99)+10)] 
         self.color = "#" + random.choice(self.colorsTab) + random.choice(self.colorsTab) + random.choice(self.colorsTab)
+        self.setXY()
+
+    #fonction qui va permettre aux planetes de ne pas etre par dessus le soleil
+    def setXY(self):
+        if self.x <=100:
+            self.x+=100
         
+        if self.y <=100:
+            self.y+=100
+
+
+
 class Etoile():
     def __init__(self,x,y,parent):
         self.id=Id.prochainid()
@@ -29,7 +40,7 @@ class Etoile():
     
     def creerplanetes(self):
         bordure=1
-        for i in range(20):
+        for i in range(10):
             planX=random.randrange(self.largeur-(2*bordure))+bordure
             planY=random.randrange(self.hauteur-(2*bordure))+bordure
             self.planetes.append(Planete(planX, planY))

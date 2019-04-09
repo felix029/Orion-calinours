@@ -220,6 +220,9 @@ class Vue():
 
         if self.vueactive == 1: #vue systeme solaire
             self.etoileselect = random.choice(mod.etoiles)
+            
+            self.canevas.create_oval(-100, -100, 100, 100, fill="orange", tags=("soleil", "fond"))
+
             for i in self.etoileselect.planetes:
                 t=i.taille
                 self.canevas.create_oval(i.x-t,i.y-t,i.x+t,i.y+t,fill="grey80",
@@ -244,7 +247,7 @@ class Vue():
             self.etoileselect = random.choice(mod.etoiles)
             self.planeteselect = random.choice(self.etoileselect.planetes)
             t=self.planeteselect.taille
-            self.canevas.create_oval(mod.largeur/2-(t*25),mod.hauteur/2-(t*25),mod.largeur/2+(t*25),mod.hauteur/2+(t*25), fill=self.planeteselect.color,
+            self.canevas.create_oval(mod.largeur/2-(t*25),mod.hauteur/2-(t*25),mod.largeur/2+(t*25),mod.hauteur/2+(t*25), width=2, outline="white", fill=self.planeteselect.color,
                                     tags=(self.planeteselect.proprietaire, "planetezoom", "p"+str(self.planeteselect.id), "possession", "e"+str(self.etoileselect.id)))
 
         #self.afficherpartie(mod)
