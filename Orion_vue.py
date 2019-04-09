@@ -17,21 +17,21 @@ class Vue():
         self.root.title(os.path.basename(sys.argv[0]))
         self.modele=None
         self.nom=""
-        self.cadreapp=Frame(self.root,width=800,height=600)
+        self.cadreapp=Frame(self.root,width=1100,height=700)
         self.cadreapp.pack()
         self.creercadresplash(ip,nom)
         self.creercadrelobby()
         self.changecadre(self.cadresplash)
-        
+
     def fermerfenetre(self):
         self.parent.fermefenetre()
-        
+
     def changecadre(self,cadre):
         if self.cadreactif:
             self.cadreactif.pack_forget()
         self.cadreactif=cadre
         self.cadreactif.pack()
-            
+
     def creercadresplash(self,ip,nom):
         self.cadresplash=Frame(self.cadreapp)
         self.canevassplash=Canvas(self.cadresplash,width=640,height=480,bg="red")
@@ -47,8 +47,8 @@ class Vue():
         self.canevassplash.create_window(200,250,window=self.ipsplash,width=100,height=30)
         self.canevassplash.create_window(200,300,window=labip,width=100,height=30)
         self.canevassplash.create_window(200,350,window=btncreerpartie,width=100,height=30)
-        self.canevassplash.create_window(200,400,window=btnconnecterpartie,width=100,height=30) 
-            
+        self.canevassplash.create_window(200,400,window=btnconnecterpartie,width=100,height=30)
+
     def creercadrelobby(self):
         self.cadrelobby=Frame(self.cadreapp)
         self.canevaslobby=Canvas(self.cadrelobby,width=640,height=480,bg="lightblue")
@@ -66,7 +66,7 @@ class Vue():
         self.canevaslobby.create_window(200,250,window=self.hautespace,width=100,height=30)
         self.canevaslobby.create_window(200,300,window=self.nbetoile,width=100,height=30)
         self.canevaslobby.create_window(200,400,window=btnlancerpartie,width=100,height=30)
-        
+
     def connecterpartie(self):
         nom=self.nomsplash.get()
         ip=self.ipsplash.get()
@@ -75,7 +75,7 @@ class Vue():
             self.changecadre(self.cadrelobby)
             print("BOUCLEATTENTE de CONNECTER")
             self.parent.boucleattente()
-        
+
     def creerpartie(self):
         nom=self.nomsplash.get()
         ip=self.ipsplash.get()
@@ -85,52 +85,94 @@ class Vue():
             self.changecadre(self.cadrelobby)
             print("BOUCLEATTENTE de CREER")
             self.parent.boucleattente()
-        
+
     def lancerpartie(self):
         self.parent.lancerpartie()
-        
+
     def affichelisteparticipants(self,lj):
         self.listelobby.delete(0,END)
         self.listelobby.insert(0,lj)
-        
+
     def creeraffichercadrepartie(self,mod):
         self.nom=self.parent.monnom
         self.mod=mod
+
+        ##########################################################################
+        #Zone globale
         self.cadrepartie=Frame(self.cadreapp)
         self.cadrejeu=Frame(self.cadrepartie)
-        #self.scrollX=Scrollbar(self.cadrepartie,orientation=HORIZONTAL)
-        #self.scrollY=Scrollbar(self.cadrepartie,orientation=VERTICAL)
-        self.canevas=Canvas(self.cadrepartie,width=800,height=600,scrollregion=(0,0,mod.largeur,mod.hauteur),bg="grey11")
-        #self.scrollX.
-        self.canevas.pack(side=LEFT)
-        self.canevas.bind("<Button>",self.cliquecosmos)
-        
-        self.cadreoutils=Frame(self.cadrepartie,width=200,height=200,bg="darkgrey")
-        self.cadreoutils.pack(side=LEFT,fill=Y)
-        
-        self.cadreinfo=Frame(self.cadreoutils,width=200,height=200,bg="darkgrey")
-        self.cadreinfo.pack(fill=Y)
-        self.cadreinfogen=Frame(self.cadreinfo,width=200,height=200,bg="grey50")
-        self.cadreinfogen.pack()
+        ##########################################################################
+        #Zone Dessus
+        #Cadre Statistiques (upperFrame)
+        self.upperFrame=Frame(self.cadrepartie,width=1100,height=50,bg="black")
+        self.upperFrame.grid(row=0, column=0, sticky="we")
+
+        #Zone Dessous
+        #Cadre perspectives (lowerFrame)
+        self.lowerFrame=Frame(self.cadrepartie,width=1100,height=625,bg="red")
+        self.lowerFrame.grid(row=2, column=0, sticky="ns")
+        ###########################################################################
+        #Sous-Zone Dessous
+
+        #Zone Dessous-Gauche
+        #Cadre fonctionnalités (lowerLeftFrame)
+        self.lowerLeftFrame=Frame(self.lowerFrame,width=150,height=625,bg="green")
+        self.lowerLeftFrame.grid(row=0, column=0, rowspan=2, sticky="ns")
+
+        #Zone Dessous-Droite
+        #Cadre fonctionnalités (lowerRightFrame)
+        self.lowerRightFrame=Frame(self.lowerFrame,width=150,height=625,bg="green")
+        self.lowerRightFrame.grid(row=0, column=2, rowspan=2, sticky="ns")
+
+        #Zone Dessous-Centre
+        #Aire de jeu - Interstellaire
+        self.canevas=Canvas(self.lowerFrame,width=800,height=600,bg="grey11")
+        self.canevas.grid(row=0, column=1, sticky="ns")
+
+        self.canevas.bind("<Button>",self.cliquecosmos) # Event MouseClick lié au canevas (Aire de jeu)
+
+        #Zone Dessous-Dessous
+        #Cadre fonctionnalités (lowerRightFrame)
+        self.lowerLowerFrame=Frame(self.lowerFrame,width=800,height=75,bg="blue")
+        self.lowerLowerFrame.grid(row=1, column=1, sticky="ns")
+        ###############################################################################
+        #Sous-Zone Dessous-Gauche
+
+        self.lowerLeftFrame.columnconfigure(0, minsize=150)
+
+        #left Buttons
+        self.btncreervaisseau=Button(self.lowerLeftFrame,text="Vaisseau",command=self.creervaisseau)
+        self.btncreervaisseau.grid(row=0, column=0, sticky="we")
+
+        #self.cadreinfo=Frame(self.rightFrame,width=200,height=200,bg="blue")
+        #self.cadreinfo.grid(row=0, column=0, sticky="we")
+
+        self.cadreinfogen=Frame(self.lowerRightFrame,width=150,height=200,bg="pink")
+        self.cadreinfogen.grid(row=0, column=0, sticky="we")
+
         self.labid=Label(self.cadreinfogen,text=self.nom,fg=mod.joueurs[self.nom].couleur)
+        self.labid.grid(row=0, column=0, sticky="we")
         self.labid.bind("<Button>",self.afficherplanemetemere)
-        self.labid.pack()
-        self.cadreinfochoix=Frame(self.cadreinfo,height=200,width=200,bg="grey30")
-        self.cadreinfochoix.pack()
-        self.btncreervaisseau=Button(self.cadreinfo,text="Vaisseau",command=self.creervaisseau)
-        self.lbselectecible=Label(self.cadreinfo,text="Choisir cible",bg="darkgrey")
-        
-        
-        self.cadreminimap=Frame(self.cadreoutils,height=200,width=200,bg="black")
-        self.canevasMini=Canvas(self.cadreminimap,width=200,height=200,bg="pink")
+
+        #self.cadreinfochoix=Frame(self.cadreinfo,height=200,width=200,bg="red")
+        #self.cadreinfochoix.grid(row=1, column=0, sticky="we")
+
+
+        #self.lbselectecible=Label(self.cadreinfo,text="Choisir cible",bg="yellow")
+        #self.lbselectecible.grid(row=3, column=0, sticky="we")
+
+
+        self.cadreminimap=Frame(self.lowerRightFrame,height=150,width=200,bg="green")
+        self.cadreminimap.grid(row=1, column=0, sticky="we")
+        self.canevasMini=Canvas(self.cadreminimap,width=200,height=200,bg="orange")
+        self.canevasMini.grid(row=0, column=0, sticky="we")
         self.canevasMini.bind("<Button>",self.moveCanevas)
-        self.canevasMini.pack()
-        self.cadreminimap.pack()
-        
+
+
         self.afficherdecor(mod)
-        
+
         self.changecadre(self.cadrepartie)
-        
+
     def moveCanevas(self,evt):
         x=evt.x
         y=evt.y
@@ -139,14 +181,14 @@ class Vue():
         self.canevas.xview(MOVETO,px)
         self.canevas.yview(MOVETO,py)
         print("SCROLL",px,py)
-        
+
     def afficherdecor(self,mod):
-        
+
         for i in range(len(mod.planetes)*3):
             x=random.randrange(mod.largeur)
             y=random.randrange(mod.hauteur)
             self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond",))
-        
+
         for i in mod.planetes:
             t=i.taille
             self.canevas.create_oval(i.x-t,i.y-t,i.x+t,i.y+t,fill="grey80",
@@ -157,15 +199,15 @@ class Vue():
                 self.canevas.create_oval(j.x-t,j.y-t,j.x+t,j.y+t,fill=mod.joueurs[i].couleur,
                                      tags=(j.proprietaire,"planete",str(j.id),"possession"))
         # dessine IAs
-        
+
         for i in mod.ias:
             for j in i.planetescontrolees:
                 t=j.taille
                 self.canevas.create_oval(j.x-t,j.y-t,j.x+t,j.y+t,fill=i.couleur,
                                      tags=(j.proprietaire,"planete",str(j.id),"possession"))
-                
+
         self.afficherpartie(mod)
-                
+
     def afficherplanemetemere(self,evt):
         j=self.mod.joueurs[self.nom]
         couleur=j.couleur
@@ -180,10 +222,10 @@ class Vue():
         self.maselection=None
         self.canevas.delete("marqueur")
         self.btncreervaisseau.pack_forget()
-        
+
     def afficherpartie(self,mod):
         self.canevas.delete("artefact")
-        
+
         if self.maselection!=None:
             joueur=mod.joueurs[self.maselection[0]]
             if self.maselection[1]=="planete":
@@ -204,18 +246,18 @@ class Vue():
                                                  tags=("select","marqueur"))
         #else:
         #    self.canevas.delete("marqueur")
-            
-        
+
+
         for i in mod.joueurs.keys():
             i=mod.joueurs[i]
             for j in i.flotte:
                 self.canevas.create_rectangle(j.x-3,j.y-3,j.x+3,j.y+3,fill=i.couleur,
                                      tags=(j.proprietaire,"flotte",str(j.id),"artefact"))
-                
+
                 #self.canevas.create_rectangle(j.x,j.y,image=self.imgs["vaiss"],
                 #                     tags=(j.proprietaire,"flotte",str(j.id),"artefact"))
-                
-        
+
+
         for i in mod.ias:
             for j in i.flotte:
                 self.canevas.create_rectangle(j.x-3,j.y-3,j.x+3,j.y+3,fill=i.couleur,
@@ -245,11 +287,28 @@ class Vue():
             self.maselection=None
             self.lbselectecible.pack_forget()
             self.canevas.delete("marqueur")
-            
+
     def montreplaneteselection(self):
         self.btncreervaisseau.pack()
     def montreflotteselection(self):
         self.lbselectecible.pack()
-    
+
     def afficherartefacts(self,joueurs):
         pass #print("ARTEFACTS de ",self.nom)
+
+
+####################################################################################
+##############  Classes pour les différentes perspectives de vue   #################
+####################################################################################
+
+class Planete():
+    def __init__(self):
+        self.root=Tk()
+
+class Solaire():
+    def __init__(self):
+        self.root=Tk()
+
+class Interstellaire():
+    def __init__(self):
+        self.root=Tk()
