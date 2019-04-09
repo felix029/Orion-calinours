@@ -3,6 +3,7 @@ from tkinter import *
 
 import random
 import os,os.path
+#from numpy.distutils.conv_template import file
 
 class Vue():
     def __init__(self,parent,ip,nom, idvue):
@@ -22,9 +23,12 @@ class Vue():
         self.creercadresplash(ip,nom)
         self.creercadrelobby()
         self.changecadre(self.cadresplash)
+        
+        
 
         #test d'initialisation de la variable idvue
-        self.idvue=1
+        # vue planete
+        self.idvue=3
 
     def fermerfenetre(self):
         self.parent.fermefenetre()
@@ -184,12 +188,13 @@ class Vue():
 
         elif self.idvue==2:
             self.canevas.configure(background = 'blue')
-            self.canevas.create_oval(50,50,100,100, fill="yellow")
+            self.canevas.create_oval(50,50,100,100, fill="orange")
             #self.afficherSolaire(mod)
 
         elif self.idvue==3:
-            self.canevas.configure(background = 'yellow')
-            self.canevas.create_oval(50,50,100,100, fill="blue")
+            self.canevas.configure(background = 'dark blue')
+            self.planeteTest=PhotoImage(file="./images/planete.png")
+            self.canevas.create_image(400,300,image=self.planeteTest)
             #self.afficherPlanete(mod)
 
 
