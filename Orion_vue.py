@@ -263,7 +263,7 @@ class Vue():
             for i in mod.etoiles:
                 t=i.taille
                 self.canevas.create_oval(i.x-t,i.y-t,i.x+t,i.y+t,fill="grey80",
-                                        tags=("etoile", "e"+str(i.id)))
+                                        tags=("etoile", str(i.id)))
 
         if self.vueactive == 1: #vue systeme solaire
             self.etoileselect = random.choice(mod.etoiles)
@@ -273,14 +273,14 @@ class Vue():
             for i in self.etoileselect.planetes:
                 t=i.taille
                 self.canevas.create_oval(i.x-t,i.y-t,i.x+t,i.y+t,fill="grey80",
-                                        tags=(i.proprietaire,"planete", "p"+str(i.id), "e"+str(self.etoileselect.id)))
+                                        tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
 
             for i in mod.joueurs.keys():
                 for j in mod.joueurs[i].planetescontrolees:
                     if j in self.etoileselect.planetes:
                         t=j.taille
                         self.canevas.create_oval(j.x-t,j.y-t,j.x+t,j.y+t,fill=mod.joueurs[i].couleur,
-                                            tags=(j.proprietaire,"planete", "p"+str(j.id),"possession", "e"+str(self.etoileselect.id)))
+                                            tags=("planete", str(j.id), j.proprietaire, str(self.etoileselect.id)))
             # dessine IAs
 
             for i in mod.ias:
@@ -288,14 +288,14 @@ class Vue():
                     if j in self.etoileselect.planetes:
                         t=j.taille
                         self.canevas.create_oval(j.x-t,j.y-t,j.x+t,j.y+t,fill=i.couleur,
-                                            tags=(j.proprietaire,"planete","p"+str(j.id),"possession", "e"+str(self.etoileselect.id)))
+                                            tags=("planete", str(j.id), j.proprietaire, str(self.etoileselect.id)))
 
         if self.vueactive == 0: #vue planète
             self.etoileselect = random.choice(mod.etoiles)
             self.planeteselect = random.choice(self.etoileselect.planetes)
             t=self.planeteselect.taille
             self.canevas.create_oval(mod.largeur/2-(t*25),mod.hauteur/2-(t*25),mod.largeur/2+(t*25),mod.hauteur/2+(t*25), width=2, outline="white", fill=self.planeteselect.color,
-                                    tags=(self.planeteselect.proprietaire, "planetezoom", "p"+str(self.planeteselect.id), "possession", "e"+str(self.etoileselect.id)))
+                                    tags=("planetezoom", str(self.planeteselect.id), self.planeteselect.proprietaire, str(self.etoileselect.id)))
 
         #self.afficherpartie(mod)
 
@@ -425,7 +425,7 @@ class Vue():
 
     def cliquecosmos(self,evt):
         self.btncreervaisseau.pack_forget()
-        t=self.canevas.gettags(CURRENT)
+        tag=self.canevas.gettags(CURRENT)
 
         ############################################################
         #
@@ -439,8 +439,23 @@ class Vue():
         #
         ############################################################
 
+        #if self.vueactive == 2:
+            #if tag and tag[0] == "etoile":
+                #for i in mod.etoiles:
+                    #if i.id == tag[1]:
+                        #self.parent.etoileselect = i
+                        #break
+
+        #if self.vueactive == 1:
+            #if tag and tag[0] == "planete":
+                #for i in self.etoileselect.planetes:
+                    #if i.id == tag[1]:
+                        #self.parent.planeteselect = i
+                        #break
+
+
         if t and t[0]==self.nom:
-            #self.maselection=self.canevas.find_withtag(CURRENT)#[0]
+            self.maselection=self.canevas.find_withtag(CURRENT)#[0]
             self.maselection=[self.nom,t[1],t[2]]  #self.canevas.find_withtag(CURRENT)#[0]
             print(self.maselection)
             if t[1] == "etoile":
