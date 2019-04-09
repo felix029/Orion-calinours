@@ -158,12 +158,12 @@ class Vue():
     def zoom (self, mod):
         #self.vueactive-=1
         self.vueactive = 1
-        self.afficherdecor(mod)
+        self.afficherdecor(self.mod)
 
     def dezoom (self, mod):
         #self.vueactive+=1
         self.vueactive=2
-        self.afficherdecor(mod)
+        self.afficherdecor(self.mod)
 
     def bindWidgets(self):
         self.boutonZoom.config(command = self.zoom(self.mod))
