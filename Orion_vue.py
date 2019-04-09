@@ -23,7 +23,7 @@ class Vue():
         self.creercadresplash(ip,nom)
         self.creercadrelobby()
         self.changecadre(self.cadresplash)
-        self.vueactive = 1 # 0: vue planétaire, 1: vue systeme planetaire, 2: vue galaxy
+        self.vueactive = 0 # 0: vue planétaire, 1: vue systeme planetaire, 2: vue galaxy
         self.etoileselect=None
         self.planeteselect=None
 
@@ -206,7 +206,12 @@ class Vue():
                                             tags=(j.proprietaire,"planete",str(j.id),"possession"))
 
         if self.vueactive == 0: #vue planète
-            self.vueactive = 2
+            self.etoileselect = random.choice(mod.etoiles)
+            self.planeteselect = random.choice(self.etoileselect.planetes)
+            t=self.planeteselect.taille
+
+            self.canevas.create_oval(mod.largeur/2-(t*25),mod.hauteur/2-(t*25),mod.largeur/2+(t*25),mod.hauteur/2+(t*25), fill="gray",
+                                    tags=(self.planeteselect.proprietaire, "planete", str(self.planeteselect.id), "possession"))
 
         #self.afficherpartie(mod)
 
