@@ -53,8 +53,11 @@ class Vaisseau():
             x1,y1=hlp.getAngledPoint(ang,self.vitesse,self.x,self.y)
             self.x,self.y=x1,y1 #int(x1),int(y1)
             if hlp.calcDistance(self.x,self.y,x,y) <=self.vitesse:
-                print("RESSOURCES...",self.cible.id,self.cible.ressource,self.cible.proprietaire)
-                self.cible.proprietaire=self.proprietaire
+                if  self.cible == Etoile:
+                    print("Etoile: ", self.cible.id)
+                if self.cible == Planete:
+                    print("RESSOURCES...",self.cible.id,self.cible.ressource,self.cible.proprietaire)
+                    self.cible.proprietaire=self.proprietaire
                 #tempo=input("Continuersvp")
                 self.cible=None
                 #print("Change cible")
@@ -174,7 +177,7 @@ class Modele():
         np=len(joueurs)+ias
         etoilej=[]
         planetej=[]
-        while np:
+        while np != 0:
             e=random.choice(self.etoiles)
             if e not in etoilej:
                 etoilej.append(e)
@@ -182,6 +185,9 @@ class Modele():
                 if p not in planetej:
                     planetej.append(p)
                 np-=1
+            else:
+                np = np
+                
         couleurs=["red","blue","lightgreen","yellow",
                   "lightblue","pink","gold","purple"]
         for i in joueurs:

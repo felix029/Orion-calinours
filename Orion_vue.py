@@ -177,16 +177,18 @@ class Vue():
             
             for i in mod.joueurs.keys():
                 for j in mod.joueurs[i].planetescontrolees:
-                    t=j.taille
-                    self.canevas.create_oval(j.x-t,j.y-t,j.x+t,j.y+t,fill=mod.joueurs[i].couleur,
-                                        tags=(j.proprietaire,"planete",str(j.id),"possession"))
+                    if j in self.etoileselect.planetes:
+                        t=j.taille
+                        self.canevas.create_oval(j.x-t,j.y-t,j.x+t,j.y+t,fill=mod.joueurs[i].couleur,
+                                            tags=(j.proprietaire,"planete",str(j.id),"possession"))
             # dessine IAs
         
             for i in mod.ias:
                 for j in i.planetescontrolees:
-                    t=j.taille
-                    self.canevas.create_oval(j.x-t,j.y-t,j.x+t,j.y+t,fill=i.couleur,
-                                        tags=(j.proprietaire,"planete",str(j.id),"possession"))
+                    if j in self.etoileselect.planetes:
+                        t=j.taille
+                        self.canevas.create_oval(j.x-t,j.y-t,j.x+t,j.y+t,fill=i.couleur,
+                                            tags=(j.proprietaire,"planete",str(j.id),"possession"))
 
         if self.vueactive == 0: #vue planète
             self.vueactive = 2
