@@ -118,6 +118,10 @@ class Vue():
         self.cadreinfochoix=Frame(self.cadreinfo,height=200,width=200,bg="grey30")
         self.cadreinfochoix.pack()
         self.btncreervaisseau=Button(self.cadreinfo,text="Vaisseau",command=self.creervaisseau)
+        self.btncreerbatiment=Button(self.cadreinfo,text="Batiment") ####Ajouter le 9 avril par nicolas pour creeation batiment
+        self.canevas.pack()
+        self.btncreerbatiment.bind("<Button>",self.creerBatiment)
+        
         self.lbselectecible=Label(self.cadreinfo,text="Choisir cible",bg="darkgrey")
         
         
@@ -180,6 +184,22 @@ class Vue():
         self.maselection=None
         self.canevas.delete("marqueur")
         self.btncreervaisseau.pack_forget()
+
+    def creerBatiment(self,event): #Ajouter le 9 avril par nic pour la creation d'un batiment
+        
+        x=event.x
+        y=event.y
+        print("Creer batiment")
+
+        joueur=self.parent.modele.joueurs[self.maselection[0]]
+        for i in joueur.planetescontrolees:
+            if i.id == int(self.maselection[2]):
+                p=i.id
+
+        self.parent.creerBatiment(p,"Minerai",x,y)
+        self.maselection=None
+        self.canevas.delete("marqueur")
+        self.btncreerbatiment.pack_forget()
         
     def afficherpartie(self,mod):
         self.canevas.delete("artefact")
@@ -248,6 +268,7 @@ class Vue():
             
     def montreplaneteselection(self):
         self.btncreervaisseau.pack()
+        self.btncreerbatiment.pack()
     def montreflotteselection(self):
         self.lbselectecible.pack()
     

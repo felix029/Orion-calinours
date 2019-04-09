@@ -140,6 +140,15 @@ class Controleur():
         
     def ciblerflotte(self,idorigine,iddestination):
         self.actions.append([self.monnom,"ciblerflotte",[idorigine,iddestination]])
+
+    def creerBatiment(self,p,typeBatiment,x,y):
+        self.actions.append([self.monnom,"creerBatiment",[p,typeBatiment,x,y]])
+
+    def ameliorerBatiment(self,batiment):
+        self.actions.append([self.monnom,"ameliorerBatiment",[batiment]])
+
+    def vendreBatiment(self,batiment):
+        self.actions.append([self.monnom,"vendreBatiment",[batiment]])
         
 if __name__=="__main__":
     c=Controleur()

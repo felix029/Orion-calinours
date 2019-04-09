@@ -15,18 +15,20 @@ class Planete():
         self.batiment=[]
 
 class Batiment(): #Ajouter le 8 avril par nic
-    def __init__(self,typeBatiment,x,y):
+    def __init__(self,nom,plan,typeBatiment,x,y):
+        self.id=Id.prochainid()
+        self.proprietaire=nom
+        self.planete=plan
         self.type = typeBatiment
         self.x = x
         self.y = y
         self.niveau = 1
         self.cout = 100
         self.nom=""
-        self.etat
+        self.etat=""
 
-        
-class Vaisseau():
-    def __init__(self,nom,x,y):
+class Vaisseau():      
+    def __init__(self,nom,x,y):   
         self.id=Id.prochainid()
         self.proprietaire=nom
         self.x=x
@@ -35,7 +37,7 @@ class Vaisseau():
         self.energie=100
         self.vitesse=2
         self.cible=None 
-        
+       
     def avancer(self):
         if self.cible:
             x=self.cible.x
@@ -65,6 +67,8 @@ class Joueur():
         self.gaz = 0
         self.flotte=[]
         self.actions={"creervaisseau":self.creervaisseau,
+                      "ameliorerBatiment":self.ameliorerBatiment,
+                      "vendreBatiment":self.vendreBatiment,
                       "creerBatiment":self.creerBatiment,
                       "ciblerflotte":self.ciblerflotte}
         
@@ -75,15 +79,31 @@ class Joueur():
         print("Vaisseau",v.id)
         self.flotte.append(v)
 
-    def creerBatiment(self,typeBatiment,x,y): #Ajouter le 8 avril par nic
+    def creerBatiment(self,params): #Ajouter le 8 avril par nic
 
-        b = Batiment(typeBatiment,x,y)
-        print("Batiment",b)
-        self.batiment.append(b)
+        indice = 0
+
+        p,typeBatiment,x,y = params
+        b = Batiment(self.nom,p,typeBatiment,x,y)
+        print("Batiment",b.id)
+
+        for i in self.planetescontrolees:
+            if i.id == p:
+                self.planetescontrolees[indice].batiment.append(b)
+                indice += 1
 
     #Ajouter le 8 avril par nic
-    def deleteBatiment(self,batiment): 
+    def vendreBatiment(self,batiment): 
+        self.minerai+=batiment.cout*0.5
         batiment.etat="detruit"
+
+    def ameliorerBatiment(self,batiment):
+        if batiment.cout <= self.minerai:
+            self.minerai -= batiment.cout
+            batiment.niveau += 1
+        else:
+            print("MANQUE ARGENT")
+
         
     def ciblerflotte(self,ids):
         idori,iddesti=ids
@@ -120,7 +140,7 @@ class IA(Joueur):
                 if i.cible:
                     i.avancer()
                 else:
-                    i.cible=random.choice(self.parent.planetes)  
+                    i.cible=random.choice(self.parent.planetes)
         else:
             self.creervaisseau(0) 
     
@@ -196,8 +216,8 @@ class Modele():
         for i in self.ias:
             i.prochaineaction()
 
-    def modifRessource(self): #Ajouter le 8 avril par nic
-
+    def modifRessource(self): 
+        #Ajouter le 8 avril par nic ( Gere l'incrémentation des ressources des joueurs avec batiment et diminuer les ressource restante sur la planete du joueur)
         for j in self.joueurs:
             for p in j.planetes:
                 for b in p.batiment:
