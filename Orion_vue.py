@@ -22,6 +22,9 @@ class Vue():
         self.creercadresplash(ip,nom)
         self.creercadrelobby()
         self.changecadre(self.cadresplash)
+        self.vueactive = 1 # 0: vue planétaire, 1: vue systeme planetaire, 2: vue galaxy
+        self.etoileselect=None
+        self.planeteselect=None
         
     def fermerfenetre(self):
         self.parent.fermefenetre()
@@ -113,7 +116,7 @@ class Vue():
         self.cadreinfogen=Frame(self.cadreinfo,width=200,height=200,bg="grey50")
         self.cadreinfogen.pack()
         self.labid=Label(self.cadreinfogen,text=self.nom,fg=mod.joueurs[self.nom].couleur)
-        self.labid.bind("<Button>",self.afficherplanemetemere)
+        self.labid.bind("<Button>",self.afficherplanetemere)
         self.labid.pack()
         self.cadreinfochoix=Frame(self.cadreinfo,height=200,width=200,bg="grey30")
         self.cadreinfochoix.pack()
@@ -142,31 +145,44 @@ class Vue():
         
     def afficherdecor(self,mod):
         
-        for i in range(len(mod.planetes)*3):
-            x=random.randrange(mod.largeur)
-            y=random.randrange(mod.hauteur)
-            self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond",))
+        if self.vueactive == 2: #vue de la galaxy
+            for i in range(len(mod.etoiles)*3):
+                x=random.randrange(mod.largeur)
+                y=random.randrange(mod.hauteur)
+                self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond",))
         
-        for i in mod.planetes:
-            t=i.taille
-            self.canevas.create_oval(i.x-t,i.y-t,i.x+t,i.y+t,fill="grey80",
-                                     tags=(i.proprietaire,"planete",str(i.id)))
-        for i in mod.joueurs.keys():
-            for j in mod.joueurs[i].planetescontrolees:
-                t=j.taille
-                self.canevas.create_oval(j.x-t,j.y-t,j.x+t,j.y+t,fill=mod.joueurs[i].couleur,
-                                     tags=(j.proprietaire,"planete",str(j.id),"possession"))
-        # dessine IAs
+            for i in mod.etoiles:
+                t=i.taille
+                self.canevas.create_oval(i.x-t,i.y-t,i.x+t,i.y+t,fill="grey80",
+                                        tags=("etoile",str(i.id)))
         
-        for i in mod.ias:
-            for j in i.planetescontrolees:
-                t=j.taille
-                self.canevas.create_oval(j.x-t,j.y-t,j.x+t,j.y+t,fill=i.couleur,
-                                     tags=(j.proprietaire,"planete",str(j.id),"possession"))
+        if self.vueactive == 1: #vue systeme planétaire
+            self.etoileselect = random.choice(mod.etoiles)
+
+            for i in self.etoileselect.planetes:
+                t=i.taille
+                self.canevas.create_oval(i.x-t,i.y-t,i.x+t,i.y+t,fill="grey80",
+                                        tags=(i.proprietaire,"planete",str(i.id)))
+            
+            for i in mod.joueurs.keys():
+                for j in mod.joueurs[i].planetescontrolees:
+                    t=j.taille
+                    self.canevas.create_oval(j.x-t,j.y-t,j.x+t,j.y+t,fill=mod.joueurs[i].couleur,
+                                        tags=(j.proprietaire,"planete",str(j.id),"possession"))
+            # dessine IAs
+        
+            for i in mod.ias:
+                for j in i.planetescontrolees:
+                    t=j.taille
+                    self.canevas.create_oval(j.x-t,j.y-t,j.x+t,j.y+t,fill=i.couleur,
+                                        tags=(j.proprietaire,"planete",str(j.id),"possession"))
+
+        if self.vueactive == 0: #vue planète
+            self.vueactive = 2
                 
-        self.afficherpartie(mod)
+        #self.afficherpartie(mod)
                 
-    def afficherplanemetemere(self,evt):
+    def afficherplanetemere(self,evt):
         j=self.mod.joueurs[self.nom]
         couleur=j.couleur
         x=j.planetemere.x
@@ -186,7 +202,7 @@ class Vue():
         
         if self.maselection!=None:
             joueur=mod.joueurs[self.maselection[0]]
-            if self.maselection[1]=="planete":
+            if self.maselection[1]=="etoile":
                 for i in joueur.planetescontrolees:
                     if i.id == int(self.maselection[2]):
                         x=i.x
@@ -228,15 +244,15 @@ class Vue():
             #self.maselection=self.canevas.find_withtag(CURRENT)#[0]
             self.maselection=[self.nom,t[1],t[2]]  #self.canevas.find_withtag(CURRENT)#[0]
             print(self.maselection)
-            if t[1] == "planete":
-                self.montreplaneteselection()
+            if t[1] == "etoile":
+                self.montreetoileselection()
             elif t[1] == "flotte":
                 self.montreflotteselection()
-        elif "planete" in t and t[0]!=self.nom:
+        elif "etoile" in t and t[0]!=self.nom:
             if self.maselection:
-                pass # attribuer cette planete a la cible de la flotte selectionne
+                pass # attribuer cette etoile a la cible de la flotte selectionne
                 self.parent.ciblerflotte(self.maselection[2],t[2])
-            print("Cette planete ne vous appartient pas - elle est a ",t[0])
+            print("Cette etoile ne vous appartient pas - elle est a ",t[0])
             self.maselection=None
             self.lbselectecible.pack_forget()
             self.canevas.delete("marqueur")
@@ -246,7 +262,7 @@ class Vue():
             self.lbselectecible.pack_forget()
             self.canevas.delete("marqueur")
             
-    def montreplaneteselection(self):
+    def montreetoileselection(self):
         self.btncreervaisseau.pack()
     def montreflotteselection(self):
         self.lbselectecible.pack()

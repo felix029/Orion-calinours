@@ -2,15 +2,35 @@
 import random
 from Id import Id
 from helper import Helper as hlp
-        
+
 class Planete():
     def __init__(self,x,y):
         self.id=Id.prochainid()
-        self.proprietaire="inconnu"
+        self.x=x
+        self.y=y
+        self.taille=random.randrange(10,15)
+        self.gas=random.randrange(4000, 10000)
+        self.minerals=random.randrange(4000, 10000)
+        self.proprietaire = ""
+
+class Etoile():
+    def __init__(self,x,y,parent):
+        self.id=Id.prochainid()
         self.x=x
         self.y=y
         self.taille=random.randrange(4,6)
         self.ressource=random.randrange(10)
+        self.planetes=[]
+        self.largeur = parent.largeur
+        self.hauteur = parent.hauteur
+        self.creerplanetes()
+    
+    def creerplanetes(self):
+        bordure=1
+        for i in range(20):
+            planX=random.randrange(self.largeur-(2*bordure))+bordure
+            planY=random.randrange(self.hauteur-(2*bordure))+bordure
+            self.planetes.append(Planete(planX, planY))
         
 class Vaisseau():
     def __init__(self,nom,x,y):
@@ -70,7 +90,7 @@ class Joueur():
                       "ciblerflotte":self.ciblerflotte}
         
     def creervaisseau(self,params):
-        #planete,cible,type=params
+        #etoile,cible,type=params
         #is type=="explorer":
         v=Vaisseau(self.nom,self.planetemere.x+10,self.planetemere.y)
         print("Vaisseau",v.id)
@@ -80,7 +100,7 @@ class Joueur():
         idori,iddesti=ids
         for i in self.flotte:
             if i.id== int(idori):
-                for j in self.parent.planetes:
+                for j in self.parent.etoiles:
                     if j.id== int(iddesti):
                         i.cible=j
                         print("GOT TARGET")
@@ -92,7 +112,7 @@ class Joueur():
             if i.cible:
                 i.avancer()
             #else:
-            #    i.cible=random.choice(self.parent.planetes)
+            #    i.cible=random.choice(self.parent.etoiles)
             
     def prochaineaction2(self):
         for i in self.flotte:
@@ -111,7 +131,7 @@ class IA(Joueur):
                 if i.cible:
                     i.avancer()
                 else:
-                    i.cible=random.choice(self.parent.planetes)  
+                    i.cible=random.choice(self.parent.etoiles)  
         else:
             self.creervaisseau(0) 
     
@@ -123,10 +143,11 @@ class Modele():
         self.joueurs={}
         self.ias=[]
         self.actionsafaire={}
-        self.planetes=[]
+        self.etoiles=[]
         self.terrain=[]
-        self.creerplanetes(joueurs,2)
+        self.creeretoiles()
         self.creerterrain()
+        self.assignerplanetes(joueurs,2)
         
     def creerterrain(self):
         self.terrain=[]
@@ -140,30 +161,34 @@ class Modele():
                     ligne.append(0)
             self.terrain.append(ligne)
         
-    def creerplanetes(self,joueurs,ias=1):
+    def creeretoiles(self):
         bordure=0
         for i in range(200):
             x=random.randrange(self.largeur-(2*bordure))+bordure
             y=random.randrange(self.hauteur-(2*bordure))+bordure
-            self.planetes.append(Planete(x,y))
+            self.etoiles.append(Etoile(x,y,self))
+    
+    def assignerplanetes(self, joueurs, ias=1):
         np=len(joueurs)+ias
-        planes=[]
+        etoilej=[]
+        planetej=[]
         while np:
-            p=random.choice(self.planetes)
-            if p not in planes:
-                planes.append(p)
-                self.planetes.remove(p)
+            e=random.choice(self.etoiles)
+            if e not in etoilej:
+                etoilej.append(e)
+                p=random.choice(e.planetes)
+                if p not in planetej:
+                    planetej.append(p)
                 np-=1
         couleurs=["red","blue","lightgreen","yellow",
                   "lightblue","pink","gold","purple"]
         for i in joueurs:
-            self.joueurs[i]=Joueur(self,i,planes.pop(0),couleurs.pop(0))
+            self.joueurs[i]=Joueur(self,i,planetej.pop(0),couleurs.pop(0))
         
         # IA- creation des ias - max 2 
         couleursia=["orange","green"]
         for i in range(ias):
-            self.ias.append(IA(self,"IA_"+str(i),planes.pop(0),couleursia.pop(0)))  
-        
+            self.ias.append(IA(self,"IA_"+str(i),planetej.pop(0),couleursia.pop(0)))
             
     def prochaineaction(self,cadre):
         if cadre in self.actionsafaire:
