@@ -12,7 +12,7 @@ class Planete():
         self.gas=random.randrange(4000, 10000)
         self.minerals=random.randrange(4000, 10000)
         self.proprietaire = ""
-        self.colorsTab = [str((self.minerals%99) + 10), str(random.randrange(10,99)), str((self.gas%99)+10)] 
+        self.colorsTab = [str(self.minerals%99), str(random.randrange(4000,10000)%99), str(self.gas%99)] 
         self.color = "#" + random.choice(self.colorsTab) + random.choice(self.colorsTab) + random.choice(self.colorsTab)
         self.setXY()
 
@@ -39,10 +39,9 @@ class Etoile():
         self.creerplanetes()
     
     def creerplanetes(self):
-        bordure=1
         for i in range(10):
-            planX=random.randrange(self.largeur-(2*bordure))+bordure
-            planY=random.randrange(self.hauteur-(2*bordure))+bordure
+            planX=random.randrange(150, 200)+(i*60)
+            planY=random.randrange(150, 200)+(i*random.randrange(20,40))+10
             self.planetes.append(Planete(planX, planY))
         
 class Vaisseau():
