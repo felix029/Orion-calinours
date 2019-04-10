@@ -23,13 +23,9 @@ class Vue():
         self.creercadresplash(ip,nom)
         self.creercadrelobby()
         self.changecadre(self.cadresplash)
-        self.vueactive = 0 # 0: vue planétaire, 1: vue systeme planetaire, 2: vue galaxy
+        self.vueactive = 2 # 0: vue planétaire, 1: vue systeme planetaire, 2: vue galaxy
         self.etoileselect=None
         self.planeteselect=None
-
-
-
-
 
     def fermerfenetre(self):
         self.parent.fermefenetre()
@@ -237,15 +233,23 @@ class Vue():
         if self.vueactive == 0:
             self.afficherdecor(self.mod)
         else:
-            self.vueactive-=1
-            self.afficherdecor(self.mod)
+            if (self.vueactive == 2 and self.etoileselect != None) or (self.vueactive == 1 and self.planeteselect != None):
+                self.vueactive-=1
+                self.afficherdecor(self.mod)
+            else:
+                print("Aucune planete ou etoile select")
 
     def dezoom (self, mod):
-        if self.vueactive ==2:
+        if self.vueactive == 2:
             self.afficherdecor(self.mod)
-        else:
+        if self.vueactive == 1:
             self.vueactive+=1
             self.afficherdecor(self.mod)
+            self.etoileselect=None
+        if self.vueactive == 0:
+            self.vueactive+=1
+            self.afficherdecor(self.mod)
+            self.planeteselect=None
 
     def bindWidgets(self):
         self.boutonZoom.config(command = lambda: self.zoom(self.mod))
@@ -266,7 +270,7 @@ class Vue():
                                         tags=("etoile", str(i.id)))
 
         if self.vueactive == 1: #vue systeme solaire
-            self.etoileselect = random.choice(mod.etoiles)
+            #self.etoileselect = random.choice(mod.etoiles)
             
             self.canevas.create_oval(-100, -100, 100, 100, fill="orange", tags=("soleil", "fond"))
 
@@ -291,8 +295,8 @@ class Vue():
                                             tags=("planete", str(j.id), j.proprietaire, str(self.etoileselect.id)))
 
         if self.vueactive == 0: #vue planète
-            self.etoileselect = random.choice(mod.etoiles)
-            self.planeteselect = random.choice(self.etoileselect.planetes)
+            #self.etoileselect = random.choice(mod.etoiles)
+            #self.planeteselect = random.choice(self.etoileselect.planetes)
             t=self.planeteselect.taille
             self.canevas.create_oval(mod.largeur/2-(t*25),mod.hauteur/2-(t*25),mod.largeur/2+(t*25),mod.hauteur/2+(t*25), width=2, outline="white", fill=self.planeteselect.color,
                                     tags=("planetezoom", str(self.planeteselect.id), self.planeteselect.proprietaire, str(self.etoileselect.id)))
@@ -439,42 +443,48 @@ class Vue():
         #
         ############################################################
 
-        #if self.vueactive == 2:
-            #if tag and tag[0] == "etoile":
-                #for i in mod.etoiles:
-                    #if i.id == tag[1]:
-                        #self.parent.etoileselect = i
-                        #break
+        if self.vueactive == 2:
+            if tag and tag[0] == "etoile":
+                self.maselection=self.canevas.find_withtag(CURRENT)
+                self.maselection=["etoile", tag[1]]
+                print(self.maselection)
+                for i in self.mod.etoiles:
+                    if str(i.id) == self.maselection[1]:
+                        self.etoileselect = i
+                        break
 
-        #if self.vueactive == 1:
-            #if tag and tag[0] == "planete":
-                #for i in self.etoileselect.planetes:
-                    #if i.id == tag[1]:
-                        #self.parent.planeteselect = i
-                        #break
+        if self.vueactive == 1:
+            if tag and tag[0] == "planete":
+                self.maselection=self.canevas.find_withtag(CURRENT)
+                self.maselection=["planete", tag[1]]
+                print(self.maselection)
+                for i in self.etoileselect.planetes:
+                    if str(i.id) == tag[1]:
+                        self.planeteselect = i
+                        break
 
 
-        if t and t[0]==self.nom:
-            self.maselection=self.canevas.find_withtag(CURRENT)#[0]
-            self.maselection=[self.nom,t[1],t[2]]  #self.canevas.find_withtag(CURRENT)#[0]
-            print(self.maselection)
-            if t[1] == "etoile":
-                self.montreetoileselection()
-            elif t[1] == "flotte":
-                self.montreflotteselection()
-        elif "etoile" in t and t[0]!=self.nom:
-            if self.maselection:
-                pass # attribuer cette etoile a la cible de la flotte selectionne
-                self.parent.ciblerflotte(self.maselection[2],t[2])
-            print("Cette etoile ne vous appartient pas - elle est a ",t[0])
-            self.maselection=None
-            self.lbselectecible.pack_forget()
-            self.canevas.delete("marqueur")
-        else:
-            print("Region inconnue")
-            self.maselection=None
-            self.lbselectecible.pack_forget()
-            self.canevas.delete("marqueur")
+        #if t and t[0]==self.nom:
+        #    self.maselection=self.canevas.find_withtag(CURRENT)#[0]
+        #    self.maselection=[self.nom,t[1],t[2]]  #self.canevas.find_withtag(CURRENT)#[0]
+        #    print(self.maselection)
+        #    if t[1] == "etoile":
+        #        self.montreetoileselection()
+        #    elif t[1] == "flotte":
+        #        self.montreflotteselection()
+        #elif "etoile" in t and t[0]!=self.nom:
+        #    if self.maselection:
+        #        pass # attribuer cette etoile a la cible de la flotte selectionne
+        #        self.parent.ciblerflotte(self.maselection[2],t[2])
+        #    print("Cette etoile ne vous appartient pas - elle est a ",t[0])
+        #    self.maselection=None
+        #    self.lbselectecible.pack_forget()
+        #    self.canevas.delete("marqueur")
+        #else:
+        #    print("Region inconnue")
+        #    self.maselection=None
+        #    self.lbselectecible.pack_forget()
+        #    self.canevas.delete("marqueur")
 
     def montreetoileselection(self):
         self.btncreervaisseau.pack()

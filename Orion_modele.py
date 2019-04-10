@@ -12,8 +12,8 @@ class Planete():
         self.gas=random.randrange(4000, 10000)
         self.minerals=random.randrange(4000, 10000)
         self.proprietaire = ""
-        self.colorsTab = [str(self.minerals%99), str(random.randrange(4000,10000)%99), str(self.gas%99)] 
-        self.color = "#" + random.choice(self.colorsTab) + random.choice(self.colorsTab) + random.choice(self.colorsTab)
+        self.colorsTab = [self.minerals%10, random.randrange(4000,10000)%10, self.gas%10, self.minerals%10, random.randrange(4000,10000)%10, self.gas%10] 
+        self.color = "#" + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab))
         self.setXY()
 
     #fonction qui va permettre aux planetes de ne pas etre par dessus le soleil
@@ -23,7 +23,6 @@ class Planete():
         
         if self.y <=100:
             self.y+=100
-
 
 
 class Etoile():
