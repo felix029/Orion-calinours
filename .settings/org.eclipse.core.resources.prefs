@@ -1,2 +1,8 @@
 eclipse.preferences.version=1
+<<<<<<< HEAD
+=======
+encoding/Orion_client.py=utf-8
+encoding/Orion_modele.py=utf-8
+encoding/Orion_serveur.py=utf-8
+>>>>>>> d5fa593c4a33477b31d698f846714ad6bd84ed7a
 encoding/Orion_vue.py=utf-8

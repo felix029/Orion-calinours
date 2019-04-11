@@ -2,6 +2,7 @@
 from tkinter import *
 import random
 import os,os.path
+#from numpy.distutils.conv_template import file
 
 class Vue():
 
@@ -22,11 +23,11 @@ class Vue():
         self.cadreapp.pack()
         self.creercadresplash(ip,nom)
         self.creercadrelobby()
-        self.changecadre(self.cadresplash)
-        self.vueactive = 2 # 0: vue plan�taire, 1: vue systeme planetaire, 2: vue galaxy
+        self.changecadre(self.cadresplash)        
+        self.vueactive = 2 # 0: vue planetaire, 1: vue systeme planetaire, 2: vue galaxy
         self.etoileselect=None
-        self.planeteselect=None
-
+        self.planeteselect=None    
+    
     def fermerfenetre(self):
         self.parent.fermefenetre()
 
@@ -193,9 +194,9 @@ class Vue():
         self.canevasMini=Canvas(self.cadreminimap,width=200,height=200,bg="orange")
         self.canevasMini.grid(row=0, column=0, sticky="we")       
         self.canevasMini.bind("<Button>",self.moveCanevas)
-
-
         self.afficherdecor(mod)
+
+
 
         self.changecadre(self.cadrepartie)
 
@@ -294,15 +295,13 @@ class Vue():
                         self.canevas.create_oval(j.x-t,j.y-t,j.x+t,j.y+t,fill=i.couleur,
                                             tags=("planete", str(j.id), j.proprietaire, str(self.etoileselect.id)))
 
+
         if self.vueactive == 0: #vue plan�te
             #self.etoileselect = random.choice(mod.etoiles)
             #self.planeteselect = random.choice(self.etoileselect.planetes)
             t=self.planeteselect.taille
             self.canevas.create_oval(mod.largeur/2-(t*25),mod.hauteur/2-(t*25),mod.largeur/2+(t*25),mod.hauteur/2+(t*25), width=2, outline="white", fill=self.planeteselect.color,
                                     tags=("planetezoom", str(self.planeteselect.id), self.planeteselect.proprietaire, str(self.etoileselect.id)))
-
-        #self.afficherpartie(mod)
-
 ##############################################################################################################################
     def clearSelection(self, event=None):
         self.selection=None
