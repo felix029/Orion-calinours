@@ -23,7 +23,7 @@ class Vue():
         self.creercadresplash(ip,nom)
         self.creercadrelobby()
         self.changecadre(self.cadresplash)
-        self.vueactive = 2 # 0: vue planétaire, 1: vue systeme planetaire, 2: vue galaxy
+        self.vueactive = 2 # 0: vue plan�taire, 1: vue systeme planetaire, 2: vue galaxy
         self.etoileselect=None
         self.planeteselect=None
 
@@ -141,12 +141,12 @@ class Vue():
         #Sous-Zone Dessous
 
         #Zone Dessous-Gauche
-        #Cadre fonctionnalités (lowerLeftFrame)
+        #Cadre fonctionnalit�s (lowerLeftFrame)
         self.lowerLeftFrame=Frame(self.lowerFrame,width=150,height=625,bg="green")
         self.lowerLeftFrame.grid(row=0, column=0, rowspan=2, sticky="ns")
 
         #Zone Dessous-Droite
-        #Cadre fonctionnalités (lowerRightFrame)
+        #Cadre fonctionnalit�s (lowerRightFrame)
         self.lowerRightFrame=Frame(self.lowerFrame,width=150,height=625,bg="green")
         self.lowerRightFrame.grid(row=0, column=2, rowspan=2, sticky="ns")
 
@@ -155,10 +155,10 @@ class Vue():
         self.canevas=Canvas(self.lowerFrame,width=800,height=600,bg="grey11")
         self.canevas.grid(row=0, column=1, sticky="ns")
 
-        self.canevas.bind("<Button>",self.cliquecosmos) # Event MouseClick lié au canevas (Aire de jeu)
+        self.canevas.bind("<Button>",self.cliquecosmos) # Event MouseClick li� au canevas (Aire de jeu)
 
         #Zone Dessous-Dessous
-        #Cadre fonctionnalités (lowerRightFrame)
+        #Cadre fonctionnalit�s (lowerRightFrame)
         self.lowerLowerFrame=Frame(self.lowerFrame,width=800,height=75,bg="blue")
         self.lowerLowerFrame.grid(row=1, column=1, sticky="ns")
         ###############################################################################
@@ -191,7 +191,7 @@ class Vue():
         self.cadreminimap=Frame(self.lowerRightFrame,height=150,width=200,bg="green")
         self.cadreminimap.grid(row=1, column=0, sticky="we")
         self.canevasMini=Canvas(self.cadreminimap,width=200,height=200,bg="orange")
-        self.canevasMini.grid(row=0, column=0, sticky="we")
+        self.canevasMini.grid(row=0, column=0, sticky="we")       
         self.canevasMini.bind("<Button>",self.moveCanevas)
 
 
@@ -201,14 +201,14 @@ class Vue():
 
         #try de bouton zoom
         #self.boutonZoom = Button(self.cadreminimap,text="Zoom", bg="LightCyan3", borderwidth=None,font=self.simpleFont, pady=2, width= 25, height=3, cursor="hand2")
-        self.boutonZoom = Button(self.cadreminimap,text="Zoom", bg="green2", width= 25, height=3, cursor="hand2", activebackground="red")
+        self.boutonZoom = Button(self.cadreminimap,text="Vue suivante", bg="green2", width= 25, height=3, cursor="hand2", activebackground="red")
         self.boutonZoom.bind("<Button>")
         self.boutonZoom.grid(row=1, column=0, sticky="we")
         #self.boutonZoom.pack(padx=1, pady=1)
 
-        #try dde bouton dé-zomm
-        #self.boutonZoom = Button(self.cadreminimap,text="Dé-zoom", bg="LightCyan3", borderwidth=None,font=self.simpleFont, pady=2, width= 25, height=3, cursor="hand2")
-        self.boutonDzoom=Button(self.cadreminimap,text="Dé-zoom", bg="green2", width= 25, height=3, cursor="hand2", activebackground="red")
+        #try dde bouton d�-zomm
+        #self.boutonZoom = Button(self.cadreminimap,text="D�-zoom", bg="LightCyan3", borderwidth=None,font=self.simpleFont, pady=2, width= 25, height=3, cursor="hand2")
+        self.boutonDzoom=Button(self.cadreminimap,text="Vue precedente", bg="green2", width= 25, height=3, cursor="hand2", activebackground="red")
         self.boutonDzoom.bind("<Button>")
         self.boutonDzoom.grid(row=2, column=0, sticky="we")
         #self.boutonDzoom.pack(padx=1, pady=1)
@@ -294,7 +294,7 @@ class Vue():
                         self.canevas.create_oval(j.x-t,j.y-t,j.x+t,j.y+t,fill=i.couleur,
                                             tags=("planete", str(j.id), j.proprietaire, str(self.etoileselect.id)))
 
-        if self.vueactive == 0: #vue planète
+        if self.vueactive == 0: #vue plan�te
             #self.etoileselect = random.choice(mod.etoiles)
             #self.planeteselect = random.choice(self.etoileselect.planetes)
             t=self.planeteselect.taille
@@ -366,7 +366,22 @@ class Vue():
         self.maselection=None
         self.canevas.delete("marqueur")
         self.btncreervaisseau.pack_forget()
+    
+    def creerBatiment(self,event): #Ajouter le 9 avril par nic pour la creation d'un batiment        
+        x=event.x
+        y=event.y
+        print("Creer batiment")
 
+        joueur=self.parent.modele.joueurs[self.maselection[0]]
+        for i in joueur.planetescontrolees:
+            if i.id == int(self.maselection[2]):
+                p=i.id
+
+        self.parent.creerBatiment(p,"Minerai",x,y)
+        self.maselection=None
+        self.canevas.delete("marqueur")
+        self.btncreerbatiment.pack_forget()
+        
     def afficherpartie(self,mod):
         self.canevas.delete("artefact")
 
@@ -433,13 +448,13 @@ class Vue():
 
         ############################################################
         #
-        #   Section à Charles: Pour la sélection d'une étpoile ou d'une planète avec de cliquer sur le bouton zoom
+        #   Section � Charles: Pour la s�lection d'une �tpoile ou d'une plan�te avec de cliquer sur le bouton zoom
         #
-        #       - Il va falloir écrire plusieurs if et else pour attendre le but visé
-        #       - Il va faloir créer une variable au début du code de la vue qui aura seulement comme valeur sois une planète ou sois une étoile
-        #       - Il va falloir vérifier si la variable de sélection "self.maselection" est pleine
-        #       - Il va falloir débolquer et bloquer les boutons de zoom et de dé-zoom selon l'état de la partie
-        #       - Il va falloir changer les strings contenu dans les boutons pour indiqués dans quel monde le joueur veuet aller
+        #       - Il va falloir �crire plusieurs if et else pour attendre le but vis�
+        #       - Il va faloir cr�er une variable au d�but du code de la vue qui aura seulement comme valeur sois une plan�te ou sois une �toile
+        #       - Il va falloir v�rifier si la variable de s�lection "self.maselection" est pleine
+        #       - Il va falloir d�bolquer et bloquer les boutons de zoom et de d�-zoom selon l'�tat de la partie
+        #       - Il va falloir changer les strings contenu dans les boutons pour indiqu�s dans quel monde le joueur veuet aller
         #
         ############################################################
 
@@ -488,6 +503,7 @@ class Vue():
 
     def montreetoileselection(self):
         self.btncreervaisseau.pack()
+        self.btncreerbatiment.pack()
     def montreflotteselection(self):
         self.lbselectecible.pack()
     def afficherartefacts(self,joueurs):
