@@ -141,12 +141,15 @@ class Controleur():
     def ciblerflotte(self,idorigine,iddestination):
         self.actions.append([self.monnom,"ciblerflotte",[idorigine,iddestination]])
 
+    #Ajouter le 9 avril par Nic
     def creerBatiment(self,p,typeBatiment,x,y):
         self.actions.append([self.monnom,"creerBatiment",[p,typeBatiment,x,y]])
 
+     #Ajouter le 9 avril par Nic
     def ameliorerBatiment(self,batiment):
         self.actions.append([self.monnom,"ameliorerBatiment",[batiment]])
 
+     #Ajouter le 9 avril par Nic
     def vendreBatiment(self,batiment):
         self.actions.append([self.monnom,"vendreBatiment",[batiment]])
         

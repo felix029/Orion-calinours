@@ -119,11 +119,9 @@ class Vue():
         self.cadreinfochoix.pack()
         self.btncreervaisseau=Button(self.cadreinfo,text="Vaisseau",command=self.creervaisseau)
         self.btncreerbatiment=Button(self.cadreinfo,text="Batiment") ####Ajouter le 9 avril par nicolas pour creeation batiment
-        self.canevas.pack()
-        self.btncreerbatiment.bind("<Button>",self.creerBatiment)
-        
+        self.canevas.pack()  #Ajouter le 9 avril par Nic
+        self.btncreerbatiment.bind("<Button>",self.creerBatiment)  #Ajouter le 9 avril par Nic
         self.lbselectecible=Label(self.cadreinfo,text="Choisir cible",bg="darkgrey")
-        
         
         self.cadreminimap=Frame(self.cadreoutils,height=200,width=200,bg="black")
         self.canevasMini=Canvas(self.cadreminimap,width=200,height=200,bg="pink")

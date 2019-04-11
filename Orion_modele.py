@@ -67,9 +67,9 @@ class Joueur():
         self.gaz = 0
         self.flotte=[]
         self.actions={"creervaisseau":self.creervaisseau,
-                      "ameliorerBatiment":self.ameliorerBatiment,
-                      "vendreBatiment":self.vendreBatiment,
-                      "creerBatiment":self.creerBatiment,
+                      "ameliorerBatiment":self.ameliorerBatiment,  #Ajouter le 9 avril par Nic
+                      "vendreBatiment":self.vendreBatiment,  #Ajouter le 9 avril par Nic
+                      "creerBatiment":self.creerBatiment,  #Ajouter le 9 avril par Nic
                       "ciblerflotte":self.ciblerflotte}
         
     def creervaisseau(self,params):
@@ -92,11 +92,12 @@ class Joueur():
                 self.planetescontrolees[indice].batiment.append(b)
                 indice += 1
 
-    #Ajouter le 8 avril par nic
+    #Ajouter le 9 avril par nic
     def vendreBatiment(self,batiment): 
         self.minerai+=batiment.cout*0.5
         batiment.etat="detruit"
 
+     #Ajouter le 9 avril par Nic
     def ameliorerBatiment(self,batiment):
         if batiment.cout <= self.minerai:
             self.minerai -= batiment.cout
