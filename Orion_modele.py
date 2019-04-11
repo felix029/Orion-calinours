@@ -9,10 +9,10 @@ class Planete():
         self.x=x
         self.y=y
         self.taille=random.randrange(10,15)
-        self.gas=random.randrange(4000, 10000)
-        self.minerals=random.randrange(4000, 10000)
+        self.gaz=random.randrange(4000, 10000)
+        self.minerai=random.randrange(4000, 10000)
         self.proprietaire = ""
-        self.colorsTab = [self.minerals%10, random.randrange(4000,10000)%10, self.gas%10, self.minerals%10, random.randrange(4000,10000)%10, self.gas%10] 
+        self.colorsTab = [self.minerai%10, random.randrange(4000,10000)%10, self.gaz%10, self.minerai%10, random.randrange(4000,10000)%10, self.gaz%10] 
         self.color = "#" + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab))
         self.setXY()
         self.batiment=[]
