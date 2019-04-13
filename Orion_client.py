@@ -156,6 +156,9 @@ class Controleur():
      #Ajouter le 9 avril par Nic
     def vendreBatiment(self,batiment):
         self.actions.append([self.monnom,"vendreBatiment",[batiment]])
+    
+    def detruire(self):
+        self.actions.append([self.monnom,"detruire",""])
         
 if __name__=="__main__":
     c=Controleur()
