@@ -216,11 +216,26 @@ class Joueur():
                         i.cible=j
                         print("GOT TARGET")
                         return
+                for j in self.parent.ias:
+                    for k in j.flotte:
+                        if k.id == int(iddesti):
+                            i.cible=k
+                            i.typecible="Vaisseau"
+                for j in self.parent.joueurs:
+                    for k in self.parent.joueurs[j].flotte:
+                        if k.id == int(iddesti):
+                            i.cible=k
+                            i.typecible="Vaisseau"
         
         
     def prochaineaction(self):
+
+        if self.detruits:
+            self.detruire()
         for i in self.flotte:
-            if i.cible:
+            if i.cible and i.typecible == "Vaisseau":
+                i.tirer()
+            elif i.cible:
                 i.avancer()
             #else:
             #    i.cible=random.choice(self.parent.planetes)
