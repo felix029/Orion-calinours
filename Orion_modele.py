@@ -8,7 +8,7 @@ class Planete():
         self.id=Id.prochainid()
         self.x=x
         self.y=y
-        self.taille=random.randrange(10,15)
+        self.taille=random.randrange(7,12)
         self.gaz=random.randrange(4000, 10000)
         self.minerai=random.randrange(4000, 10000)
         self.proprietaire = ""

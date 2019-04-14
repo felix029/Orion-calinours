@@ -124,6 +124,9 @@ class Vue():
         self.nom=self.parent.monnom
         self.mod=mod
 
+        self.simpleFont=("MS Sans Serif", 11, "bold")
+
+
         ##########################################################################
         #Zone globale
         self.cadrepartie=Frame(self.cadreapp)
@@ -200,20 +203,25 @@ class Vue():
 
         self.changecadre(self.cadrepartie)
 
-        #try de bouton zoom
+        #Bouton pour modifier la vue
+        #bouton zoom
         #self.boutonZoom = Button(self.cadreminimap,text="Zoom", bg="LightCyan3", borderwidth=None,font=self.simpleFont, pady=2, width= 25, height=3, cursor="hand2")
         self.boutonZoom = Button(self.cadreminimap,text="Vue suivante", bg="green2", width= 25, height=3, cursor="hand2", activebackground="red")
         self.boutonZoom.bind("<Button>")
         self.boutonZoom.grid(row=1, column=0, sticky="we")
-        #self.boutonZoom.pack(padx=1, pady=1)
-
-        #try dde bouton d�-zomm
-        #self.boutonZoom = Button(self.cadreminimap,text="D�-zoom", bg="LightCyan3", borderwidth=None,font=self.simpleFont, pady=2, width= 25, height=3, cursor="hand2")
+        #bouton d�-zomm
         self.boutonDzoom=Button(self.cadreminimap,text="Vue precedente", bg="green2", width= 25, height=3, cursor="hand2", activebackground="red")
         self.boutonDzoom.bind("<Button>")
         self.boutonDzoom.grid(row=2, column=0, sticky="we")
-        #self.boutonDzoom.pack(padx=1, pady=1)
-        #fin du try de bouton
+        
+        #######################################
+        #try d'afficher les atrributs d'une planète lors de la VUE_PLANÉTAIRE
+        self.attributMinerai = Label(self.cadreminimap,  width= 25, height=3, textvariable="Minerai : ", fg="black", bg="yellow",borderwidth=1,font=self.simpleFont)
+        self.attributGaz = Label(self.cadreminimap,  width= 25, height=3, textvariable="Gaz : ", fg="black", bg="blue",borderwidth=1,font=self.simpleFont)
+
+
+        #######################################
+
         self.bindWidgets()
         self.afficherdecor(self.mod)
         self.changecadre(self.cadrepartie)
@@ -302,6 +310,42 @@ class Vue():
             t=self.planeteselect.taille
             self.canevas.create_oval(mod.largeur/2-(t*25),mod.hauteur/2-(t*25),mod.largeur/2+(t*25),mod.hauteur/2+(t*25), width=2, outline="white", fill=self.planeteselect.color,
                                     tags=("planetezoom", str(self.planeteselect.id), self.planeteselect.proprietaire, str(self.etoileselect.id)))
+            afficheAttributsPlanete(self.planeteselect)
+
+
+    def afficheAttributsPlanete(self, maselection, planeteselect=None, etoileselect=None):
+
+        tag = self.maselection.tag[1]
+        self.calculMinerai+=0
+        self.calculGaz+=0
+
+        if tag == "etoile":
+            print(self.etoileselect)
+            print(tag)
+            for i in self.etoileselect.planetes:
+                self.calculMinerai+=self.planeteselect.minerai
+                self.calculGaz+=self.planeteselect.gaz
+            
+            print(str(self.calculMinerai))
+            print(str(self.calculGaz))
+            self.planeteselect.gaz
+            self.planeteselect.minerai
+
+        if tag == "planete":
+            print(self.planeteselect)
+            print(tag)
+            self.planeteselect.gaz
+            self.planeteselect.minerai
+            self.attributMinerai.set(textvariable = "Minerai : " + str(self.planeteselect.minerai)) 
+            self.attributGaz.set(textvariable = "Gaz : " + str(self.planeteselect.gaz)) 
+
+
+        self.planeteselect.id
+        self.planeteselect.propriétaire
+        self.planeteselect.color
+
+
+
 ##############################################################################################################################
     def clearSelection(self, event=None):
         self.selection=None
@@ -465,6 +509,7 @@ class Vue():
                 for i in self.mod.etoiles:
                     if str(i.id) == self.maselection[1]:
                         self.etoileselect = i
+                        afficheAttributsPlanete(self.maselection, self.etoileselect)
                         break
 
         if self.vueactive == 1:
@@ -475,6 +520,7 @@ class Vue():
                 for i in self.etoileselect.planetes:
                     if str(i.id) == tag[1]:
                         self.planeteselect = i
+                        afficheAttributsPlanete(self.maselection, self.planeteselect)
                         break
 
 
