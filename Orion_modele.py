@@ -59,6 +59,12 @@ class Batiment(): #Ajouter le 8 avril par nic
         self.etat=""
 
 class Vaisseau():      
+
+    ###définition des types de vaisseaux [energie,vitesse, puissance de feu]
+    typevaisseau={"chasseur":[100,3,10],
+                    "cargo":[100,2,0],
+                    "colonisateur":[150,1,0]}
+
     def __init__(self,nom,x,y):   
         self.id=Id.prochainid()
         self.proprietaire=nom
@@ -70,6 +76,11 @@ class Vaisseau():
         self.cible=None
         self.sysplanetecur=None
         self.planetecur=None
+        self.typecible=""  
+        self.range=10  
+        self.projectiles=[]
+        self.delaidetir=5
+        self.etat="actif"
        
     def avancer(self):
         if self.cible:
@@ -89,7 +100,56 @@ class Vaisseau():
                 #print("Change cible")
         else:
             print("PAS DE CIBLE")
-              
+
+    def tirer(self):
+        d=hlp.calcDistance(self.x,self.y,self.cible.x,self.cible.y)
+        if self.cible and d>self.range:
+            self.avancer()
+        elif self.cible.etat!="detruit":  ###ajouter le délai de tir
+            p=Projectile(self.cible,self.x,self.y,self.cible.x,self.cible.y)
+            self.projectiles.append(p)
+
+        else:
+            self.cible=None
+
+        for i in self.projectiles:
+            if i.etat!="detruit":
+                i.deplacer()
+
+    def toucher(self,puissance):
+        self.energie-=puissance
+        if(self.energie<=0):
+            self.etat="detruit"
+
+class Projectile():
+    ###définition des types de projectiles [puissance,vitesse, aire d'effet]
+    #typeprojectile={"tetechercheuse":[25,15,0],
+                    #"normal":[15,25,0],
+                    #"grenade":[50,10,50]}
+
+    def __init__(self,cible,x,y,ciblex,cibley):
+        #self.choixprojectile=choixprojectile
+        self.cible=cible
+        self.x=x
+        self.y=y
+        self.ciblex=ciblex
+        self.cibley=cibley
+        self.puissance=20
+        self.vitesse=5
+        self.etat="actif"
+        self.angle=hlp.calcAngle(self.x,self.y,self.ciblex,self.cibley)
+
+    def deplacer(self):
+            self.angle=hlp.calcAngle(self.x,self.y,self.ciblex,self.cibley)
+            self.x,self.y=hlp.getAngledPoint(self.angle,self.vitesse, self.x, self.y)
+            d=hlp.calcDistance(self.x,self.y,self.ciblex,self.cibley)
+            if d<=self.vitesse:
+                self.cible.toucher(self.puissance)
+                print(self.cible.etat)
+                print(self.cible.energie)
+                self.etat="detruit"
+
+
 class Joueur():
     def __init__(self,parent,nom,planetemere,couleur):
         self.id=Id.prochainid()
@@ -103,11 +163,13 @@ class Joueur():
         self.energie = 0
         self.gaz = 0
         self.flotte=[]
+        self.detruits=[]
         self.actions={"creervaisseau":self.creervaisseau,
                       "ameliorerBatiment":self.ameliorerBatiment,  #Ajouter le 9 avril par Nic
                       "vendreBatiment":self.vendreBatiment,  #Ajouter le 9 avril par Nic
                       "creerBatiment":self.creerBatiment,  #Ajouter le 9 avril par Nic
-                      "ciblerflotte":self.ciblerflotte}
+                      "ciblerflotte":self.ciblerflotte,
+                      "detruire": self.detruire}
         
     def creervaisseau(self,params):
         #etoile,cible,type=params
@@ -165,6 +227,25 @@ class Joueur():
         for i in self.flotte:
             i.avancer()
     
+    def detruire(self):
+
+        for i in self.flotte:
+            
+
+            if i.etat=="detruit":
+                self.detruits.append(i)
+                if i.projectiles:  ###assure la destruction des projectiles reliés au vaisseau détruit
+                    for j in i.projectiles:
+                        j.etat="detruit"
+                        
+            if i.projectiles:
+                for j in i.projectiles:
+                    if j.etat=="detruit":
+                        self.detruits.append(j)
+
+
+        for i in self.detruits:
+            self.detruits.remove(i)
 
 # IA- nouvelle classe de joueur
 class IA(Joueur):
@@ -178,10 +259,10 @@ class IA(Joueur):
                 if i.cible:
                     i.avancer()
                 else:
-                    i.cible=random.choice(self.parent.planetes)  
+                    #i.cible=random.choice(self.parent.planetes)  
                     i.cible=random.choice(self.parent.etoiles)
-                #else:
-                    #self.creervaisseau(0) 
+        else:
+            self.creervaisseau(0) 
     
 class Modele():
     def __init__(self,parent,joueurs):
