@@ -31,7 +31,7 @@ class Etoile():
         self.id=Id.prochainid()
         self.x=x
         self.y=y
-        self.taille=random.randrange(4,6)
+        self.taille=random.randrange(8,25)
         self.ressource=random.randrange(10)
         self.planetes=[]
         self.largeur = parent.largeur
@@ -274,6 +274,8 @@ class Modele():
         self.actionsafaire={}
         self.etoiles=[]
         self.terrain=[]
+        self.xEtoile=[]
+        self.yEtoile=[]
         self.creeretoiles()
         self.creerterrain()
         self.assignerplanetes(joueurs,2)
@@ -292,10 +294,18 @@ class Modele():
         
     def creeretoiles(self):
         bordure=0
-        for i in range(200):
-            x=random.randrange(self.largeur-(2*bordure))+bordure
-            y=random.randrange(self.hauteur-(2*bordure))+bordure
-            self.etoiles.append(Etoile(x,y,self))
+        nbEtoile = 7
+        self.xEtoile = [nbEtoile+1]
+        self.yEtoile = [nbEtoile+1]
+        for i in range(nbEtoile):
+            self.xEtoile[i]=random.randrange(self.largeur-(2*bordure))
+            self.yEtoile[i]=random.randrange(self.hauteur-(2*bordure))
+
+            for z in range(i):
+                if self.xEtoile[i] - self.xEtoile[z] < 15 and self.yEtoile[i] - self.yEtoiley[z] < 15:
+                    self.xEtoile[i] =  self.xEtoile[i] + 25
+                    self.yEtoile[i] =  self.yEtoile[i] + 25     
+            self.etoiles.append(Etoile(self.xEtoile[i],self.yEtoile[i],self))
     
     def assignerplanetes(self, joueurs, ias=1):
         np=len(joueurs)+ias
