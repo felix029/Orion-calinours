@@ -78,7 +78,7 @@ class Controleur():
     def initierpartie(self,rep):  # initalisation locale de la simulation, creation du modele, generation des assets et suppression du layout de lobby
         if rep[1][0][0]=="lancerpartie":
             self.modele=Modele(self,rep[1][0][1]) # on cree le modele
-            self.vue.creeraffichercadrepartie(self.modele)
+            self.vue.creeraffichercadrepartie(self.modele)           
             print(self.monnom,"LANCE PROCHAINTOUR")
             self.prochaintour()
 
@@ -103,7 +103,7 @@ class Controleur():
             self.cadre=self.cadre+1 # increment du compteur de cadre
             if self.attente==0:
                 self.modele.prochaineaction(self.cadre)    # mise a jour du modele
-                #self.vue.afficherpartie(self.modele) # mise a jour de la vue
+                self.vue.afficherpartie(self.modele) # mise a jour de la vue
             if self.actions: # si on a des actions a partager
                 rep=self.serveur.faireaction([self.monnom,self.cadre,self.actions]) # on les envoie
             else:

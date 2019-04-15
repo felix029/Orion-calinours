@@ -314,7 +314,7 @@ class Modele():
         
     def creeretoiles(self):
         bordure=0
-        nbEtoile = 7
+        nbEtoile = 10
         #self.xEtoile = [nbEtoile+1]
         #self.yEtoile = [nbEtoile+1]
         for i in range(nbEtoile):

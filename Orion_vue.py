@@ -127,6 +127,14 @@ class Vue():
 
         self.simpleFont=("MS Sans Serif", 11, "bold")
 
+        j=self.mod.joueurs[self.nom]
+        
+        for i in self.parent.modele.etoiles:
+            if j.planetemere in i.planetes:
+                self.etoileselect = i
+                break
+
+        self.planeteselect = j.planetemere
 
         ##########################################################################
         #Zone globale
@@ -319,7 +327,7 @@ class Vue():
             t=self.planeteselect.taille
             self.canevas.create_oval(mod.largeur/2-(t*25),mod.hauteur/2-(t*25),mod.largeur/2+(t*25),mod.hauteur/2+(t*25), width=2, outline="white", fill=self.planeteselect.color,
                                     tags=("planetezoom", str(self.planeteselect.id), self.planeteselect.proprietaire, str(self.etoileselect.id)))
-            afficheAttributsPlanete(self.planeteselect)
+            #afficheAttributsPlanete(self.planeteselect)
             
             
 
@@ -353,7 +361,7 @@ class Vue():
         self.planeteselect.id
         self.planeteselect.propriétaire
         self.planeteselect.color
-
+     
 ##########################################################################################################
 
     def afficherplanetemere(self,evt):
@@ -368,7 +376,7 @@ class Vue():
             couleur=j.couleur
             x=etoileplanetemere.x
             y=etoileplanetemere.y
-            t=10
+            t=30
             self.canevas.create_oval(x-t,y-t,x+t,y+t,dash=(3,3),width=2,outline=couleur,
                                  tags=("planetemere","marqueur"))
 
@@ -399,18 +407,18 @@ class Vue():
         self.canevas.delete("artefact")
 
         if self.maselection!=None:
-            joueur=mod.joueurs[self.maselection[0]]
-            if self.maselection[1]=="etoile":
-                for i in joueur.planetescontrolees:
-                    if i.id == int(self.maselection[2]):
-                        x=i.x
-                        y=i.y
-                        t=10
-                        self.canevas.create_oval(x-t,y-t,x+t,y+t,dash=(2,2),outline=mod.joueurs[self.nom].couleur,
-                                                 tags=("select","marqueur"))
-            elif self.maselection[1]=="flotte":
+            #joueur=mod.joueurs[self.maselection[0]]
+            #if self.maselection[0]=="etoile":
+                #for i in joueur.planetescontrolees:
+                    #if i.id == int(self.maselection[2]):
+                        #x=i.x
+                        #y=i.y
+                        #t=10
+                        #self.canevas.create_oval(x-t,y-t,x+t,y+t,dash=(2,2),outline=mod.joueurs[self.nom].couleur,
+                        #                         tags=("select","marqueur"))
+            if self.maselection[0]=="flotte":
                 for i in joueur.flotte:
-                    if i.id == int(self.maselection[2]):
+                    if i.id == int(self.maselection[1]):
                         x=i.x
                         y=i.y
                         t=10
@@ -420,57 +428,44 @@ class Vue():
         #    self.canevas.delete("marqueur")
 
 
-        for i in mod.joueurs.keys():
+        for i in self.mod.joueurs.keys():
             i=mod.joueurs[i]
             for j in i.flotte:
                 if self.vueactive == 2:
                     if j.sysplanetecur == None and j.planetecur == None:
                         self.canevas.create_rectangle(j.x-3,j.y-3,j.x+3,j.y+3,fill=i.couleur,
-                                            tags=(j.proprietaire,"flotte",str(j.id),"artefact"))
+                                            tags=("flotte", str(j.id), j.proprietaire, "artefact"))
                 if self.vueactive == 1:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == None:
                         self.canevas.create_rectangle(j.x-3,j.y-3,j.x+3,j.y+3,fill=i.couleur,
-                                            tags=(j.proprietaire,"flotte",str(j.id),"artefact"))
+                                            tags=("flotte", str(j.id), j.proprietaire, "artefact"))
                 if self.vueactive == 0:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
                         self.canevas.create_rectangle(j.x-3,j.y-3,j.x+3,j.y+3,fill=i.couleur,
-                                            tags=(j.proprietaire,"flotte",str(j.id),"artefact"))
+                                            tags=("flotte", str(j.id), j.proprietaire, "artefact"))
 
                 #self.canevas.create_rectangle(j.x,j.y,image=self.imgs["vaiss"],
                 #                     tags=(j.proprietaire,"flotte",str(j.id),"artefact"))
 
 
-        for i in mod.ias:
+        for i in self.mod.ias:
             for j in i.flotte:
                 if self.vueactive == 2:
                     if j.sysplanetecur == None and j.planetecur == None:
                         self.canevas.create_rectangle(j.x-3,j.y-3,j.x+3,j.y+3,fill=i.couleur,
-                                            tags=(j.proprietaire,"flotte",str(j.id),"artefact"))
+                                            tags=("flotte", str(j.id), j.proprietaire, "artefact"))
                 if self.vueactive == 1:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == None:
                         self.canevas.create_rectangle(j.x-3,j.y-3,j.x+3,j.y+3,fill=i.couleur,
-                                            tags=(j.proprietaire,"flotte",str(j.id),"artefact"))
+                                            tags=("flotte", str(j.id), j.proprietaire, "artefact"))
                 if self.vueactive == 0:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
                         self.canevas.create_rectangle(j.x-3,j.y-3,j.x+3,j.y+3,fill=i.couleur,
-                                            tags=(j.proprietaire,"flotte",str(j.id),"artefact"))
+                                            tags=("flotte", str(j.id), j.proprietaire, "artefact"))
 
     def cliquecosmos(self,evt):
         self.btncreervaisseau.pack_forget()
         tag=self.canevas.gettags(CURRENT)
-
-        ############################################################
-        #
-        #   Section � Charles: Pour la s�lection d'une �tpoile ou d'une plan�te avec de cliquer sur le bouton zoom
-        #
-        #       - Il va falloir �crire plusieurs if et else pour attendre le but vis�
-        #       - Il va faloir cr�er une variable au d�but du code de la vue qui aura seulement comme valeur sois une plan�te ou sois une �toile
-        #       - Il va falloir v�rifier si la variable de s�lection "self.maselection" est pleine
-        #       - Il va falloir d�bolquer et bloquer les boutons de zoom et de d�-zoom selon l'�tat de la partie
-        #       - Il va falloir changer les strings contenu dans les boutons pour indiqu�s dans quel monde le joueur veuet aller
-        #
-        #       -Faire en sorte qu'il aille un carré ou une cercle qui entoure notre sélection
-        ############################################################
 
         if self.vueactive == 2:
             if tag and tag[0] == "etoile":
@@ -480,10 +475,10 @@ class Vue():
                 for i in self.mod.etoiles:
                     if str(i.id) == self.maselection[1]:
                         self.etoileselect = i
-                        afficheAttributsPlanete(self.maselection, self.etoileselect)
+                        #afficheAttributsPlanete(self.maselection, self.etoileselect)
                         break
 
-        if self.vueactive == 1:
+        if self.vueactive == 1 or self.vueactive == 0:
             if tag and tag[0] == "planete":
                 self.maselection=self.canevas.find_withtag(CURRENT)
                 self.maselection=["planete", tag[1]]
@@ -491,7 +486,7 @@ class Vue():
                 for i in self.etoileselect.planetes:
                     if str(i.id) == tag[1]:
                         self.planeteselect = i
-                        afficheAttributsPlanete(self.maselection, self.planeteselect)
+                        #afficheAttributsPlanete(self.maselection, self.planeteselect)
                         break
 
         #else
