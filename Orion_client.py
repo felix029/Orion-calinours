@@ -145,6 +145,11 @@ class Controleur():
 
     def ciblerflotte(self,idorigine,iddestination):
         self.actions.append([self.monnom,"ciblerflotte",[idorigine,iddestination]])
+    
+    #Ajouter 15 avril FelixO
+    def ciblerflotteplanete(self,idorigine,iddestination,etoile):
+        self.actions.append([self.monnom,"ciblerflotteplanete",[idorigine,iddestination,etoile]])
+    
     #Ajouter le 9 avril par Nic
     def creerBatiment(self,p,typeBatiment,x,y):
         self.actions.append([self.monnom,"creerBatiment",[p,typeBatiment,x,y]])

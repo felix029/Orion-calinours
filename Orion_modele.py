@@ -171,7 +171,8 @@ class Joueur():
                       "vendreBatiment":self.vendreBatiment,  #Ajouter le 9 avril par Nic
                       "creerBatiment":self.creerBatiment,  #Ajouter le 9 avril par Nic
                       "ciblerflotte":self.ciblerflotte,
-                      "detruire": self.detruire}
+                      "detruire": self.detruire,
+                      "ciblerflotteplanete":self.ciblerflotteplanete}
         
     def creervaisseau(self,params):
         #etoile,cible,type=params
@@ -216,6 +217,28 @@ class Joueur():
                         i.cible=j
                         print("GOT TARGET")
                         return
+                for j in self.parent.ias:
+                    for k in j.flotte:
+                        if k.id == int(iddesti):
+                            i.cible=k
+                            i.typecible="Vaisseau"
+                for j in self.parent.joueurs:
+                    for k in self.parent.joueurs[j].flotte:
+                        if k.id == int(iddesti):
+                            i.cible=k
+                            i.typecible="Vaisseau"
+    
+    def ciblerflotteplanete(self,ids):
+        idori,iddesti,etoile=ids
+        for i in self.flotte:
+            if i.id == int(idori):
+                for e in self.parent.etoiles:
+                    if e.id == int(etoile):
+                        for j in e.planetes:
+                            if j.id == int(iddesti):
+                                i.cible=j
+                                print("GOT TARGET")
+                                return
                 for j in self.parent.ias:
                     for k in j.flotte:
                         if k.id == int(iddesti):

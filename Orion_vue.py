@@ -480,11 +480,18 @@ class Vue():
                             #afficheAttributsPlanete(self.maselection, self.etoileselect)
                             break
                     if self.flotteselect != None:
-                        self.parent.ciblerflotte(self.flotteselect.id, self.etoileselect.id)
-                        print(self.flotteselect.id, self.etoileselect.id)
-                        self.flotteselect = None
-                        self.etoileselect = None
-
+                        t=self.etoileselect.taille
+                        if self.flotteselect.x <= (self.etoileselect.x + t) and self.flotteselect.x >= (self.etoileselect.x - t):
+                            if self.flotteselect.y <= (self.etoileselect.y + t) and self.flotteselect.y >= (self.etoileselect.y - t):
+                                self.flotteselect.sysplanetecur = self.etoileselect
+                                self.flotteselect.x = self.mod.largeur-random.randrange(30, 45)
+                                self.flotteselect.y = self.mod.hauteur-random.randrange(30, 45)
+                        else:
+                            self.parent.ciblerflotte(self.flotteselect.id, self.etoileselect.id)
+                            print(self.flotteselect.id, self.etoileselect.id)
+                            self.flotteselect = None
+                            self.etoileselect = None
+                            
             if tag and tag[0] == "flotte":
                 self.maselection=[tag[0], tag[1], tag[2], tag[3]]
                 print(self.maselection)
@@ -504,6 +511,29 @@ class Vue():
                     if str(i.id) == tag[1]:
                         self.planeteselect = i
                         #afficheAttributsPlanete(self.maselection, self.planeteselect)
+                        break
+
+                if self.flotteselect != None:
+                    t=self.planeteselect.taille
+                    if self.flotteselect.x <= (self.planeteselect.x + t) and self.flotteselect.x >= (self.planeteselect.x - t):
+                        if self.flotteselect.y <= (self.planeteselect.y + t) and self.flotteselect.y >= (self.planeteselect.y - t):
+                            self.flotteselect.planetecur = self.planeteselect
+                            self.flotteselect.x = self.mod.largeur-random.randrange(30, 45)
+                            self.flotteselect.y = self.mod.hauteur-random.randrange(30, 45)
+                    else:
+                        print("dans else")
+                        self.parent.ciblerflotteplanete(self.flotteselect.id, self.planeteselect.id, self.etoileselect.id)
+                        print(self.flotteselect.id, self.planeteselect.id)
+                        self.flotteselect = None
+                        self.planeteselect = None
+
+            if tag and tag[0] == "flotte":
+                self.maselection=[tag[0], tag[1], tag[2], tag[3]]
+                print(self.maselection)
+                j=self.mod.joueurs[self.nom]
+                for i in j.flotte:
+                    if i.id == int(self.maselection[1]):
+                        self.flotteselect = i
                         break
 
         self.maselection = None
