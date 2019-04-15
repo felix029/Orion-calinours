@@ -24,7 +24,7 @@ class Vue():
         self.creercadresplash(ip,nom)
         self.creercadrelobby()
         self.changecadre(self.cadresplash)        
-        self.vueactive = 2 # 0: vue planetaire, 1: vue systeme planetaire, 2: vue galaxy
+        self.vueactive = 2 # 0: vue planetaire, 1: vue systeme solaire, 2: vue galaxy
         self.etoileselect=None
         self.planeteselect=None
 
@@ -215,8 +215,7 @@ class Vue():
         self.boutonDzoom.bind("<Button>")
         self.boutonDzoom.grid(row=2, column=0, sticky="we")
         
-        #######################################
-        #try d'afficher les atrributs d'une planète lors de la VUE_PLANÉTAIRE
+        #Label d'affichage des atrributs d'une planète lors de la VUE_PLANÉTAIRE
         self.textMinerai =  StringVar()
         self.textMinerai = str("Minerai : ")
         self.attributMinerai = Label(self.cadreminimap,  width= 25, height=2, text=self.textMinerai , bg="white",borderwidth=1,font=self.simpleFont)
@@ -226,9 +225,6 @@ class Vue():
         self.textGaz = str("Gaz : ")
         self.attributGaz = Label(self.cadreminimap,  width= 25, height=2, text=self.textGaz, bg="white",borderwidth=1,font=self.simpleFont)
         self.attributGaz.grid(row=4, column=0, sticky="we")
-
-
-        #######################################
 
         self.bindWidgets()
         self.afficherdecor(self.mod)
@@ -327,7 +323,7 @@ class Vue():
             
             
 
-
+################################################################################################ Charles
     def afficheAttributsPlanete(self, maselection, planeteselect=None, etoileselect=None):
 
         tag = self.maselection.tag[1]
@@ -354,61 +350,11 @@ class Vue():
             self.attributMinerai.set(textvariable = "Minerai : " + str(self.planeteselect.minerai)) 
             self.attributGaz.set(textvariable = "Gaz : " + str(self.planeteselect.gaz)) 
 
-
         self.planeteselect.id
         self.planeteselect.propriétaire
         self.planeteselect.color
 
-
-
-##############################################################################################################################
-    def clearSelection(self, event=None):
-        self.selection=None
-        self.afficherdecor(self.mod)
-
-    def clickAireJeu(self, event):
-        posClick=self.normInterprePos(event)
-        posModel=COORD(int(posClick.x/3), int(posClick.y/3))
-        o=self.aireJeu.find_withtag(CURRENT) # trouver obj pese
-
-        #if self.selection.__class__ in self.etoile[]: # obj tour
-        #     if "tour" in self.aireJeu.gettags(o): # if (not o) or ("sentier" in self.aireJeu.gettags(o)):
-        #         for tour in self.data.entites.tours:
-        #             if tour.pos == posModel:
-        #                 self.selection=tour
-        #                 self.tourSelectionner = self.selection
-        #                 self.menuContextuelTour(tour)
-        #                 self.placerCurseur(posClick)
-        #                 self.actualiserUpgradeTour(self.data.joueur.argent, self.tourSelectionner)
-        #                 break
-        #     else:
-        #         self.clearSelection()
-
-        # elif self.selection in self.data.choixTours: #typeTour
-        #     reponse=self.parent.ajoutTour(posModel, self.selection)
-        #     if type(reponse) is tuple: # error
-        #         print(reponse[1])
-        #         if reponse[0] in (-1, -2):
-        #             taille = 10*self.stretchRatio
-        #             td_graphics.rectangle(self.aireJeu, (posClick*self.stretchRatio), largeur=taille, hauteur=taille, fill='red', tags=("curseur"))
-        #     else: #if reponse.__class__ in self.data.choixTours:
-        #         self.afficherTour(reponse)
-
-        # elif self.selection is None:
-        #     if "tour" in self.aireJeu.gettags(o):
-        #         for tour in self.data.entites.tours:
-        #             if tour.pos == posModel:
-        #                 self.selection=tour
-        #                 self.tourSelectionner = self.selection
-        #                 self.menuContextuelTour(tour)
-        #                 self.placerCurseur(posClick)
-        #                 self.actualiserUpgradeTour(self.data.joueur.argent, self.tourSelectionner)
-        #                 break
-
-    def normInterprePos(self, pos):
-        op=lambda val: val - (int(val) % (self.stretchRatio*10)) + (self.stretchRatio*5)
-        return COORD(op(pos.x), op(pos.y))
-###############################################################################################################################
+##########################################################################################################
 
     def afficherplanetemere(self,evt):
         if self.vueactive == 2:
@@ -523,6 +469,7 @@ class Vue():
         #       - Il va falloir d�bolquer et bloquer les boutons de zoom et de d�-zoom selon l'�tat de la partie
         #       - Il va falloir changer les strings contenu dans les boutons pour indiqu�s dans quel monde le joueur veuet aller
         #
+        #       -Faire en sorte qu'il aille un carré ou une cercle qui entoure notre sélection
         ############################################################
 
         if self.vueactive == 2:
@@ -547,7 +494,13 @@ class Vue():
                         afficheAttributsPlanete(self.maselection, self.planeteselect)
                         break
 
+        #else
+            #1- clearer les sélection, dnc enlever les encadrer de sur les objet
+            #2- faire en sorte de .pack_forget() les label inutiles
+            #3- Reprinter les bouton avec une grosseur normale
 
+
+###Code à clearer 
         #if t and t[0]==self.nom:
         #    self.maselection=self.canevas.find_withtag(CURRENT)#[0]
         #    self.maselection=[self.nom,t[1],t[2]]  #self.canevas.find_withtag(CURRENT)#[0]
