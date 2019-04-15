@@ -85,7 +85,7 @@ class Vaisseau():
     def avancer(self):
         if self.cible:
             x=self.cible.x
-            y=self.cible.y
+            y=self.cible.y 
             ang=hlp.calcAngle(self.x,self.y,x,y)
             x1,y1=hlp.getAngledPoint(ang,self.vitesse,self.x,self.y)
             self.x,self.y=x1,y1 #int(x1),int(y1)

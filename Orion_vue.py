@@ -27,6 +27,7 @@ class Vue():
         self.vueactive = 2 # 0: vue planetaire, 1: vue systeme solaire, 2: vue galaxy
         self.etoileselect=None
         self.planeteselect=None
+        self.flotteselect=None
 
     
     def fermerfenetre(self):
@@ -407,6 +408,7 @@ class Vue():
         self.canevas.delete("artefact")
 
         if self.maselection!=None:
+
             #joueur=mod.joueurs[self.maselection[0]]
             #if self.maselection[0]=="etoile":
                 #for i in joueur.planetescontrolees:
@@ -419,6 +421,7 @@ class Vue():
             if self.maselection[0]=="flotte":
                 for i in joueur.flotte:
                     if i.id == int(self.maselection[1]):
+                        print(self.maselection)
                         x=i.x
                         y=i.y
                         t=10
@@ -469,25 +472,41 @@ class Vue():
 
         if self.vueactive == 2:
             if tag and tag[0] == "etoile":
-                self.maselection=self.canevas.find_withtag(CURRENT)
-                self.maselection=["etoile", tag[1]]
+                    self.maselection=[tag[0], tag[1]]
+                    print(self.maselection)
+                    for i in self.mod.etoiles:
+                        if str(i.id) == self.maselection[1]:
+                            self.etoileselect = i
+                            #afficheAttributsPlanete(self.maselection, self.etoileselect)
+                            break
+                    if self.flotteselect != None:
+                        self.parent.ciblerflotte(self.flotteselect.id, self.etoileselect.id)
+                        print(self.flotteselect.id, self.etoileselect.id)
+                        self.flotteselect = None
+                        self.etoileselect = None
+
+            if tag and tag[0] == "flotte":
+                self.maselection=[tag[0], tag[1], tag[2], tag[3]]
                 print(self.maselection)
-                for i in self.mod.etoiles:
-                    if str(i.id) == self.maselection[1]:
-                        self.etoileselect = i
-                        #afficheAttributsPlanete(self.maselection, self.etoileselect)
+                j=self.mod.joueurs[self.nom]
+                for i in j.flotte:
+                    if i.id == int(self.maselection[1]):
+                        self.flotteselect = i
                         break
+        
+
 
         if self.vueactive == 1 or self.vueactive == 0:
             if tag and tag[0] == "planete":
-                self.maselection=self.canevas.find_withtag(CURRENT)
-                self.maselection=["planete", tag[1]]
+                self.maselection=[tag[0], tag[1], tag[2]]
                 print(self.maselection)
                 for i in self.etoileselect.planetes:
                     if str(i.id) == tag[1]:
                         self.planeteselect = i
                         #afficheAttributsPlanete(self.maselection, self.planeteselect)
                         break
+
+        self.maselection = None
 
         #else
             #1- clearer les sélection, dnc enlever les encadrer de sur les objet
