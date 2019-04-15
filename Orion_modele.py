@@ -90,9 +90,11 @@ class Vaisseau():
             x1,y1=hlp.getAngledPoint(ang,self.vitesse,self.x,self.y)
             self.x,self.y=x1,y1 #int(x1),int(y1)
             if hlp.calcDistance(self.x,self.y,x,y) <=self.vitesse:
-                if self.cible == Etoile:
+                if self.typecible=="Vaisseau":
+                    print("Vaisseau: ", self.cible.id)
+                elif self.cible == Etoile:
                     print("Etoile: ", self.cible.id)
-                if self.cible == Planete:
+                elif self.cible == Planete:
                     print("RESSOURCES...",self.cible.id,self.cible.ressource,self.cible.proprietaire)
                     self.cible.proprietaire=self.proprietaire                #tempo=input("Continuersvp")
                 
@@ -214,11 +216,26 @@ class Joueur():
                         i.cible=j
                         print("GOT TARGET")
                         return
+                for j in self.parent.ias:
+                    for k in j.flotte:
+                        if k.id == int(iddesti):
+                            i.cible=k
+                            i.typecible="Vaisseau"
+                for j in self.parent.joueurs:
+                    for k in self.parent.joueurs[j].flotte:
+                        if k.id == int(iddesti):
+                            i.cible=k
+                            i.typecible="Vaisseau"
         
         
     def prochaineaction(self):
+
+        if self.detruits:
+            self.detruire()
         for i in self.flotte:
-            if i.cible:
+            if i.cible and i.typecible == "Vaisseau":
+                i.tirer()
+            elif i.cible:
                 i.avancer()
             #else:
             #    i.cible=random.choice(self.parent.planetes)
@@ -254,6 +271,9 @@ class IA(Joueur):
         self.tempo=random.randrange(100)+20
         
     def prochaineaction(self):
+        if self.detruits:
+            self.detruire()
+
         if self.flotte:
             for i in self.flotte:
                 if i.cible:
