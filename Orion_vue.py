@@ -26,7 +26,8 @@ class Vue():
         self.changecadre(self.cadresplash)        
         self.vueactive = 2 # 0: vue planetaire, 1: vue systeme planetaire, 2: vue galaxy
         self.etoileselect=None
-        self.planeteselect=None    
+        self.planeteselect=None
+
     
     def fermerfenetre(self):
         self.parent.fermefenetre()
