@@ -216,8 +216,15 @@ class Vue():
         
         #######################################
         #try d'afficher les atrributs d'une planète lors de la VUE_PLANÉTAIRE
-        self.attributMinerai = Label(self.cadreminimap,  width= 25, height=3, textvariable="Minerai : ", fg="black", bg="yellow",borderwidth=1,font=self.simpleFont)
-        self.attributGaz = Label(self.cadreminimap,  width= 25, height=3, textvariable="Gaz : ", fg="black", bg="blue",borderwidth=1,font=self.simpleFont)
+        self.textMinerai =  StringVar()
+        self.textMinerai = str("Minerai : ")
+        self.attributMinerai = Label(self.cadreminimap,  width= 25, height=2, text=self.textMinerai , bg="white",borderwidth=1,font=self.simpleFont)
+        self.attributMinerai.grid(row=3, column=0, sticky="we")
+
+        self.textMinerai =  StringVar()
+        self.textGaz = str("Gaz : ")
+        self.attributGaz = Label(self.cadreminimap,  width= 25, height=2, text=self.textGaz, bg="white",borderwidth=1,font=self.simpleFont)
+        self.attributGaz.grid(row=4, column=0, sticky="we")
 
 
         #######################################
