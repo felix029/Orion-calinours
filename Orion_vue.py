@@ -294,10 +294,7 @@ class Vue():
                         t=j.taille
                         self.canevas.create_oval(j.x-t,j.y-t,j.x+t,j.y+t,fill=mod.joueurs[i].couleur,
                                             tags=("planete", str(j.id), j.proprietaire, str(self.etoileselect.id)))
-
-            self.canevas.create_oval(mod.hauteur-20, mod.largeur-20, mod.hauteur+20, mod.largeur+20,fill="white",
-                                    tags=("retour2"))
-            # dessine IAs
+            # dessine planetes IAs
 
             for i in mod.ias:
                 for j in i.planetescontrolees:
@@ -306,17 +303,21 @@ class Vue():
                         self.canevas.create_oval(j.x-t,j.y-t,j.x+t,j.y+t,fill=i.couleur,
                                             tags=("planete", str(j.id), j.proprietaire, str(self.etoileselect.id)))
 
-            self.canevas.create_oval(mod.hauteur-20, mod.largeur-20, mod.hauteur+20, mod.largeur+20,fill="white",
-                                    tags=("retour1"))
+            #affichage de l'espace ou envoyer un vaisseau pour le retourner a la vue 2
+            self.canevas.create_oval(mod.largeur-40, mod.hauteur-40, mod.largeur+40, mod.hauteur+40,fill="purple", tags=("retour2"))
 
 
         if self.vueactive == 0: #vue plan�te
-            #self.etoileselect = random.choice(mod.etoiles)
-            #self.planeteselect = random.choice(self.etoileselect.planetes)
+
+            #affichage de l'espace ou envoyer un vaisseau pour le retourner a la vue 1
+            self.canevas.create_oval(mod.largeur-40, mod.hauteur-40, mod.largeur+40, mod.hauteur+40,fill="purple", tags=("retour1"))
+
             t=self.planeteselect.taille
             self.canevas.create_oval(mod.largeur/2-(t*25),mod.hauteur/2-(t*25),mod.largeur/2+(t*25),mod.hauteur/2+(t*25), width=2, outline="white", fill=self.planeteselect.color,
                                     tags=("planetezoom", str(self.planeteselect.id), self.planeteselect.proprietaire, str(self.etoileselect.id)))
             afficheAttributsPlanete(self.planeteselect)
+            
+            
 
 
     def afficheAttributsPlanete(self, maselection, planeteselect=None, etoileselect=None):
@@ -402,13 +403,22 @@ class Vue():
 ###############################################################################################################################
 
     def afficherplanetemere(self,evt):
-        j=self.mod.joueurs[self.nom]
-        couleur=j.couleur
-        x=j.planetemere.x
-        y=j.planetemere.y
-        t=10
-        self.canevas.create_oval(x-t,y-t,x+t,y+t,dash=(3,3),width=2,outline=couleur,
+        if self.vueactive == 2:
+            j=self.mod.joueurs[self.nom]
+            
+            for i in self.parent.modele.etoiles:
+                if j.planetemere in i.planetes:
+                    etoileplanetemere = i
+                    break
+
+            couleur=j.couleur
+            x=etoileplanetemere.x
+            y=etoileplanetemere.y
+            t=10
+            self.canevas.create_oval(x-t,y-t,x+t,y+t,dash=(3,3),width=2,outline=couleur,
                                  tags=("planetemere","marqueur"))
+
+
     def creervaisseau(self):
         print("Creer vaisseau")
         self.parent.creervaisseau()
