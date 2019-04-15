@@ -294,6 +294,9 @@ class Vue():
                         t=j.taille
                         self.canevas.create_oval(j.x-t,j.y-t,j.x+t,j.y+t,fill=mod.joueurs[i].couleur,
                                             tags=("planete", str(j.id), j.proprietaire, str(self.etoileselect.id)))
+
+            self.canevas.create_oval(mod.hauteur-20, mod.largeur-20, mod.hauteur+20, mod.largeur+20,fill="white",
+                                    tags=("retour2"))
             # dessine IAs
 
             for i in mod.ias:
@@ -302,6 +305,9 @@ class Vue():
                         t=j.taille
                         self.canevas.create_oval(j.x-t,j.y-t,j.x+t,j.y+t,fill=i.couleur,
                                             tags=("planete", str(j.id), j.proprietaire, str(self.etoileselect.id)))
+
+            self.canevas.create_oval(mod.hauteur-20, mod.largeur-20, mod.hauteur+20, mod.largeur+20,fill="white",
+                                    tags=("retour1"))
 
 
         if self.vueactive == 0: #vue plan�te
