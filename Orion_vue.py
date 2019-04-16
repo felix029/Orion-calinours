@@ -28,6 +28,7 @@ class Vue():
         self.etoileselect=None
         self.planeteselect=None
         self.flotteselect=None
+        self.selectionBatiment=None
 
     
     def fermerfenetre(self):
@@ -184,6 +185,9 @@ class Vue():
         self.btncreervaisseau=Button(self.lowerLeftFrame,text="Vaisseau",command=self.creervaisseau)
         self.btncreervaisseau.grid(row=0, column=0, sticky="we")
 
+        self.btncreerbatiment=Button(self.lowerLeftFrame,text="Batiment")
+        self.btncreerbatiment.bind("<Button>",self.creerBatiment)
+        self.btncreerbatiment.grid(row=1, column=0, sticky="we")
         #self.cadreinfo=Frame(self.rightFrame,width=200,height=200,bg="blue")
         #self.cadreinfo.grid(row=0, column=0, sticky="we")
 
@@ -338,8 +342,12 @@ class Vue():
             t=self.planeteselect.taille
             self.canevas.create_oval(mod.largeur/2-(t*20),mod.hauteur/2-(t*20),mod.largeur/2+(t*20),mod.hauteur/2+(t*20), width=2, outline="white", fill=self.planeteselect.color,
                                     tags=("planetezoom", str(self.planeteselect.id), self.planeteselect.proprietaire, str(self.etoileselect.id)))
-            #afficheAttributsPlanete(self.planeteselect)
-            
+            #affiche les batiment
+            for e in self.mod.etoiles:
+                for p in e.planetes:
+                    if p.id == self.planeteselect.id:
+                        for b in p.batiment:
+                            self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="red",tags=("batiment"))
             
 
 ################################################################################################ Charles
@@ -399,20 +407,17 @@ class Vue():
         self.canevas.delete("marqueur")
         self.btncreervaisseau.pack_forget()
     
-    def creerBatiment(self,event): #Ajouter le 9 avril par nic pour la creation d'un batiment        
-        x=event.x
-        y=event.y
-        print("Creer batiment")
+    def creerBatiment(self,evt): #Ajouter le 9 avril par nic pour la creation d'un batiment  
 
-        joueur=self.parent.modele.joueurs[self.maselection[0]]
-        for i in joueur.planetescontrolees:
-            if i.id == int(self.maselection[2]):
-                p=i.id
+        if self.selectionBatiment != None:
+            print("Creer batiment")
+            self.parent.creerBatiment(self.selectionBatiment[1],self.selectionBatiment[0],evt.x,evt.y)
+            self.canevas.delete("marqueur")
+            self.btncreerbatiment.pack_forget()
 
-        self.parent.creerBatiment(p,"Minerai",x,y)
-        self.maselection=None
-        self.canevas.delete("marqueur")
-        self.btncreerbatiment.pack_forget()
+            self.canevas.create_rectangle(evt.x-10,evt.y,evt.x+10,evt.y-40, fill="red",tags=("batiment"))
+        else:
+            self.selectionBatiment=["Minerai",self.maselection[1]]
         
     def afficherpartie(self,mod):
         self.canevas.delete("artefact")
@@ -514,7 +519,7 @@ class Vue():
         
 
 
-        if self.vueactive == 1 or self.vueactive == 0:
+        if self.vueactive == 1:
             if tag and tag[0] == "planete":
                 self.maselection=[tag[0], tag[1], tag[2]]
                 print(self.maselection)
@@ -547,7 +552,13 @@ class Vue():
                         self.flotteselect = i
                         break
 
-        self.maselection = None
+        if self.vueactive == 0:
+            self.maselection=["planetezoom", tag[1]]
+            if self.selectionBatiment != None:
+                self.creerBatiment(evt)
+                self.selectionBatiment=None
+
+        self.maselection=None
 
         #else
             #1- clearer les sélection, dnc enlever les encadrer de sur les objet
