@@ -508,7 +508,7 @@ class Vue():
         
 
 
-        elif self.vueactive == 1:
+        if self.vueactive == 1:
             if tag and tag[0] == "planete":
                 self.maselection=[tag[0], tag[1], tag[2]]
                 print(self.maselection)
@@ -541,11 +541,13 @@ class Vue():
                         self.flotteselect = i
                         break
 
-        elif self.vueactive == 0:
+        if self.vueactive == 0:
             self.maselection=["planetezoom", tag[1]]
             if self.selectionBatiment != None:
                 self.creerBatiment(evt)
                 self.selectionBatiment=None
+
+        self.maselection=None
 
         #else
             #1- clearer les sélection, dnc enlever les encadrer de sur les objet
