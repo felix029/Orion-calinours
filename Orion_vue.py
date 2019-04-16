@@ -286,15 +286,21 @@ class Vue():
         self.btncreervaisseau=Button(self.creationFrame,text="Vaisseau",command=self.creervaisseau)
         self.btncreervaisseau.grid(row=2, column=0, sticky="we")
         self.btncreervaisseau.config(height=3)
+
         self.mines=Button(self.creationFrame,text="Mine")
         self.mines.grid(row=4, column=0, sticky="we")
         self.mines.config(height=3)
+        self.mines.bind("<Button>", self.initMine)
+
         self.extracteurs=Button(self.creationFrame,text="Gaz")
         self.extracteurs.grid(row=5, column=0, sticky="we")
         self.extracteurs.config(height=3)
+        self.extracteurs.bind("<Button>", self.initGaz)
+
         self.electricite=Button(self.creationFrame,text="Électricité")
         self.electricite.grid(row=6, column=0, sticky="we")
         self.electricite.config(height=3)
+        self.electricite.bind("<Button>", self.initEnergie)
 
         #Boutons du upgradeFrame
         self.upgVaisseau=Button(self.upgradeFrame,text="Upg Vaisseau")
@@ -310,9 +316,6 @@ class Vue():
         self.upgElectricite.grid(row=6, column=0, sticky="we")
         self.upgElectricite.config(height=3)
 
-        self.btncreerbatiment=Button(self.lowerLeftFrame,text="Batiment")
-        self.btncreerbatiment.bind("<Button>",self.creerBatiment)
-        self.btncreerbatiment.grid(row=1, column=0, sticky="we")
         #self.cadreinfo=Frame(self.rightFrame,width=200,height=200,bg="blue")
         #self.cadreinfo.grid(row=0, column=0, sticky="we")
 
