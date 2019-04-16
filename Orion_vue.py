@@ -224,15 +224,21 @@ class Vue():
         self.boutonDzoom.bind("<Button>")
 
         #Label d'affichage des atrributs d'une planète lors de la VUE_PLANÉTAIRE
+        self.textGeneriquePlanete =  StringVar()
         self.textMinerai =  StringVar()
-        self.textMinerai = str("Minerai : ")
-        self.attributMinerai = Label(self.cadreminimap,  width= 25, height=2, text=self.textMinerai , bg="white",borderwidth=1,font=self.simpleFont)
-        self.attributMinerai.grid(row=3, column=0, sticky="we")
+        self.textGaz = StringVar()
+        self.attributMineraiEtoile = 0
+        self.attributGazEtoile = 0
+
+        self.attributPlaneteSelectionne = Label(self.cadreminimap,  width= 25, height=10, bg="white",borderwidth=1,font=self.simpleFont)
+        self.attributPlaneteSelectionne.grid(row=3, column=0, sticky="we")
 
         self.textMinerai =  StringVar()
-        self.textGaz = str("Gaz : ")
-        self.attributGaz = Label(self.cadreminimap,  width= 25, height=2, text=self.textGaz, bg="white",borderwidth=1,font=self.simpleFont)
-        self.attributGaz.grid(row=4, column=0, sticky="we")
+        self.attributMinerai = Label(self.cadreminimap,  width= 25, height=2, bg="white",borderwidth=1,font=self.simpleFont)
+        self.attributMinerai.grid(row=4, column=0, sticky="we")
+
+        self.attributGaz = Label(self.cadreminimap,  width= 25, height=2, bg="white",borderwidth=1,font=self.simpleFont)
+        self.attributGaz.grid(row=5, column=0, sticky="we")
 
         self.afficherdecor(mod)
 
@@ -248,25 +254,49 @@ class Vue():
 
     def etatBouton(self):
 
+        self.attributPlaneteSelectionne.grid_forget()
+        self.attributMinerai.grid_forget()
+        self.attributGaz.grid_forget()
+        self.boutonZoom.grid_forget()
+        self.boutonDzoom.grid_forget()
+
         if self.vueactive==2:
-            self.boutonZoom.grid_forget()
-            self.boutonDzoom.grid_forget()
             self.boutonZoom.config(width = 6, text = "Vue du système solaire")
             self.boutonZoom.grid(row=1, column=0, sticky="we")
 
         elif self.vueactive == 1:
-            self.boutonZoom.grid_forget()
-            self.boutonDzoom.grid_forget()
+            self.attributMineraiEtoile = 0
+            self.attributGazEtoile = 0
             self.boutonZoom.config(width = 3, text = "Vue planétaire")
             self.boutonDzoom.config(width = 3, text = "Vue de la galaxie")
             self.boutonZoom.grid(row=1, column=0, sticky="we")
             self.boutonDzoom.grid(row=2, column=0, sticky="we")
 
+            for i in self.etoileselect.planetes:
+                self.attributMineraiEtoile+= i.minerai
+                self.attributGazEtoile+= i.gaz
+
+            self.textGeneriquePlanete = "\n\n\n\nL'étoile possède :  \n"
+            self.textMinerai = "Minerai : " + str (self.attributMineraiEtoile) + "\n"
+            self.textGaz = "Gaz : " + str(self.attributGazEtoile) + "\n"
+            self.attributPlaneteSelectionne.config(text =  self.textGeneriquePlanete + self.textMinerai + self.textGaz )
+            self.attributPlaneteSelectionne.grid(row = 3)
+
+
         elif self.vueactive == 0:
-            self.boutonZoom.grid_forget()
-            self.boutonDzoom.grid_forget()
             self.boutonDzoom.config(width = 6, text = "Vue du système solaire")
             self.boutonDzoom.grid(row=1, column=0, sticky="we")
+
+            if self.planeteselect.proprietaire == " ":
+                self.textGeneriquePlanete = "Aucun propriétaire" + "\n\n\n\nLa planète possède :  \n"
+            else:
+                self.textGeneriquePlanete = "Le propriétaire de la planète est\n " + self.planeteselect.proprietaire + "\n\n\n\nLa planète possède :  \n"
+
+            self.textMinerai = "Minerai : " + str (self.planeteselect.minerai) + "\n"
+            self.textGaz = "Gaz : " + str(self.planeteselect.gaz) + "\n"
+            self.attributPlaneteSelectionne.config(text =  self.textGeneriquePlanete + self.textMinerai + self.textGaz )
+            self.attributPlaneteSelectionne.grid(row = 3)
+
 
     def moveCanevas(self,evt):
         x=evt.x
@@ -295,18 +325,22 @@ class Vue():
         if self.vueactive == 2:
             self.vueactive= 2
             self.afficherdecor(self.mod)
+            self.etatBouton()
 
         elif self.vueactive == 1:
             self.vueactive=2
             self.afficherdecor(self.mod)
+            self.etatBouton()
             self.etoileselect=None
             self.flotteselect=None
         elif self.vueactive == 0:
             self.vueactive=1
             self.afficherdecor(self.mod)
+            self.etatBouton()
             self.planeteselect=None
             self.flotteselect=None
         self.etatBouton()
+     
 
     def afficherdecor(self, mod):
 
@@ -373,7 +407,7 @@ class Vue():
                     if p.id == self.planeteselect.id:
                         for b in p.batiment:
                             self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="red",tags=("batiment"))
-            
+
 
 
 ################################################################################################ Charles
@@ -433,18 +467,18 @@ class Vue():
         self.canevas.delete("marqueur")
         self.btncreervaisseau.pack_forget()
 
-    def creerBatiment(self,evt): #Ajouter le 9 avril par nic pour la creation d'un batiment  
+    def creerBatiment(self,evt): #Ajouter le 9 avril par nic pour la creation d'un batiment
         if self.selectionBatiment != None:
             print("Creer batiment")
             self.parent.creerBatiment(self.selectionBatiment[1],self.selectionBatiment[0],evt.x,evt.y)
             self.canevas.delete("marqueur")
             self.btncreerbatiment.pack_forget()
-   
+
             self.canevas.create_rectangle(evt.x-10,evt.y,evt.x+10,evt.y-40, fill="red",tags=("batiment"))
         else:
             self.selectionBatiment=[1,1]
 
-        
+
     def afficherpartie(self,mod):
         self.canevas.delete("artefact")
 
@@ -564,7 +598,7 @@ class Vue():
                         print("dans else")
                         self.parent.ciblerflotteplanete(self.flotteselect.id, self.planeteselect.id, self.etoileselect.id)
                         print(self.flotteselect.id, self.planeteselect.id)
-                    
+
                     self.flotteselect=None
                     self.planeteselect=None
 
