@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from tkinter import *
+from PIL import Image, ImageOps, ImageTk, ImageChops
 import random
 import os,os.path
 #from numpy.distutils.conv_template import file
@@ -28,6 +29,33 @@ class Vue():
         self.etoileselect=None
         self.planeteselect=None
         self.flotteselect=None
+        
+        ###################################################
+        #    Variables utiles pour le formatage du menu   #
+        ###################################################
+        self.couleurLabelMenu  = "white"
+        self.couleurBackgroundMenu  = "gray27"
+        self.espacementDonneesMenu = 20
+        
+        
+        ###################################################
+        #             Images redimensionnées              #
+        ###################################################
+        self.plan = Image.open("./images/planete.png")
+        self.resized = self.plan.resize((30, 30),Image.ANTIALIAS)
+        self.planete = ImageTk.PhotoImage(self.resized)
+        
+        self.electricite = Image.open("./images/electricite.png")
+        self.resized = self.electricite.resize((30, 30),Image.ANTIALIAS)
+        self.light = ImageTk.PhotoImage(self.resized)
+        
+        self.rock = Image.open("./images/rock.png")
+        self.resized = self.rock.resize((30, 30),Image.ANTIALIAS)
+        self.minerais = ImageTk.PhotoImage(self.resized)
+        
+        self.gas = Image.open("./images/gas.png")
+        self.resized = self.gas.resize((30, 30),Image.ANTIALIAS)
+        self.gaz = ImageTk.PhotoImage(self.resized)
 
 
     def fermerfenetre(self):
@@ -145,10 +173,39 @@ class Vue():
         self.cadrepartie=Frame(self.cadreapp)
         self.cadrejeu=Frame(self.cadrepartie)
         ##########################################################################
-        #Zone Dessus
+        #Zone Dessus    KIM:)
         #Cadre Statistiques (upperFrame)
-        self.upperFrame=Frame(self.cadrepartie,width=1100,height=50,bg="black")
+        self.upperFrame=Frame(self.cadrepartie,width=1100,height=50,bg= self.couleurBackgroundMenu)
         self.upperFrame.grid(row=0, column=0, sticky="we")
+        
+        self.espaceVide0 = Label(self.upperFrame, bg = self.couleurBackgroundMenu,width=self.espacementDonneesMenu).grid(row=0, column=1)
+        
+        self.lab_planete = Label(self.upperFrame, image = self.planete, bg = self.couleurBackgroundMenu)
+        self.lblPlanConquises=Label(self.upperFrame,text="Planètes conquises: ", fg=self.couleurLabelMenu, bg= self.couleurBackgroundMenu)
+        self.lab_planete.grid(row=0, column=2)
+        self.lblPlanConquises.grid(row=0, column=3)
+        
+        self.espaceVide1 = Label(self.upperFrame, bg = self.couleurBackgroundMenu,width=self.espacementDonneesMenu).grid(row=0, column=4)
+        
+        self.lab_eclair = Label(self.upperFrame, image = self.light, bg = self.couleurBackgroundMenu)
+        self.lblElectricite=Label(self.upperFrame,text="Électricité: ", fg=self.couleurLabelMenu, bg= self.couleurBackgroundMenu)
+        self.lab_eclair.grid(row=0, column=5)
+        self.lblElectricite.grid(row=0, column=6)
+        
+        self.espaceVide2 = Label(self.upperFrame, bg = self.couleurBackgroundMenu,width=self.espacementDonneesMenu).grid(row=0, column=7)
+        
+        self.lab_rock = Label(self.upperFrame, image = self.minerais, bg = self.couleurBackgroundMenu)
+        self.lblMinerais=Label(self.upperFrame,text="Minerais: ", fg=self.couleurLabelMenu, bg= self.couleurBackgroundMenu)
+        self.lab_rock.grid(row=0, column=8)
+        self.lblMinerais.grid(row=0, column=9)
+        
+        self.espaceVide3 = Label(self.upperFrame, bg = self.couleurBackgroundMenu,width=self.espacementDonneesMenu).grid(row=0, column=10)
+        
+        self.lab_gaz = Label(self.upperFrame, image = self.gaz, bg = self.couleurBackgroundMenu)
+        self.lblGaz=Label(self.upperFrame,text="Gaz: ", fg=self.couleurLabelMenu, bg= self.couleurBackgroundMenu)
+        self.lab_gaz.grid(row=0, column=11)
+        self.lblGaz.grid(row=0, column=12)
+        
 
         #Zone Dessous
         #Cadre perspectives (lowerFrame)
