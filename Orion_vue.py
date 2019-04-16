@@ -470,15 +470,15 @@ class Vue():
             for j in i.flotte:
                 if self.vueactive == 2:
                     if j.sysplanetecur == None and j.planetecur == None:
-                        self.canevas.create_rectangle(j.x-3,j.y-3,j.x+3,j.y+3,fill=i.couleur,
+                        self.canevas.create_rectangle(j.x-5,j.y-5,j.x+5,j.y+5,fill=i.couleur,
                                             tags=("flotte", str(j.id), j.proprietaire, "artefact"))
                 if self.vueactive == 1:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == None:
-                        self.canevas.create_rectangle(j.x-3,j.y-3,j.x+3,j.y+3,fill=i.couleur,
+                        self.canevas.create_rectangle(j.x-7,j.y-7,j.x+7,j.y+7,fill=i.couleur,
                                             tags=("flotte", str(j.id), j.proprietaire, "artefact"))
                 if self.vueactive == 0:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
-                        self.canevas.create_rectangle(j.x-3,j.y-3,j.x+3,j.y+3,fill=i.couleur,
+                        self.canevas.create_rectangle(j.x-9,j.y-9,j.x+9,j.y+9,fill=i.couleur,
                                             tags=("flotte", str(j.id), j.proprietaire, "artefact"))
 
     def cliquecosmos(self,evt):
