@@ -272,10 +272,12 @@ class Vue():
             self.vueactive+=1
             self.afficherdecor(self.mod)
             self.etoileselect=None
+            self.flotteselect=None
         if self.vueactive == 0:
             self.vueactive+=1
             self.afficherdecor(self.mod)
             self.planeteselect=None
+            self.flotteselect=None
 
     def bindWidgets(self):
         self.boutonZoom.config(command = lambda: self.zoom(self.mod))
@@ -487,25 +489,25 @@ class Vue():
 
         if self.vueactive == 2:
             if tag and tag[0] == "etoile":
-                    self.maselection=[tag[0], tag[1]]
-                    print(self.maselection)
-                    for i in self.mod.etoiles:
-                        if str(i.id) == self.maselection[1]:
-                            self.etoileselect = i
-                            #afficheAttributsPlanete(self.maselection, self.etoileselect)
-                            break
-                    if self.flotteselect != None:
-                        t=self.etoileselect.taille
-                        if self.flotteselect.x <= (self.etoileselect.x + t) and self.flotteselect.x >= (self.etoileselect.x - t):
-                            if self.flotteselect.y <= (self.etoileselect.y + t) and self.flotteselect.y >= (self.etoileselect.y - t):
-                                self.flotteselect.sysplanetecur = self.etoileselect
-                                self.flotteselect.x = self.mod.largeur-random.randrange(30, 45)
-                                self.flotteselect.y = self.mod.hauteur-random.randrange(30, 45)
-                        else:
-                            self.parent.ciblerflotte(self.flotteselect.id, self.etoileselect.id)
-                            print(self.flotteselect.id, self.etoileselect.id)
-                            self.flotteselect = None
-                            self.etoileselect = None
+                self.maselection=[tag[0], tag[1]]
+                print(self.maselection)
+                for i in self.mod.etoiles:
+                    if str(i.id) == self.maselection[1]:
+                        self.etoileselect = i
+                        #afficheAttributsPlanete(self.maselection, self.etoileselect)
+                        break
+                if self.flotteselect != None:
+                    t=self.etoileselect.taille
+                    if self.flotteselect.x <= (self.etoileselect.x + t) and self.flotteselect.x >= (self.etoileselect.x - t):
+                        if self.flotteselect.y <= (self.etoileselect.y + t) and self.flotteselect.y >= (self.etoileselect.y - t):
+                            self.flotteselect.sysplanetecur = self.etoileselect
+                            self.flotteselect.x = self.mod.largeur-random.randrange(30, 45)
+                            self.flotteselect.y = self.mod.hauteur-random.randrange(30, 45)
+                    else:
+                        self.parent.ciblerflotte(self.flotteselect.id, self.etoileselect.id)
+                        print(self.flotteselect.id, self.etoileselect.id)
+                    
+                self.flotteselect = None
                             
             if tag and tag[0] == "flotte":
 
@@ -528,7 +530,7 @@ class Vue():
                         #afficheAttributsPlanete(self.maselection, self.planeteselect)
                         break
 
-                if self.flotteselect != None:
+                if self.flotteselect != None and self.flotteselect.sysplanetecur == self.etoileselect:
                     t=self.planeteselect.taille
                     if self.flotteselect.x <= (self.planeteselect.x + t) and self.flotteselect.x >= (self.planeteselect.x - t):
                         if self.flotteselect.y <= (self.planeteselect.y + t) and self.flotteselect.y >= (self.planeteselect.y - t):
@@ -540,8 +542,8 @@ class Vue():
                         self.parent.ciblerflotteplanete(self.flotteselect.id, self.planeteselect.id, self.etoileselect.id)
                         print(self.flotteselect.id, self.planeteselect.id)
                     
-                    self.flotteselect=None
-                    self.planeteselect=None
+                self.flotteselect=None
+                    
 
             if tag and tag[0] == "flotte":
                 self.maselection=[tag[0], tag[1], tag[2], tag[3]]
