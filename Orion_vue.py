@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from tkinter import *
+from PIL import Image, ImageOps, ImageTk, ImageChops
 import random
 import os,os.path
 #from numpy.distutils.conv_template import file
@@ -31,6 +32,32 @@ class Vue():
         self.selectionBatiment=None
         self.batimentChoisi="minerai"
 
+        ###################################################
+        #    Variables utiles pour le formatage du menu   #
+        ###################################################
+        self.couleurLabelMenu  = "white"
+        self.couleurBackgroundMenu  = "gray27"
+        self.espacementDonneesMenu = 20
+
+
+        ###################################################
+        #             Images redimensionnées              #
+        ###################################################
+        self.plan = Image.open("./images/planete.png")
+        self.resized = self.plan.resize((30, 30),Image.ANTIALIAS)
+        self.planete = ImageTk.PhotoImage(self.resized)
+
+        self.electricite = Image.open("./images/electricite.png")
+        self.resized = self.electricite.resize((30, 30),Image.ANTIALIAS)
+        self.light = ImageTk.PhotoImage(self.resized)
+
+        self.rock = Image.open("./images/rock.png")
+        self.resized = self.rock.resize((30, 30),Image.ANTIALIAS)
+        self.minerais = ImageTk.PhotoImage(self.resized)
+
+        self.gas = Image.open("./images/gas.png")
+        self.resized = self.gas.resize((30, 30),Image.ANTIALIAS)
+        self.gaz = ImageTk.PhotoImage(self.resized)
 
     def fermerfenetre(self):
         self.parent.fermefenetre()
@@ -140,75 +167,179 @@ class Vue():
         self.planeteselect = j.planetemere
 
         ##########################################################################
+        ##########################################################################
+        #                          Principaux Frames                             #
+        ##########################################################################
         #Zone globale
         self.cadrepartie=Frame(self.cadreapp)
         self.cadrejeu=Frame(self.cadrepartie)
         ##########################################################################
-        #Zone Dessus
+        #Zone Dessus    KIM:)
         #Cadre Statistiques (upperFrame)
-        self.upperFrame=Frame(self.cadrepartie,width=1100,height=50,bg="black")
+        self.upperFrame=Frame(self.cadrepartie,width=1100,height=50,bg= self.couleurBackgroundMenu)
         self.upperFrame.grid(row=0, column=0, sticky="we")
+
+        self.espaceVide0 = Label(self.upperFrame, bg = self.couleurBackgroundMenu,width=self.espacementDonneesMenu).grid(row=0, column=1)
+
+        self.lab_planete = Label(self.upperFrame, image = self.planete, bg = self.couleurBackgroundMenu)
+        self.lblPlanConquises=Label(self.upperFrame,text="Planètes conquises: ", fg=self.couleurLabelMenu, bg= self.couleurBackgroundMenu)
+        self.lab_planete.grid(row=0, column=2)
+        self.lblPlanConquises.grid(row=0, column=3)
+
+        self.espaceVide1 = Label(self.upperFrame, bg = self.couleurBackgroundMenu,width=self.espacementDonneesMenu).grid(row=0, column=4)
+
+        self.lab_eclair = Label(self.upperFrame, image = self.light, bg = self.couleurBackgroundMenu)
+        self.lblElectricite=Label(self.upperFrame,text="Électricité: ", fg=self.couleurLabelMenu, bg= self.couleurBackgroundMenu)
+        self.lab_eclair.grid(row=0, column=5)
+        self.lblElectricite.grid(row=0, column=6)
+
+        self.espaceVide2 = Label(self.upperFrame, bg = self.couleurBackgroundMenu,width=self.espacementDonneesMenu).grid(row=0, column=7)
+
+        self.lab_rock = Label(self.upperFrame, image = self.minerais, bg = self.couleurBackgroundMenu)
+        self.lblMinerais=Label(self.upperFrame,text="Minerais: ", fg=self.couleurLabelMenu, bg= self.couleurBackgroundMenu)
+        self.lab_rock.grid(row=0, column=8)
+        self.lblMinerais.grid(row=0, column=9)
+
+        self.espaceVide3 = Label(self.upperFrame, bg = self.couleurBackgroundMenu,width=self.espacementDonneesMenu).grid(row=0, column=10)
+
+        self.lab_gaz = Label(self.upperFrame, image = self.gaz, bg = self.couleurBackgroundMenu)
+        self.lblGaz=Label(self.upperFrame,text="Gaz: ", fg=self.couleurLabelMenu, bg= self.couleurBackgroundMenu)
+        self.lab_gaz.grid(row=0, column=11)
+        self.lblGaz.grid(row=0, column=12)
+
 
         #Zone Dessous
         #Cadre perspectives (lowerFrame)
         self.lowerFrame=Frame(self.cadrepartie,width=1100,height=625,bg="red")
         self.lowerFrame.grid(row=2, column=0, sticky="ns")
         ###########################################################################
-        #Sous-Zone Dessous
+        ###########################################################################
 
-        #Zone Dessous-Gauche
-        #Cadre fonctionnalit�s (lowerLeftFrame)
-        self.lowerLeftFrame=Frame(self.lowerFrame,width=150,height=625,bg="green")
-        self.lowerLeftFrame.grid(row=0, column=0, rowspan=2, sticky="ns")
-
-        #Zone Dessous-Droite
-        #Cadre fonctionnalit�s (lowerRightFrame)
-        self.lowerRightFrame=Frame(self.lowerFrame,width=150,height=625,bg="green")
-        self.lowerRightFrame.grid(row=0, column=2, rowspan=2, sticky="ns")
-
-        #Zone Dessous-Centre
-        #Aire de jeu - Interstellaire
+        ###########################################################################
+        ###########################################################################
+        #                              Aire de jeu                                #
+        #                            Ne pas toucher!                              #
+        ###########################################################################
+        #
         self.canevas=Canvas(self.lowerFrame,width=800,height=600,bg="grey11")
         self.canevas.grid(row=0, column=1, sticky="ns")
 
         self.canevas.bind("<Button>",self.cliquecosmos) # Event MouseClick li� au canevas (Aire de jeu)
+        ############################################################################
+        #############################################################################
 
-        #Zone Dessous-Dessous
-        #Cadre fonctionnalit�s (lowerRightFrame)
-        self.lowerLowerFrame=Frame(self.lowerFrame,width=800,height=75,bg="blue")
-        self.lowerLowerFrame.grid(row=1, column=1, sticky="ns")
-        ###############################################################################
-        #Sous-Zone Dessous-Gauche
 
+
+
+        ###########################################################################
+        #                           Frames de travail                             #
+        #                       (Sous-Zone de "lowerFrame")                       #
+        ###########################################################################
+        ###########################################################################
+
+        ###########################################################################
+        #                           Zone Dessous-Gauche                           #
+        ###########################################################################
+        #lowerLeftFrame
+        self.lowerLeftFrame=Frame(self.lowerFrame,width=150,height=625,bg="pink")
+        self.lowerLeftFrame.grid(row=0, column=0, sticky="ns")
         self.lowerLeftFrame.columnconfigure(0, minsize=150)
+        self.lowerLeftFrame.grid_propagate(0)
+        #self.lowerLeftFrame.rowconfigure(0, minsize=313)
+        #self.lowerLeftFrame.rowconfigure(1, minsize=313)
 
-        #left Buttons
-        self.btncreervaisseau=Button(self.lowerLeftFrame,text="Vaisseau",command=self.creervaisseau)
-        self.btncreervaisseau.grid(row=0, column=0, sticky="we")
+        #Labels et sous-frames du lowerLeftFrame
+        #Frames creation et upgrade
+        self.creationFrame=Frame(self.lowerLeftFrame,width=150, height=313, bg="blue")
+        self.creationFrame.grid(row=0, column=0, sticky="ns")
+        self.creationFrame.grid_propagate(0)
+        self.upgradeFrame=Frame(self.lowerLeftFrame,width=150, height=312, bg="black")
+        self.upgradeFrame.grid(row=1, column=0, sticky="ns")
+        self.upgradeFrame.grid_propagate(0)
 
-        self.btncreerbatiment=Button(self.lowerLeftFrame,text="Mine")
-        self.btncreerbatiment.bind("<Button>",self.initMine)
-        self.btncreerbatiment.grid(row=1, column=0, sticky="we")
+        self.creationFrame.columnconfigure(0, minsize=150)
+        self.upgradeFrame.columnconfigure(0, minsize=150)
 
-        self.btncreerbatiment=Button(self.lowerLeftFrame,text="Gaz")
-        self.btncreerbatiment.bind("<Button>",self.initGaz)
-        self.btncreerbatiment.grid(row=2, column=0, sticky="we")
+        #Label Creation
+        self.creationLabel = Label(self.creationFrame, text="CREATION", anchor='center', fg="white", bg='#34344f')
+        self.creationLabel.grid(row=0, column=0, sticky="we")
+        self.vaisseauLabel = Label(self.creationFrame, text="Vaisseau", anchor='center', fg="white", bg='#34344f')
+        self.vaisseauLabel.grid(row=1, column=0, sticky="we")
+        self.batimentLabel = Label(self.creationFrame, text="Bâtiments", anchor='center', fg="white", bg='#34344f')
+        self.batimentLabel.grid(row=3, column=0, sticky="we")
+
+        #Label Upgrade
+        self.upgLabel = Label(self.upgradeFrame, text="UPGRADE", anchor='center', fg="white", bg='#34344f')
+        self.upgLabel.grid(row=0, column=0, sticky="we")
+        self.upgVaisseauLabel = Label(self.upgradeFrame, text="Vaisseau", anchor='center', fg="white", bg='#34344f')
+        self.upgVaisseauLabel.grid(row=1, column=0, sticky="we")
+        self.upgBatimentLabel = Label(self.upgradeFrame, text="Bâtiments", anchor='center', fg="white", bg='#34344f')
+        self.upgBatimentLabel.grid(row=3, column=0, sticky="we")
+
+
+
+
+
+
+
+        #Boutons du lowerLeftFrame
+        #Boutons du creationFrame
+        self.btncreervaisseau=Button(self.creationFrame,text="Vaisseau",command=self.creervaisseau)
+        self.btncreervaisseau.grid(row=2, column=0, sticky="we")
+        self.btncreervaisseau.config(height=3)
+
+        self.mines=Button(self.creationFrame,text="Mine")
+        self.mines.grid(row=4, column=0, sticky="we")
+        self.mines.config(height=3)
+        self.mines.bind("<Button>", self.initMine)
+
+        self.extracteurs=Button(self.creationFrame,text="Gaz")
+        self.extracteurs.grid(row=5, column=0, sticky="we")
+        self.extracteurs.config(height=3)
+        self.extracteurs.bind("<Button>", self.initGaz)
+
+        self.electricite=Button(self.creationFrame,text="Électricité")
+        self.electricite.grid(row=6, column=0, sticky="we")
+        self.electricite.config(height=3)
+        self.electricite.bind("<Button>", self.initEnergie)
+
+        #Boutons du upgradeFrame
+        self.upgVaisseau=Button(self.upgradeFrame,text="Upg Vaisseau")
+        self.upgVaisseau.grid(row=2, column=0, sticky="we")
+        self.upgVaisseau.config(height=3)
+        self.upgMines=Button(self.upgradeFrame,text="Upg Mines")
+        self.upgMines.grid(row=4, column=0, sticky="we")
+        self.upgMines.config(height=3)
+        self.upgExtracteurs=Button(self.upgradeFrame,text="Upg Extracteurs")
+        self.upgExtracteurs.grid(row=5, column=0, sticky="we")
+        self.upgExtracteurs.config(height=3)
+        self.upgElectricite=Button(self.upgradeFrame,text="Upg Électricité")
+        self.upgElectricite.grid(row=6, column=0, sticky="we")
+        self.upgElectricite.config(height=3)
+
         #self.cadreinfo=Frame(self.rightFrame,width=200,height=200,bg="blue")
         #self.cadreinfo.grid(row=0, column=0, sticky="we")
+
+
+
+
+
+        ###########################################################################
+
+        ###########################################################################
+        #                            Zone Dessous-Droite                          #
+        ###########################################################################
+        #lowerRightFrame
+        self.lowerRightFrame=Frame(self.lowerFrame,width=150,height=626,bg="green")
+        self.lowerRightFrame.grid(row=0, column=2, rowspan=2, sticky="ns")
+
+        #Labels  et sous-frames du lowerRighttFrame
 
         self.cadreinfogen=Frame(self.lowerRightFrame,width=150,height=200,bg="pink")
         self.cadreinfogen.grid(row=0, column=0, sticky="we")
 
         self.labid=Label(self.cadreinfogen,text=self.nom,fg=mod.joueurs[self.nom].couleur)
         self.labid.grid(row=0, column=0, sticky="we")
-        self.labid.bind("<Button>",self.afficherplanetemere)
-
-        #self.cadreinfochoix=Frame(self.cadreinfo,height=200,width=200,bg="red")
-        #self.cadreinfochoix.grid(row=1, column=0, sticky="we")
-
-
-        #self.lbselectecible=Label(self.cadreinfo,text="Choisir cible",bg="yellow")
-        #self.lbselectecible.grid(row=3, column=0, sticky="we")
 
 
         self.cadreminimap=Frame(self.lowerRightFrame,height=150,width=200,bg="green")
@@ -217,18 +348,61 @@ class Vue():
         self.canevasMini.grid(row=0, column=0, sticky="we")
         self.canevasMini.bind("<Button>",self.moveCanevas)
 
-        self.changecadre(self.cadrepartie)
 
+
+        #Boutons du lowerRightFrame
+        self.labid.bind("<Button>",self.afficherplanetemere)
+        self.canevasMini.bind("<Button>",self.moveCanevas)
+
+
+
+        ##############################################################################
+        #                             Zone Dessous-Dessous                           #
+        ##############################################################################
+        #################################################Charles!!!!!!#####################################################
+        #lowerLowerFrame
+        self.lowerLowerFrame=Frame(self.lowerFrame,width=800,height=75,bg="blue")
+        self.lowerLowerFrame.grid(row=1, column=1, sticky="ns")
+
+        #Labels du lowerLeftFrame
         #Bouton pour modifier la vue
         #bouton zoom
         #self.boutonZoom = Button(self.cadreminimap,text="Zoom", bg="LightCyan3", borderwidth=None,font=self.simpleFont, pady=2, width= 25, height=3, cursor="hand2")
-        self.boutonZoom = Button(self.cadreminimap,text="Vue suivante", bg="green2", width= 25, height=3, cursor="hand2", activebackground="red")
+        self.boutonZoom = Button(self.lowerLowerFrame,text="Vue suivante", bg="#003182", width= 56, height=2, cursor="hand2", activebackground="red", fg="white")
         self.boutonZoom.bind("<Button>")
+        self.boutonZoom.grid(row=0, column=0)
         #bouton d�-zomm
-        self.boutonDzoom=Button(self.cadreminimap,text="Vue precedente", bg="green2", width= 25, height=3, cursor="hand2", activebackground="red")
+        self.boutonDzoom=Button(self.lowerLowerFrame,text="Vue precedente", bg="#003182", width= 56, height=2, cursor="hand2", activebackground="red", fg="white")
         self.boutonDzoom.bind("<Button>")
+        self.boutonDzoom.grid(row=0, column=1)
 
-        #Label d'affichage des atrributs d'une planète lors de la VUE_PLANÉTAIRE
+
+
+
+
+        #Boutons du lowerLeftFrame
+
+
+
+
+
+
+
+        ###############################################################################
+
+
+        #self.cadreinfo=Frame(self.rightFrame,width=200,height=200,bg="blue")
+        #self.cadreinfo.grid(row=0, column=0, sticky="we")
+        #self.cadreinfochoix=Frame(self.cadreinfo,height=200,width=200,bg="red")
+        #self.cadreinfochoix.grid(row=1, column=0, sticky="we")
+        #self.lbselectecible=Label(self.cadreinfo,text="Choisir cible",bg="yellow")
+        #self.lbselectecible.grid(row=3, column=0, sticky="we")
+
+
+
+
+        self.afficherdecor(mod)
+        self.changecadre(self.cadrepartie)        #Label d'affichage des atrributs d'une planète lors de la VUE_PLANÉTAIRE
         self.textGeneriquePlanete =  StringVar()
         self.textMinerai =  StringVar()
         self.textGaz = StringVar()
@@ -266,16 +440,16 @@ class Vue():
         self.boutonDzoom.grid_forget()
 
         if self.vueactive==2:
-            self.boutonZoom.config(width = 6, text = "Vue du système solaire")
-            self.boutonZoom.grid(row=1, column=0, sticky="we")
+            self.boutonZoom.config(width =113, text = "Vue du système solaire")
+            self.boutonZoom.grid(row=0, column=0, sticky="we")
 
         elif self.vueactive == 1:
             self.attributMineraiEtoile = 0
             self.attributGazEtoile = 0
-            self.boutonZoom.config(width = 3, text = "Vue planétaire")
-            self.boutonDzoom.config(width = 3, text = "Vue de la galaxie")
-            self.boutonZoom.grid(row=1, column=0, sticky="we")
-            self.boutonDzoom.grid(row=2, column=0, sticky="we")
+            self.boutonZoom.config(width = 56, text = "Vue planétaire")
+            self.boutonDzoom.config(width = 56, text = "Vue de la galaxie")
+            self.boutonZoom.grid(row=0, column=0, sticky="we")
+            self.boutonDzoom.grid(row=0, column=1, sticky="we")
 
             for i in self.etoileselect.planetes:
                 self.attributMineraiEtoile+= i.minerai
@@ -289,7 +463,7 @@ class Vue():
 
 
         elif self.vueactive == 0:
-            self.boutonDzoom.config(width = 6, text = "Vue du système solaire")
+            self.boutonDzoom.config(width =113, text = "Vue du système solaire")
             self.boutonDzoom.grid(row=1, column=0, sticky="we")
 
             if self.planeteselect.proprietaire == " ":
@@ -345,7 +519,7 @@ class Vue():
             self.planeteselect=None
             self.flotteselect=None
         self.etatBouton()
-     
+
 
     def afficherdecor(self, mod):
 
@@ -367,8 +541,7 @@ class Vue():
                 x=random.randrange(mod.largeur)
                 y=random.randrange(mod.hauteur)
                 self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond"))
-
-            self.canevas.create_oval(-100, -100, 100, 100, fill="orange", tags=("soleil", "fond"))
+                self.canevas.create_oval(-100, -100, 100, 100, fill="orange", tags=("soleil", "fond"))
 
             for i in self.etoileselect.planetes:
                 t=i.taille
@@ -412,7 +585,6 @@ class Vue():
                     if p.id == self.planeteselect.id:
                         for b in p.batiment:
                             self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="red",tags=("batiment"))
-
 
 
 ################################################################################################ Charles
@@ -477,7 +649,7 @@ class Vue():
             print("Creer batiment")
             self.parent.creerBatiment(self.selectionBatiment[1],self.selectionBatiment[0],evt.x,evt.y)
             self.canevas.delete("marqueur")
-            self.btncreerbatiment.pack_forget()
+            #self.btncreerbatiment.pack_forget()
 
             self.canevas.create_rectangle(evt.x-10,evt.y,evt.x+10,evt.y-40, fill="red",tags=("batiment"))
         else:
@@ -535,12 +707,25 @@ class Vue():
                                             tags=("flotte", str(j.id), j.proprietaire, "artefact"))
                 if self.vueactive == 1:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == None:
-                        self.canevas.create_rectangle(j.x-7,j.y-7,j.x+7,j.y+7,fill=i.couleur,
-                                            tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+                        if j.x >= 796 and j.y >= 596:
+                            j.x = j.sysplanetecur.x+25
+                            j.y = j.sysplanetecur.y+25
+                            j.sysplanetecur = None
+                            j.cible = None
+                        else:
+                            self.canevas.create_rectangle(j.x-7,j.y-7,j.x+7,j.y+7,fill=i.couleur,
+                                                    tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+
                 if self.vueactive == 0:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
-                        self.canevas.create_rectangle(j.x-9,j.y-9,j.x+9,j.y+9,fill=i.couleur,
-                                            tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+                        if j.x >= 796 and j.y >= 596:
+                            j.x = j.planetecur.x+17
+                            j.y = j.planetecur.y+17
+                            j.planetecur = None
+                            j.cible = None
+                        else:
+                            self.canevas.create_rectangle(j.x-11,j.y-11,j.x+11,j.y+11,fill=i.couleur,
+                                                    tags=("flotte", str(j.id), j.proprietaire, "artefact"))
 
                 #self.canevas.create_rectangle(j.x,j.y,image=self.imgs["vaiss"],
                 #                     tags=(j.proprietaire,"flotte",str(j.id),"artefact"))
@@ -554,12 +739,25 @@ class Vue():
                                             tags=("flotte", str(j.id), j.proprietaire, "artefact"))
                 if self.vueactive == 1:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == None:
-                        self.canevas.create_rectangle(j.x-7,j.y-7,j.x+7,j.y+7,fill=i.couleur,
-                                            tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+                        if j.x >= 796 and j.y >= 596:
+                            j.x = j.sysplanetecur.x+25
+                            j.y = j.sysplanetecur.y+25
+                            j.sysplanetecur = None
+                            j.cible = None
+                        else:
+                            self.canevas.create_rectangle(j.x-7,j.y-7,j.x+7,j.y+7,fill=i.couleur,
+                                                    tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+
                 if self.vueactive == 0:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
-                        self.canevas.create_rectangle(j.x-9,j.y-9,j.x+9,j.y+9,fill=i.couleur,
-                                            tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+                        if j.x >= 796 and j.y >= 596:
+                            j.x = j.planetecur.x+17
+                            j.y = j.planetecur.y+17
+                            j.planetecur = None
+                            j.cible = None
+                        else:
+                            self.canevas.create_rectangle(j.x-11,j.y-11,j.x+11,j.y+11,fill=i.couleur,
+                                                    tags=("flotte", str(j.id), j.proprietaire, "artefact"))
 
     def cliquecosmos(self,evt):
         self.btncreervaisseau.pack_forget()
@@ -632,6 +830,10 @@ class Vue():
                         self.maselection=None
                         break
 
+            if tag and tag[0] == "retour2":
+                if self.flotteselect != None:
+                    self.parent.cibleretour(self.flotteselect.id)
+
 
         if self.vueactive == 0:
             if self.selectionBatiment != None:
@@ -639,6 +841,36 @@ class Vue():
                 self.creerBatiment(evt)
                 self.selectionBatiment=None
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        if tag and tag[0] == "flotte":
+                self.maselection=[tag[0], tag[1], tag[2], tag[3]]
+                print(self.maselection)
+                j=self.mod.joueurs[self.nom]
+                for i in j.flotte:
+                    if i.id == int(self.maselection[1]):
+                        self.flotteselect = i
+                        self.maselection=None
+                        break
+
+        if tag and tag[0] == "retour1":
+                if self.flotteselect != None:
+                    self.parent.cibleretour(self.flotteselect.id)
 
         self.maselection=None
 
