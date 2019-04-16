@@ -164,6 +164,10 @@ class Controleur():
     
     def detruire(self):
         self.actions.append([self.monnom,"detruire",""])
+
+    #Ajouter par Felix-O le 16 avril
+    def cibleretour(self,idori):
+        self.actions.append([self.monnom,"cibleretour",idori])
         
 if __name__=="__main__":
     c=Controleur()
