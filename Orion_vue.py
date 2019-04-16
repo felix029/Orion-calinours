@@ -240,11 +240,41 @@ class Vue():
         #                           Zone Dessous-Gauche                           #
         ###########################################################################
         #lowerLeftFrame
-        self.lowerLeftFrame=Frame(self.lowerFrame,width=150,height=625,bg="green")
-        self.lowerLeftFrame.grid(row=0, column=0, rowspan=2, sticky="ns")
+        self.lowerLeftFrame=Frame(self.lowerFrame,width=150,height=625,bg="pink")
+        self.lowerLeftFrame.grid(row=0, column=0, sticky="ns")
         self.lowerLeftFrame.columnconfigure(0, minsize=150)
+        self.lowerLeftFrame.grid_propagate(0)
+        #self.lowerLeftFrame.rowconfigure(0, minsize=313)
+        #self.lowerLeftFrame.rowconfigure(1, minsize=313)
 
         #Labels et sous-frames du lowerLeftFrame
+        #Frames creation et upgrade
+        self.creationFrame=Frame(self.lowerLeftFrame,width=150, height=313, bg="blue")
+        self.creationFrame.grid(row=0, column=0, sticky="ns")
+        self.creationFrame.grid_propagate(0)
+        self.upgradeFrame=Frame(self.lowerLeftFrame,width=150, height=312, bg="black")
+        self.upgradeFrame.grid(row=1, column=0, sticky="ns")
+        self.upgradeFrame.grid_propagate(0)
+
+        self.creationFrame.columnconfigure(0, minsize=150)
+        self.upgradeFrame.columnconfigure(0, minsize=150)
+
+        #Label Creation
+        self.creationLabel = Label(self.creationFrame, text="CREATION", anchor='center', fg="white", bg='#34344f')
+        self.creationLabel.grid(row=0, column=0, sticky="we")
+        self.vaisseauLabel = Label(self.creationFrame, text="Vaisseau", anchor='center', fg="white", bg='#34344f')
+        self.vaisseauLabel.grid(row=1, column=0, sticky="we")
+        self.batimentLabel = Label(self.creationFrame, text="Bâtiments", anchor='center', fg="white", bg='#34344f')
+        self.batimentLabel.grid(row=3, column=0, sticky="we")
+
+        #Label Upgrade
+        self.upgLabel = Label(self.upgradeFrame, text="UPGRADE", anchor='center', fg="white", bg='#34344f')
+        self.upgLabel.grid(row=0, column=0, sticky="we")
+        self.upgVaisseauLabel = Label(self.upgradeFrame, text="Vaisseau", anchor='center', fg="white", bg='#34344f')
+        self.upgVaisseauLabel.grid(row=1, column=0, sticky="we")
+        self.upgBatimentLabel = Label(self.upgradeFrame, text="Bâtiments", anchor='center', fg="white", bg='#34344f')
+        self.upgBatimentLabel.grid(row=3, column=0, sticky="we")
+
 
 
 
@@ -252,8 +282,33 @@ class Vue():
 
 
         #Boutons du lowerLeftFrame
-        self.btncreervaisseau=Button(self.lowerLeftFrame,text="Vaisseau",command=self.creervaisseau)
-        self.btncreervaisseau.grid(row=0, column=0, sticky="we")
+        #Boutons du creationFrame
+        self.btncreervaisseau=Button(self.creationFrame,text="Vaisseau",command=self.creervaisseau)
+        self.btncreervaisseau.grid(row=2, column=0, sticky="we")
+        self.btncreervaisseau.config(height=3)
+        self.mines=Button(self.creationFrame,text="Mine")
+        self.mines.grid(row=4, column=0, sticky="we")
+        self.mines.config(height=3)
+        self.extracteurs=Button(self.creationFrame,text="Gaz")
+        self.extracteurs.grid(row=5, column=0, sticky="we")
+        self.extracteurs.config(height=3)
+        self.electricite=Button(self.creationFrame,text="Électricité")
+        self.electricite.grid(row=6, column=0, sticky="we")
+        self.electricite.config(height=3)
+
+        #Boutons du upgradeFrame
+        self.upgVaisseau=Button(self.upgradeFrame,text="Upg Vaisseau")
+        self.upgVaisseau.grid(row=2, column=0, sticky="we")
+        self.upgVaisseau.config(height=3)
+        self.upgMines=Button(self.upgradeFrame,text="Upg Mines")
+        self.upgMines.grid(row=4, column=0, sticky="we")
+        self.upgMines.config(height=3)
+        self.upgExtracteurs=Button(self.upgradeFrame,text="Upg Extracteurs")
+        self.upgExtracteurs.grid(row=5, column=0, sticky="we")
+        self.upgExtracteurs.config(height=3)
+        self.upgElectricite=Button(self.upgradeFrame,text="Upg Électricité")
+        self.upgElectricite.grid(row=6, column=0, sticky="we")
+        self.upgElectricite.config(height=3)
 
         self.btncreerbatiment=Button(self.lowerLeftFrame,text="Batiment")
         self.btncreerbatiment.bind("<Button>",self.creerBatiment)
@@ -271,7 +326,7 @@ class Vue():
         #                            Zone Dessous-Droite                          #
         ###########################################################################
         #lowerRightFrame
-        self.lowerRightFrame=Frame(self.lowerFrame,width=150,height=625,bg="green")
+        self.lowerRightFrame=Frame(self.lowerFrame,width=150,height=626,bg="green")
         self.lowerRightFrame.grid(row=0, column=2, rowspan=2, sticky="ns")
 
         #Labels  et sous-frames du lowerRighttFrame
