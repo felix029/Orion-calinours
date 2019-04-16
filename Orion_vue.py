@@ -398,7 +398,6 @@ class Vue():
         self.btncreervaisseau.pack_forget()
     
     def creerBatiment(self,evt): #Ajouter le 9 avril par nic pour la creation d'un batiment  
-
         if self.selectionBatiment != None:
             print("Creer batiment")
             self.parent.creerBatiment(self.selectionBatiment[1],self.selectionBatiment[0],evt.x,evt.y)
@@ -407,7 +406,8 @@ class Vue():
 
             self.canevas.create_rectangle(evt.x-10,evt.y,evt.x+10,evt.y-40, fill="red",tags=("batiment"))
         else:
-            self.selectionBatiment=["Minerai",self.maselection[1]]
+            self.selectionBatiment=[1,1]
+        
         
     def afficherpartie(self,mod):
         self.canevas.delete("artefact")
@@ -504,8 +504,7 @@ class Vue():
                 for i in j.flotte:
                     if i.id == int(self.maselection[1]):
                         self.flotteselect = i
-                        break
-        
+                        break     
 
 
         if self.vueactive == 1:
@@ -542,10 +541,11 @@ class Vue():
                         break
 
         if self.vueactive == 0:
-            self.maselection=["planetezoom", tag[1]]
             if self.selectionBatiment != None:
+                self.selectionBatiment=["Minerai",tag[1]]
                 self.creerBatiment(evt)
                 self.selectionBatiment=None
+
 
         self.maselection=None
 
