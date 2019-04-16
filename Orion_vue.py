@@ -56,8 +56,8 @@ class Vue():
 
         self.gas = Image.open("./images/gas.png")
         self.resized = self.gas.resize((30, 30),Image.ANTIALIAS)
-        self.gaz = ImageTk.PhotoImage(self.resized)   
-    
+        self.gaz = ImageTk.PhotoImage(self.resized)
+
     def fermerfenetre(self):
         self.parent.fermefenetre()
 
@@ -295,15 +295,6 @@ class Vue():
         self.labid.bind("<Button>",self.afficherplanetemere)
         self.canevasMini.bind("<Button>",self.moveCanevas)
 
-        #Bouton pour modifier la vue
-        #bouton zoom
-        #self.boutonZoom = Button(self.cadreminimap,text="Zoom", bg="LightCyan3", borderwidth=None,font=self.simpleFont, pady=2, width= 25, height=3, cursor="hand2")
-        self.boutonZoom = Button(self.cadreminimap,text="Vue suivante", bg="green2", width= 25, height=3, cursor="hand2", activebackground="red")
-        self.boutonZoom.bind("<Button>")
-        #bouton d�-zomm
-        self.boutonDzoom=Button(self.cadreminimap,text="Vue precedente", bg="green2", width= 25, height=3, cursor="hand2", activebackground="red")
-        self.boutonDzoom.bind("<Button>")
-        ##############################################################################
 
 
         ##############################################################################
@@ -390,16 +381,16 @@ class Vue():
         self.boutonDzoom.grid_forget()
 
         if self.vueactive==2:
-            self.boutonZoom.config(width = 6, text = "Vue du système solaire")
-            self.boutonZoom.grid(row=1, column=0, sticky="we")
+            self.boutonZoom.config(width =113, text = "Vue du système solaire")
+            self.boutonZoom.grid(row=0, column=0, sticky="we")
 
         elif self.vueactive == 1:
             self.attributMineraiEtoile = 0
             self.attributGazEtoile = 0
-            self.boutonZoom.config(width = 3, text = "Vue planétaire")
-            self.boutonDzoom.config(width = 3, text = "Vue de la galaxie")
-            self.boutonZoom.grid(row=1, column=0, sticky="we")
-            self.boutonDzoom.grid(row=2, column=0, sticky="we")
+            self.boutonZoom.config(width = 56, text = "Vue planétaire")
+            self.boutonDzoom.config(width = 56, text = "Vue de la galaxie")
+            self.boutonZoom.grid(row=0, column=0, sticky="we")
+            self.boutonDzoom.grid(row=0, column=1, sticky="we")
 
             for i in self.etoileselect.planetes:
                 self.attributMineraiEtoile+= i.minerai
@@ -413,7 +404,7 @@ class Vue():
 
 
         elif self.vueactive == 0:
-            self.boutonDzoom.config(width = 6, text = "Vue du système solaire")
+            self.boutonDzoom.config(width =113, text = "Vue du système solaire")
             self.boutonDzoom.grid(row=1, column=0, sticky="we")
 
             if self.planeteselect.proprietaire == " ":
@@ -469,7 +460,7 @@ class Vue():
             self.planeteselect=None
             self.flotteselect=None
         self.etatBouton()
-     
+
 
     def afficherdecor(self, mod):
 
@@ -490,7 +481,7 @@ class Vue():
             for i in range(len(mod.etoiles)*5):
                 x=random.randrange(mod.largeur)
                 y=random.randrange(mod.hauteur)
-                self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond"))            
+                self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond"))
                 self.canevas.create_oval(-100, -100, 100, 100, fill="orange", tags=("soleil", "fond"))
 
             for i in self.etoileselect.planetes:
@@ -603,8 +594,8 @@ class Vue():
 
             self.canevas.create_rectangle(evt.x-10,evt.y,evt.x+10,evt.y-40, fill="red",tags=("batiment"))
         else:
-            self.selectionBatiment=[1,1]    
-    
+            self.selectionBatiment=[1,1]
+
     def afficherpartie(self,mod):
         self.canevas.delete("artefact")
 
@@ -776,22 +767,22 @@ class Vue():
                 self.selectionBatiment=None
 
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         if tag and tag[0] == "flotte":
                 self.maselection=[tag[0], tag[1], tag[2], tag[3]]
                 print(self.maselection)
@@ -800,12 +791,12 @@ class Vue():
                     if i.id == int(self.maselection[1]):
                         self.flotteselect = i
                         self.maselection=None
-                        break   
-     
+                        break
+
         if tag and tag[0] == "retour1":
                 if self.flotteselect != None:
                     self.parent.cibleretour(self.flotteselect.id)
-        
+
         self.maselection=None
 
         #else
