@@ -540,8 +540,9 @@ class Vue():
                         print("dans else")
                         self.parent.ciblerflotteplanete(self.flotteselect.id, self.planeteselect.id, self.etoileselect.id)
                         print(self.flotteselect.id, self.planeteselect.id)
-                        self.flotteselect = None
-                        self.planeteselect = None
+                    
+                    self.flotteselect=None
+                    self.planeteselect=None
 
             if tag and tag[0] == "flotte":
                 self.maselection=[tag[0], tag[1], tag[2], tag[3]]
@@ -550,6 +551,7 @@ class Vue():
                 for i in j.flotte:
                     if i.id == int(self.maselection[1]):
                         self.flotteselect = i
+                        self.maselection=None
                         break
 
         if self.vueactive == 0:
