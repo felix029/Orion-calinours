@@ -23,14 +23,14 @@ class Vue():
         self.cadreapp.pack()
         self.creercadresplash(ip,nom)
         self.creercadrelobby()
-        self.changecadre(self.cadresplash)        
+        self.changecadre(self.cadresplash)
         self.vueactive = 2 # 0: vue planetaire, 1: vue systeme solaire, 2: vue galaxy
         self.etoileselect=None
         self.planeteselect=None
         self.flotteselect=None
         self.selectionBatiment=None
 
-    
+
     def fermerfenetre(self):
         self.parent.fermefenetre()
 
@@ -130,7 +130,7 @@ class Vue():
         self.simpleFont=("MS Sans Serif", 11, "bold")
 
         j=self.mod.joueurs[self.nom]
-        
+
         for i in self.parent.modele.etoiles:
             if j.planetemere in i.planetes:
                 self.etoileselect = i
@@ -209,11 +209,8 @@ class Vue():
         self.cadreminimap=Frame(self.lowerRightFrame,height=150,width=200,bg="green")
         self.cadreminimap.grid(row=1, column=0, sticky="we")
         self.canevasMini=Canvas(self.cadreminimap,width=200,height=200,bg="orange")
-        self.canevasMini.grid(row=0, column=0, sticky="we")       
+        self.canevasMini.grid(row=0, column=0, sticky="we")
         self.canevasMini.bind("<Button>",self.moveCanevas)
-        self.afficherdecor(mod)
-
-
 
         self.changecadre(self.cadrepartie)
 
@@ -222,12 +219,10 @@ class Vue():
         #self.boutonZoom = Button(self.cadreminimap,text="Zoom", bg="LightCyan3", borderwidth=None,font=self.simpleFont, pady=2, width= 25, height=3, cursor="hand2")
         self.boutonZoom = Button(self.cadreminimap,text="Vue suivante", bg="green2", width= 25, height=3, cursor="hand2", activebackground="red")
         self.boutonZoom.bind("<Button>")
-        self.boutonZoom.grid(row=1, column=0, sticky="we")
         #bouton d�-zomm
         self.boutonDzoom=Button(self.cadreminimap,text="Vue precedente", bg="green2", width= 25, height=3, cursor="hand2", activebackground="red")
         self.boutonDzoom.bind("<Button>")
-        self.boutonDzoom.grid(row=2, column=0, sticky="we")
-        
+
         #Label d'affichage des atrributs d'une planète lors de la VUE_PLANÉTAIRE
         self.textMinerai =  StringVar()
         self.textMinerai = str("Minerai : ")
@@ -239,9 +234,39 @@ class Vue():
         self.attributGaz = Label(self.cadreminimap,  width= 25, height=2, text=self.textGaz, bg="white",borderwidth=1,font=self.simpleFont)
         self.attributGaz.grid(row=4, column=0, sticky="we")
 
+        self.afficherdecor(mod)
+
         self.bindWidgets()
         self.afficherdecor(self.mod)
         self.changecadre(self.cadrepartie)
+
+
+    def bindWidgets(self):
+        self.boutonZoom.config(command = lambda: self.zoom(self.mod))
+        self.boutonDzoom.config(command = lambda: self.dezoom(self.mod))
+        self.etatBouton()
+
+    def etatBouton(self):
+
+        if self.vueactive==2:
+            self.boutonZoom.grid_forget()
+            self.boutonDzoom.grid_forget()
+            self.boutonZoom.config(width = 6, text = "Vue du système solaire")
+            self.boutonZoom.grid(row=1, column=0, sticky="we")
+
+        elif self.vueactive == 1:
+            self.boutonZoom.grid_forget()
+            self.boutonDzoom.grid_forget()
+            self.boutonZoom.config(width = 3, text = "Vue planétaire")
+            self.boutonDzoom.config(width = 3, text = "Vue de la galaxie")
+            self.boutonZoom.grid(row=1, column=0, sticky="we")
+            self.boutonDzoom.grid(row=2, column=0, sticky="we")
+
+        elif self.vueactive == 0:
+            self.boutonZoom.grid_forget()
+            self.boutonDzoom.grid_forget()
+            self.boutonDzoom.config(width = 6, text = "Vue du système solaire")
+            self.boutonDzoom.grid(row=1, column=0, sticky="we")
 
     def moveCanevas(self,evt):
         x=evt.x
@@ -264,22 +289,23 @@ class Vue():
                 self.afficherdecor(self.mod)
             else:
                 print("Aucune planete ou etoile select")
+        self.etatBouton()
 
     def dezoom (self, mod):
         if self.vueactive == 2:
+            self.vueactive= 2
             self.afficherdecor(self.mod)
-        if self.vueactive == 1:
-            self.vueactive+=1
+
+        elif self.vueactive == 1:
+            self.vueactive=2
             self.afficherdecor(self.mod)
             self.etoileselect=None
-        if self.vueactive == 0:
-            self.vueactive+=1
+
+        elif self.vueactive == 0:
+            self.vueactive=1
             self.afficherdecor(self.mod)
             self.planeteselect=None
-
-    def bindWidgets(self):
-        self.boutonZoom.config(command = lambda: self.zoom(self.mod))
-        self.boutonDzoom.config(command = lambda: self.dezoom(self.mod))
+        self.etatBouton()
 
     def afficherdecor(self, mod):
 
@@ -297,7 +323,6 @@ class Vue():
 
         if self.vueactive == 1: #vue systeme solaire
             #self.etoileselect = random.choice(mod.etoiles)
-            
             for i in range(len(mod.etoiles)*5):
                 x=random.randrange(mod.largeur)
                 y=random.randrange(mod.hauteur)
@@ -330,7 +355,6 @@ class Vue():
 
 
         if self.vueactive == 0: #vue plan�te
-
             for i in range(len(mod.etoiles)*4):
                 x=random.randrange(mod.largeur)
                 y=random.randrange(mod.hauteur)
@@ -350,6 +374,7 @@ class Vue():
                             self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="red",tags=("batiment"))
             
 
+
 ################################################################################################ Charles
     def afficheAttributsPlanete(self, maselection, planeteselect=None, etoileselect=None):
 
@@ -363,7 +388,7 @@ class Vue():
             for i in self.etoileselect.planetes:
                 self.calculMinerai+=self.planeteselect.minerai
                 self.calculGaz+=self.planeteselect.gaz
-            
+
             print(str(self.calculMinerai))
             print(str(self.calculGaz))
             self.planeteselect.gaz
@@ -374,19 +399,19 @@ class Vue():
             print(tag)
             self.planeteselect.gaz
             self.planeteselect.minerai
-            self.attributMinerai.set(textvariable = "Minerai : " + str(self.planeteselect.minerai)) 
-            self.attributGaz.set(textvariable = "Gaz : " + str(self.planeteselect.gaz)) 
+            self.attributMinerai.set(textvariable = "Minerai : " + str(self.planeteselect.minerai))
+            self.attributGaz.set(textvariable = "Gaz : " + str(self.planeteselect.gaz))
 
         self.planeteselect.id
         self.planeteselect.propriétaire
         self.planeteselect.color
-     
+
 ##########################################################################################################
 
     def afficherplanetemere(self,evt):
         if self.vueactive == 2:
             j=self.mod.joueurs[self.nom]
-            
+
             for i in self.parent.modele.etoiles:
                 if j.planetemere in i.planetes:
                     etoileplanetemere = i
@@ -406,18 +431,18 @@ class Vue():
         self.maselection=None
         self.canevas.delete("marqueur")
         self.btncreervaisseau.pack_forget()
-    
+
     def creerBatiment(self,evt): #Ajouter le 9 avril par nic pour la creation d'un batiment  
         if self.selectionBatiment != None:
             print("Creer batiment")
             self.parent.creerBatiment(self.selectionBatiment[1],self.selectionBatiment[0],evt.x,evt.y)
             self.canevas.delete("marqueur")
             self.btncreerbatiment.pack_forget()
-
+   
             self.canevas.create_rectangle(evt.x-10,evt.y,evt.x+10,evt.y-40, fill="red",tags=("batiment"))
         else:
             self.selectionBatiment=[1,1]
-        
+
         
     def afficherpartie(self,mod):
         self.canevas.delete("artefact")
@@ -506,7 +531,7 @@ class Vue():
                             print(self.flotteselect.id, self.etoileselect.id)
                             self.flotteselect = None
                             self.etoileselect = None
-                            
+
             if tag and tag[0] == "flotte":
 
                 self.maselection=[tag[0], tag[1], tag[2], tag[3]]
@@ -515,8 +540,7 @@ class Vue():
                 for i in j.flotte:
                     if i.id == int(self.maselection[1]):
                         self.flotteselect = i
-                        break     
-
+                        break
 
         if self.vueactive == 1:
             if tag and tag[0] == "planete":
@@ -553,6 +577,7 @@ class Vue():
                         self.maselection=None
                         break
 
+
         if self.vueactive == 0:
             if self.selectionBatiment != None:
                 self.selectionBatiment=["Minerai",tag[1]]
@@ -568,7 +593,7 @@ class Vue():
             #3- Reprinter les bouton avec une grosseur normale
 
 
-###Code à clearer 
+###Code à clearer
         #if t and t[0]==self.nom:
         #    self.maselection=self.canevas.find_withtag(CURRENT)#[0]
         #    self.maselection=[self.nom,t[1],t[2]]  #self.canevas.find_withtag(CURRENT)#[0]
