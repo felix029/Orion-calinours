@@ -145,7 +145,7 @@ class Vue():
         self.cadrepartie=Frame(self.cadreapp)
         self.cadrejeu=Frame(self.cadrepartie)
         ##########################################################################
-        #Zone Dessus KIM!!!
+        #Zone Dessus
         #Cadre Statistiques (upperFrame)
         self.upperFrame=Frame(self.cadrepartie,width=1100,height=50,bg="black")
         self.upperFrame.grid(row=0, column=0, sticky="we")
@@ -187,7 +187,7 @@ class Vue():
         self.lowerLeftFrame.grid(row=0, column=0, rowspan=2, sticky="ns")
         self.lowerLeftFrame.columnconfigure(0, minsize=150)
 
-        #Labels du lowerLeftFrame
+        #Labels et sous-frames du lowerLeftFrame
 
 
 
@@ -213,14 +213,19 @@ class Vue():
         self.lowerRightFrame=Frame(self.lowerFrame,width=150,height=625,bg="green")
         self.lowerRightFrame.grid(row=0, column=2, rowspan=2, sticky="ns")
 
-        #Labels du lowerRighttFrame
+        #Labels  et sous-frames du lowerRighttFrame
 
         self.cadreinfogen=Frame(self.lowerRightFrame,width=150,height=200,bg="pink")
         self.cadreinfogen.grid(row=0, column=0, sticky="we")
 
         self.labid=Label(self.cadreinfogen,text=self.nom,fg=mod.joueurs[self.nom].couleur)
         self.labid.grid(row=0, column=0, sticky="we")
-        self.labid.bind("<Button>",self.afficherplanetemere)
+
+
+        self.cadreminimap=Frame(self.lowerRightFrame,height=150,width=200,bg="green")
+        self.cadreminimap.grid(row=1, column=0, sticky="we")
+        self.canevasMini=Canvas(self.cadreminimap,width=200,height=200,bg="orange")
+        self.canevasMini.grid(row=0, column=0, sticky="we")
 
 
 
@@ -228,6 +233,22 @@ class Vue():
 
 
         #Boutons du lowerRightFrame
+        self.labid.bind("<Button>",self.afficherplanetemere)
+        self.canevasMini.bind("<Button>",self.moveCanevas)
+
+        #Bouton pour modifier la vue
+        #bouton zoom
+        #self.boutonZoom = Button(self.cadreminimap,text="Zoom", bg="LightCyan3", borderwidth=None,font=self.simpleFont, pady=2, width= 25, height=3, cursor="hand2")
+        self.boutonZoom = Button(self.cadreminimap,text="Vue suivante", bg="green2", width= 25, height=3, cursor="hand2", activebackground="red")
+        self.boutonZoom.bind("<Button>")
+        self.boutonZoom.grid(row=1, column=0, sticky="we")
+        #bouton d�-zomm
+        self.boutonDzoom=Button(self.cadreminimap,text="Vue precedente", bg="green2", width= 25, height=3, cursor="hand2", activebackground="red")
+        self.boutonDzoom.bind("<Button>")
+        self.boutonDzoom.grid(row=2, column=0, sticky="we")
+
+
+
 
 
 
@@ -242,6 +263,7 @@ class Vue():
         ##############################################################################
         #                             Zone Dessous-Dessous                           #
         ##############################################################################
+        #################################################Charles!!!!!!#####################################################
         #lowerLowerFrame
         self.lowerLowerFrame=Frame(self.lowerFrame,width=800,height=75,bg="blue")
         self.lowerLowerFrame.grid(row=1, column=1, sticky="ns")
@@ -264,45 +286,20 @@ class Vue():
         ###############################################################################
 
 
-
-
-        #left Buttons
-
-
         #self.cadreinfo=Frame(self.rightFrame,width=200,height=200,bg="blue")
         #self.cadreinfo.grid(row=0, column=0, sticky="we")
-
-
-
         #self.cadreinfochoix=Frame(self.cadreinfo,height=200,width=200,bg="red")
         #self.cadreinfochoix.grid(row=1, column=0, sticky="we")
-
-
         #self.lbselectecible=Label(self.cadreinfo,text="Choisir cible",bg="yellow")
         #self.lbselectecible.grid(row=3, column=0, sticky="we")
 
 
-        self.cadreminimap=Frame(self.lowerRightFrame,height=150,width=200,bg="green")
-        self.cadreminimap.grid(row=1, column=0, sticky="we")
-        self.canevasMini=Canvas(self.cadreminimap,width=200,height=200,bg="orange")
-        self.canevasMini.grid(row=0, column=0, sticky="we")
-        self.canevasMini.bind("<Button>",self.moveCanevas)
+
+
         self.afficherdecor(mod)
-
-
-
         self.changecadre(self.cadrepartie)
 
-        #Bouton pour modifier la vue
-        #bouton zoom
-        #self.boutonZoom = Button(self.cadreminimap,text="Zoom", bg="LightCyan3", borderwidth=None,font=self.simpleFont, pady=2, width= 25, height=3, cursor="hand2")
-        self.boutonZoom = Button(self.cadreminimap,text="Vue suivante", bg="green2", width= 25, height=3, cursor="hand2", activebackground="red")
-        self.boutonZoom.bind("<Button>")
-        self.boutonZoom.grid(row=1, column=0, sticky="we")
-        #bouton d�-zomm
-        self.boutonDzoom=Button(self.cadreminimap,text="Vue precedente", bg="green2", width= 25, height=3, cursor="hand2", activebackground="red")
-        self.boutonDzoom.bind("<Button>")
-        self.boutonDzoom.grid(row=2, column=0, sticky="we")
+
 
         #Label d'affichage des atrributs d'une planète lors de la VUE_PLANÉTAIRE
         self.textMinerai =  StringVar()
