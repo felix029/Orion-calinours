@@ -23,13 +23,13 @@ class Vue():
         self.cadreapp.pack()
         self.creercadresplash(ip,nom)
         self.creercadrelobby()
-        self.changecadre(self.cadresplash)        
+        self.changecadre(self.cadresplash)
         self.vueactive = 2 # 0: vue planetaire, 1: vue systeme solaire, 2: vue galaxy
         self.etoileselect=None
         self.planeteselect=None
         self.flotteselect=None
 
-    
+
     def fermerfenetre(self):
         self.parent.fermefenetre()
 
@@ -129,7 +129,7 @@ class Vue():
         self.simpleFont=("MS Sans Serif", 11, "bold")
 
         j=self.mod.joueurs[self.nom]
-        
+
         for i in self.parent.modele.etoiles:
             if j.planetemere in i.planetes:
                 self.etoileselect = i
@@ -138,11 +138,14 @@ class Vue():
         self.planeteselect = j.planetemere
 
         ##########################################################################
+        ##########################################################################
+        #                          Principaux Frames                             #
+        ##########################################################################
         #Zone globale
         self.cadrepartie=Frame(self.cadreapp)
         self.cadrejeu=Frame(self.cadrepartie)
         ##########################################################################
-        #Zone Dessus
+        #Zone Dessus KIM!!!
         #Cadre Statistiques (upperFrame)
         self.upperFrame=Frame(self.cadrepartie,width=1100,height=50,bg="black")
         self.upperFrame.grid(row=0, column=0, sticky="we")
@@ -152,40 +155,65 @@ class Vue():
         self.lowerFrame=Frame(self.cadrepartie,width=1100,height=625,bg="red")
         self.lowerFrame.grid(row=2, column=0, sticky="ns")
         ###########################################################################
-        #Sous-Zone Dessous
+        ###########################################################################
 
-        #Zone Dessous-Gauche
-        #Cadre fonctionnalit�s (lowerLeftFrame)
-        self.lowerLeftFrame=Frame(self.lowerFrame,width=150,height=625,bg="green")
-        self.lowerLeftFrame.grid(row=0, column=0, rowspan=2, sticky="ns")
-
-        #Zone Dessous-Droite
-        #Cadre fonctionnalit�s (lowerRightFrame)
-        self.lowerRightFrame=Frame(self.lowerFrame,width=150,height=625,bg="green")
-        self.lowerRightFrame.grid(row=0, column=2, rowspan=2, sticky="ns")
-
-        #Zone Dessous-Centre
-        #Aire de jeu - Interstellaire
+        ###########################################################################
+        ###########################################################################
+        #                              Aire de jeu                                #
+        #                            Ne pas toucher!                              #
+        ###########################################################################
+        #
         self.canevas=Canvas(self.lowerFrame,width=800,height=600,bg="grey11")
         self.canevas.grid(row=0, column=1, sticky="ns")
 
         self.canevas.bind("<Button>",self.cliquecosmos) # Event MouseClick li� au canevas (Aire de jeu)
+        ############################################################################
+        #############################################################################
 
-        #Zone Dessous-Dessous
-        #Cadre fonctionnalit�s (lowerRightFrame)
-        self.lowerLowerFrame=Frame(self.lowerFrame,width=800,height=75,bg="blue")
-        self.lowerLowerFrame.grid(row=1, column=1, sticky="ns")
-        ###############################################################################
-        #Sous-Zone Dessous-Gauche
 
+
+
+        ###########################################################################
+        #                           Frames de travail                             #
+        #                       (Sous-Zone de "lowerFrame")                       #
+        ###########################################################################
+        ###########################################################################
+
+        ###########################################################################
+        #                           Zone Dessous-Gauche                           #
+        ###########################################################################
+        #lowerLeftFrame
+        self.lowerLeftFrame=Frame(self.lowerFrame,width=150,height=625,bg="green")
+        self.lowerLeftFrame.grid(row=0, column=0, rowspan=2, sticky="ns")
         self.lowerLeftFrame.columnconfigure(0, minsize=150)
 
-        #left Buttons
+        #Labels du lowerLeftFrame
+
+
+
+
+
+
+        #Boutons du lowerLeftFrame
         self.btncreervaisseau=Button(self.lowerLeftFrame,text="Vaisseau",command=self.creervaisseau)
         self.btncreervaisseau.grid(row=0, column=0, sticky="we")
 
-        #self.cadreinfo=Frame(self.rightFrame,width=200,height=200,bg="blue")
-        #self.cadreinfo.grid(row=0, column=0, sticky="we")
+
+
+
+
+
+
+        ###########################################################################
+
+        ###########################################################################
+        #                            Zone Dessous-Droite                          #
+        ###########################################################################
+        #lowerRightFrame
+        self.lowerRightFrame=Frame(self.lowerFrame,width=150,height=625,bg="green")
+        self.lowerRightFrame.grid(row=0, column=2, rowspan=2, sticky="ns")
+
+        #Labels du lowerRighttFrame
 
         self.cadreinfogen=Frame(self.lowerRightFrame,width=150,height=200,bg="pink")
         self.cadreinfogen.grid(row=0, column=0, sticky="we")
@@ -193,6 +221,58 @@ class Vue():
         self.labid=Label(self.cadreinfogen,text=self.nom,fg=mod.joueurs[self.nom].couleur)
         self.labid.grid(row=0, column=0, sticky="we")
         self.labid.bind("<Button>",self.afficherplanetemere)
+
+
+
+
+
+
+        #Boutons du lowerRightFrame
+
+
+
+
+
+
+
+
+        ##############################################################################
+
+
+        ##############################################################################
+        #                             Zone Dessous-Dessous                           #
+        ##############################################################################
+        #lowerLowerFrame
+        self.lowerLowerFrame=Frame(self.lowerFrame,width=800,height=75,bg="blue")
+        self.lowerLowerFrame.grid(row=1, column=1, sticky="ns")
+
+        #Labels du lowerLeftFrame
+
+
+
+
+
+
+        #Boutons du lowerLeftFrame
+
+
+
+
+
+
+
+        ###############################################################################
+
+
+
+
+        #left Buttons
+
+
+        #self.cadreinfo=Frame(self.rightFrame,width=200,height=200,bg="blue")
+        #self.cadreinfo.grid(row=0, column=0, sticky="we")
+
+
 
         #self.cadreinfochoix=Frame(self.cadreinfo,height=200,width=200,bg="red")
         #self.cadreinfochoix.grid(row=1, column=0, sticky="we")
@@ -205,7 +285,7 @@ class Vue():
         self.cadreminimap=Frame(self.lowerRightFrame,height=150,width=200,bg="green")
         self.cadreminimap.grid(row=1, column=0, sticky="we")
         self.canevasMini=Canvas(self.cadreminimap,width=200,height=200,bg="orange")
-        self.canevasMini.grid(row=0, column=0, sticky="we")       
+        self.canevasMini.grid(row=0, column=0, sticky="we")
         self.canevasMini.bind("<Button>",self.moveCanevas)
         self.afficherdecor(mod)
 
@@ -223,7 +303,7 @@ class Vue():
         self.boutonDzoom=Button(self.cadreminimap,text="Vue precedente", bg="green2", width= 25, height=3, cursor="hand2", activebackground="red")
         self.boutonDzoom.bind("<Button>")
         self.boutonDzoom.grid(row=2, column=0, sticky="we")
-        
+
         #Label d'affichage des atrributs d'une planète lors de la VUE_PLANÉTAIRE
         self.textMinerai =  StringVar()
         self.textMinerai = str("Minerai : ")
@@ -293,7 +373,7 @@ class Vue():
 
         if self.vueactive == 1: #vue systeme solaire
             #self.etoileselect = random.choice(mod.etoiles)
-            
+
             self.canevas.create_oval(-100, -100, 100, 100, fill="orange", tags=("soleil", "fond"))
 
             for i in self.etoileselect.planetes:
@@ -329,8 +409,8 @@ class Vue():
             self.canevas.create_oval(mod.largeur/2-(t*25),mod.hauteur/2-(t*25),mod.largeur/2+(t*25),mod.hauteur/2+(t*25), width=2, outline="white", fill=self.planeteselect.color,
                                     tags=("planetezoom", str(self.planeteselect.id), self.planeteselect.proprietaire, str(self.etoileselect.id)))
             #afficheAttributsPlanete(self.planeteselect)
-            
-            
+
+
 
 ################################################################################################ Charles
     def afficheAttributsPlanete(self, maselection, planeteselect=None, etoileselect=None):
@@ -345,7 +425,7 @@ class Vue():
             for i in self.etoileselect.planetes:
                 self.calculMinerai+=self.planeteselect.minerai
                 self.calculGaz+=self.planeteselect.gaz
-            
+
             print(str(self.calculMinerai))
             print(str(self.calculGaz))
             self.planeteselect.gaz
@@ -356,19 +436,19 @@ class Vue():
             print(tag)
             self.planeteselect.gaz
             self.planeteselect.minerai
-            self.attributMinerai.set(textvariable = "Minerai : " + str(self.planeteselect.minerai)) 
-            self.attributGaz.set(textvariable = "Gaz : " + str(self.planeteselect.gaz)) 
+            self.attributMinerai.set(textvariable = "Minerai : " + str(self.planeteselect.minerai))
+            self.attributGaz.set(textvariable = "Gaz : " + str(self.planeteselect.gaz))
 
         self.planeteselect.id
         self.planeteselect.propriétaire
         self.planeteselect.color
-     
+
 ##########################################################################################################
 
     def afficherplanetemere(self,evt):
         if self.vueactive == 2:
             j=self.mod.joueurs[self.nom]
-            
+
             for i in self.parent.modele.etoiles:
                 if j.planetemere in i.planetes:
                     etoileplanetemere = i
@@ -388,8 +468,8 @@ class Vue():
         self.maselection=None
         self.canevas.delete("marqueur")
         self.btncreervaisseau.pack_forget()
-    
-    def creerBatiment(self,event): #Ajouter le 9 avril par nic pour la creation d'un batiment        
+
+    def creerBatiment(self,event): #Ajouter le 9 avril par nic pour la creation d'un batiment
         x=event.x
         y=event.y
         print("Creer batiment")
@@ -403,7 +483,7 @@ class Vue():
         self.maselection=None
         self.canevas.delete("marqueur")
         self.btncreerbatiment.pack_forget()
-        
+
     def afficherpartie(self,mod):
         self.canevas.delete("artefact")
 
@@ -491,7 +571,7 @@ class Vue():
                             print(self.flotteselect.id, self.etoileselect.id)
                             self.flotteselect = None
                             self.etoileselect = None
-                            
+
             if tag and tag[0] == "flotte":
                 self.maselection=[tag[0], tag[1], tag[2], tag[3]]
                 print(self.maselection)
@@ -500,7 +580,7 @@ class Vue():
                     if i.id == int(self.maselection[1]):
                         self.flotteselect = i
                         break
-        
+
 
 
         if self.vueactive == 1 or self.vueactive == 0:
@@ -544,7 +624,7 @@ class Vue():
             #3- Reprinter les bouton avec une grosseur normale
 
 
-###Code à clearer 
+###Code à clearer
         #if t and t[0]==self.nom:
         #    self.maselection=self.canevas.find_withtag(CURRENT)#[0]
         #    self.maselection=[self.nom,t[1],t[2]]  #self.canevas.find_withtag(CURRENT)#[0]
