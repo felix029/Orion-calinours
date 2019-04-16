@@ -481,12 +481,25 @@ class Vue():
                                             tags=("flotte", str(j.id), j.proprietaire, "artefact"))
                 if self.vueactive == 1:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == None:
-                        self.canevas.create_rectangle(j.x-7,j.y-7,j.x+7,j.y+7,fill=i.couleur,
-                                            tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+                        if j.x >= 796 and j.y >= 596:
+                            j.x = j.sysplanetecur.x+25
+                            j.y = j.sysplanetecur.y+25
+                            j.sysplanetecur = None
+                            j.cible = None
+                        else:
+                            self.canevas.create_rectangle(j.x-7,j.y-7,j.x+7,j.y+7,fill=i.couleur,
+                                                    tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+
                 if self.vueactive == 0:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
-                        self.canevas.create_rectangle(j.x-9,j.y-9,j.x+9,j.y+9,fill=i.couleur,
-                                            tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+                        if j.x >= 796 and j.y >= 596:
+                            j.x = j.planetecur.x+17
+                            j.y = j.planetecur.y+17
+                            j.planetecur = None
+                            j.cible = None
+                        else:
+                            self.canevas.create_rectangle(j.x-11,j.y-11,j.x+11,j.y+11,fill=i.couleur,
+                                                    tags=("flotte", str(j.id), j.proprietaire, "artefact"))
 
                 #self.canevas.create_rectangle(j.x,j.y,image=self.imgs["vaiss"],
                 #                     tags=(j.proprietaire,"flotte",str(j.id),"artefact"))
@@ -500,12 +513,25 @@ class Vue():
                                             tags=("flotte", str(j.id), j.proprietaire, "artefact"))
                 if self.vueactive == 1:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == None:
-                        self.canevas.create_rectangle(j.x-7,j.y-7,j.x+7,j.y+7,fill=i.couleur,
-                                            tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+                        if j.x >= 796 and j.y >= 596:
+                            j.x = j.sysplanetecur.x+25
+                            j.y = j.sysplanetecur.y+25
+                            j.sysplanetecur = None
+                            j.cible = None
+                        else:
+                            self.canevas.create_rectangle(j.x-7,j.y-7,j.x+7,j.y+7,fill=i.couleur,
+                                                    tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+
                 if self.vueactive == 0:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
-                        self.canevas.create_rectangle(j.x-9,j.y-9,j.x+9,j.y+9,fill=i.couleur,
-                                            tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+                        if j.x >= 796 and j.y >= 596:
+                            j.x = j.planetecur.x+17
+                            j.y = j.planetecur.y+17
+                            j.planetecur = None
+                            j.cible = None
+                        else:
+                            self.canevas.create_rectangle(j.x-11,j.y-11,j.x+11,j.y+11,fill=i.couleur,
+                                                    tags=("flotte", str(j.id), j.proprietaire, "artefact"))
 
     def cliquecosmos(self,evt):
         self.btncreervaisseau.pack_forget()
@@ -578,6 +604,10 @@ class Vue():
                         self.maselection=None
                         break
 
+            if tag and tag[0] == "retour2":
+                if self.flotteselect != None:
+                    self.parent.cibleretour(self.flotteselect.id)
+
 
         if self.vueactive == 0:
             if self.selectionBatiment != None:
@@ -586,6 +616,36 @@ class Vue():
                 self.selectionBatiment=None
 
 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        if tag and tag[0] == "flotte":
+                self.maselection=[tag[0], tag[1], tag[2], tag[3]]
+                print(self.maselection)
+                j=self.mod.joueurs[self.nom]
+                for i in j.flotte:
+                    if i.id == int(self.maselection[1]):
+                        self.flotteselect = i
+                        self.maselection=None
+                        break   
+     
+        if tag and tag[0] == "retour1":
+                if self.flotteselect != None:
+                    self.parent.cibleretour(self.flotteselect.id)
+        
         self.maselection=None
 
         #else

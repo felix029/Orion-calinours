@@ -172,7 +172,8 @@ class Joueur():
                       "creerBatiment":self.creerBatiment,  #Ajouter le 9 avril par Nic
                       "ciblerflotte":self.ciblerflotte,
                       "detruire": self.detruire,
-                      "ciblerflotteplanete":self.ciblerflotteplanete}
+                      "ciblerflotteplanete":self.ciblerflotteplanete,
+                      "cibleretour":self.cibleretour} #Ajout Felix-O 16 avril
         
     def creervaisseau(self,params):
         #etoile,cible,type=params
@@ -247,8 +248,14 @@ class Joueur():
                         if k.id == int(iddesti):
                             i.cible=k
                             i.typecible="Vaisseau"
-        
-        
+    
+    def cibleretour(self,idori):
+        for i in self.flotte:
+            if i.id == int(idori):
+                ptemp=Planete(self.parent.largeur,self.parent.hauteur)
+                ptemp.taille=0
+                i.cible=ptemp
+
     def prochaineaction(self):
 
         if self.detruits:
@@ -339,8 +346,8 @@ class Modele():
         #self.xEtoile = [nbEtoile+1]
         #self.yEtoile = [nbEtoile+1]
         for i in range(nbEtoile):
-            x=random.randrange(0, self.largeur)
-            y=random.randrange(0, self.hauteur)
+            x=random.randrange(0, self.largeur-10)
+            y=random.randrange(0, self.hauteur-10)
             self.etoiles.append(Etoile(x,y,self))
        #     self.xEtoile[i]=random.randrange(self.largeur-(2*bordure))
         #    self.yEtoile[i]=random.randrange(self.hauteur-(2*bordure))
