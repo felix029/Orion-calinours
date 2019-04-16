@@ -281,7 +281,7 @@ class Vue():
 
         self.canevas.delete(ALL)
         if self.vueactive == 2: #vue de la galaxy
-            for i in range(len(mod.etoiles)*3):
+            for i in range(len(mod.etoiles)*5):
                 x=random.randrange(mod.largeur)
                 y=random.randrange(mod.hauteur)
                 self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond"))
@@ -294,6 +294,11 @@ class Vue():
         if self.vueactive == 1: #vue systeme solaire
             #self.etoileselect = random.choice(mod.etoiles)
             
+            for i in range(len(mod.etoiles)*5):
+                x=random.randrange(mod.largeur)
+                y=random.randrange(mod.hauteur)
+                self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond"))
+
             self.canevas.create_oval(-100, -100, 100, 100, fill="orange", tags=("soleil", "fond"))
 
             for i in self.etoileselect.planetes:
@@ -322,11 +327,16 @@ class Vue():
 
         if self.vueactive == 0: #vue plan�te
 
+            for i in range(len(mod.etoiles)*4):
+                x=random.randrange(mod.largeur)
+                y=random.randrange(mod.hauteur)
+                self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond"))
+
             #affichage de l'espace ou envoyer un vaisseau pour le retourner a la vue 1
             self.canevas.create_oval(mod.largeur-40, mod.hauteur-40, mod.largeur+40, mod.hauteur+40,fill="purple", tags=("retour1"))
 
             t=self.planeteselect.taille
-            self.canevas.create_oval(mod.largeur/2-(t*25),mod.hauteur/2-(t*25),mod.largeur/2+(t*25),mod.hauteur/2+(t*25), width=2, outline="white", fill=self.planeteselect.color,
+            self.canevas.create_oval(mod.largeur/2-(t*20),mod.hauteur/2-(t*20),mod.largeur/2+(t*20),mod.hauteur/2+(t*20), width=2, outline="white", fill=self.planeteselect.color,
                                     tags=("planetezoom", str(self.planeteselect.id), self.planeteselect.proprietaire, str(self.etoileselect.id)))
             #afficheAttributsPlanete(self.planeteselect)
             
@@ -436,15 +446,15 @@ class Vue():
             for j in i.flotte:
                 if self.vueactive == 2:
                     if j.sysplanetecur == None and j.planetecur == None:
-                        self.canevas.create_rectangle(j.x-3,j.y-3,j.x+3,j.y+3,fill=i.couleur,
+                        self.canevas.create_rectangle(j.x-5,j.y-5,j.x+5,j.y+5,fill=i.couleur,
                                             tags=("flotte", str(j.id), j.proprietaire, "artefact"))
                 if self.vueactive == 1:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == None:
-                        self.canevas.create_rectangle(j.x-3,j.y-3,j.x+3,j.y+3,fill=i.couleur,
+                        self.canevas.create_rectangle(j.x-7,j.y-7,j.x+7,j.y+7,fill=i.couleur,
                                             tags=("flotte", str(j.id), j.proprietaire, "artefact"))
                 if self.vueactive == 0:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
-                        self.canevas.create_rectangle(j.x-3,j.y-3,j.x+3,j.y+3,fill=i.couleur,
+                        self.canevas.create_rectangle(j.x-9,j.y-9,j.x+9,j.y+9,fill=i.couleur,
                                             tags=("flotte", str(j.id), j.proprietaire, "artefact"))
 
                 #self.canevas.create_rectangle(j.x,j.y,image=self.imgs["vaiss"],
@@ -493,6 +503,7 @@ class Vue():
                             self.etoileselect = None
                             
             if tag and tag[0] == "flotte":
+
                 self.maselection=[tag[0], tag[1], tag[2], tag[3]]
                 print(self.maselection)
                 j=self.mod.joueurs[self.nom]

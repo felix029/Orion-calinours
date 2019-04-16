@@ -8,7 +8,7 @@ class Planete():
         self.id=Id.prochainid()
         self.x=x
         self.y=y
-        self.taille=random.randrange(7,12)
+        self.taille=random.randrange(13,17)
         self.gaz=random.randrange(4000, 10000)
         self.minerai=random.randrange(4000, 10000)
         self.proprietaire = ""
@@ -31,7 +31,7 @@ class Etoile():
         self.id=Id.prochainid()
         self.x=x
         self.y=y
-        self.taille=random.randrange(8,25)
+        self.taille=random.randrange(15,25)
         self.ressource=random.randrange(10)
         self.planetes=[]
         self.largeur = parent.largeur
@@ -337,12 +337,12 @@ class Modele():
         
     def creeretoiles(self):
         bordure=0
-        nbEtoile = 10
+        nbEtoile = 12
         #self.xEtoile = [nbEtoile+1]
         #self.yEtoile = [nbEtoile+1]
         for i in range(nbEtoile):
-            x=random.randrange(self.largeur-(2*bordure))
-            y=random.randrange(self.hauteur-(2*bordure))
+            x=random.randrange(0, self.largeur)
+            y=random.randrange(0, self.hauteur)
             self.etoiles.append(Etoile(x,y,self))
        #     self.xEtoile[i]=random.randrange(self.largeur-(2*bordure))
         #    self.yEtoile[i]=random.randrange(self.hauteur-(2*bordure))
