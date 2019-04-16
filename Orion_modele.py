@@ -183,16 +183,14 @@ class Joueur():
 
     def creerBatiment(self,params): #Ajouter le 8 avril par nic
 
-        indice = 0
-
         p,typeBatiment,x,y = params
-        b = Batiment(self.nom,p,typeBatiment,x,y)
+
+        b = Batiment(self.id,p,typeBatiment,x,y)
         print("Batiment",b.id)
 
         for i in self.planetescontrolees:
-            if i.id == p:
-                self.planetescontrolees[indice].batiment.append(b)
-                indice += 1
+            if i.id == int(p):
+                i.batiment.append(b)
 
     #Ajouter le 9 avril par nic
     def vendreBatiment(self,batiment): 
