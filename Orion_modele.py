@@ -50,10 +50,10 @@ class Batiment(): #Ajouter le 8 avril par nic
         self.id=Id.prochainid()
         self.proprietaire=nom
         self.planete=plan
-        self.type = typeBatiment
+        self.typeBatiment = typeBatiment
         self.x = x
         self.y = y
-        self.niveau = 1
+        self.vitesse = 1
         self.cout = 100
         self.nom=""
         self.etat=""
@@ -172,7 +172,8 @@ class Joueur():
                       "creerBatiment":self.creerBatiment,  #Ajouter le 9 avril par Nic
                       "ciblerflotte":self.ciblerflotte,
                       "detruire": self.detruire,
-                      "ciblerflotteplanete":self.ciblerflotteplanete}
+                      "ciblerflotteplanete":self.ciblerflotteplanete,
+                      "modifRessource":self.modifRessource}
         
     def creervaisseau(self,params):
         #etoile,cible,type=params
@@ -201,10 +202,22 @@ class Joueur():
     def ameliorerBatiment(self,batiment):
         if batiment.cout <= self.minerai:
             self.minerai -= batiment.cout
-            batiment.niveau += 1
+            batiment.vitesse += 1
         else:
             print("MANQUE ARGENT")
 
+    def modifRessource(self): 
+        #Ajouter le 8 avril par nic ( Gere l'incrémentation des ressources des joueurs avec batiment et diminuer les ressource restante sur la planete du joueur)
+        for p in self.planetescontrolees:
+            for b in p.batiment:
+                if b.typeBatiment == "minerai":
+                    self.minerai += b.vitesse
+                    p.minerai -= b.vitesse
+                elif b.typeBatiment == "gaz":
+                    self.gaz += b.vitesse
+                    p.gaz -= b.vitesse
+                elif b.typeBatiment == "energie":
+                    self.energie += b.vitesse
         
     def ciblerflotte(self,ids):
         idori,iddesti=ids
@@ -251,6 +264,7 @@ class Joueur():
         
     def prochaineaction(self):
 
+        self.modifRessource()
         if self.detruits:
             self.detruire()
         for i in self.flotte:
@@ -260,7 +274,9 @@ class Joueur():
                 i.avancer()
             #else:
             #    i.cible=random.choice(self.parent.planetes)
-            #    i.cible=random.choice(self.parent.etoiles)            
+            #    i.cible=random.choice(self.parent.etoiles)   
+
+                    
     def prochaineaction2(self):
         for i in self.flotte:
             i.avancer()
@@ -398,19 +414,5 @@ class Modele():
         # IA- appelle prochaine action
         for i in self.ias:
             i.prochaineaction()
-
-    def modifRessource(self): 
-        #Ajouter le 8 avril par nic ( Gere l'incrémentation des ressources des joueurs avec batiment et diminuer les ressource restante sur la planete du joueur)
-        for j in self.joueurs:
-            for p in j.planetes:
-                for b in p.batiment:
-                    if b.typeBatiment == "minerai":
-                        j.minerai += b.niveau
-                        p.minerai -= b.niveau
-                    elif b.typeBatiment == "gaz":
-                        j.gaz += b.niveau
-                        p.gaz -= b.niveau
-                    elif b.typeBatiment == "energie":
-                        j.energie += b.niveau
         
  

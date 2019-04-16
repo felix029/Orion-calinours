@@ -581,7 +581,7 @@ class Vue():
 
         if self.vueactive == 0:
             if self.selectionBatiment != None:
-                self.selectionBatiment=["Minerai",tag[1]]
+                self.selectionBatiment=["minerai",tag[1]]
                 self.creerBatiment(evt)
                 self.selectionBatiment=None
 

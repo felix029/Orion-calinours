@@ -164,6 +164,9 @@ class Controleur():
     
     def detruire(self):
         self.actions.append([self.monnom,"detruire",""])
+
+    def modifRessource(self):
+        self.actions.append([self.monnom,"modifRessource",""])
         
 if __name__=="__main__":
     c=Controleur()
