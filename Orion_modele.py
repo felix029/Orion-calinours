@@ -1,4 +1,4 @@
- # -*- coding: utf-8 -*-   
+ # -*- coding: utf-8 -*-
 import random
 from Id import Id
 from helper import Helper as hlp
@@ -11,8 +11,8 @@ class Planete():
         self.taille=random.randrange(13,17)
         self.gaz=random.randrange(4000, 10000)
         self.minerai=random.randrange(4000, 10000)
-        self.proprietaire = ""
-        self.colorsTab = [self.minerai%10, random.randrange(4000,10000)%10, self.gaz%10, self.minerai%10, random.randrange(4000,10000)%10, self.gaz%10] 
+        self.proprietaire = " "
+        self.colorsTab = [self.minerai%10, random.randrange(4000,10000)%10, self.gaz%10, self.minerai%10, random.randrange(4000,10000)%10, self.gaz%10]
         self.color = "#" + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab))
         self.setXY()
         self.batiment=[]
@@ -21,7 +21,7 @@ class Planete():
     def setXY(self):
         if self.x <=100:
             self.x+=100
-        
+
         if self.y <=100:
             self.y+=100
 
@@ -44,7 +44,7 @@ class Etoile():
             planX=random.randrange(150, 200)+(i*60)
             planY=random.randrange(150, 200)+(i*random.randrange(20,40))+10
             self.planetes.append(Planete(planX, planY))
-        
+
 class Batiment(): #Ajouter le 8 avril par nic
     def __init__(self,nom,plan,typeBatiment,x,y):
         self.id=Id.prochainid()
@@ -58,14 +58,14 @@ class Batiment(): #Ajouter le 8 avril par nic
         self.nom=""
         self.etat=""
 
-class Vaisseau():      
+class Vaisseau():
 
     ###définition des types de vaisseaux [energie,vitesse, puissance de feu]
     typevaisseau={"chasseur":[100,3,10],
                     "cargo":[100,2,0],
                     "colonisateur":[150,1,0]}
 
-    def __init__(self,nom,x,y):   
+    def __init__(self,nom,x,y):
         self.id=Id.prochainid()
         self.proprietaire=nom
         self.x=x
@@ -76,16 +76,16 @@ class Vaisseau():
         self.cible=None
         self.sysplanetecur=None
         self.planetecur=None
-        self.typecible=""  
-        self.range=10  
+        self.typecible=""
+        self.range=10
         self.projectiles=[]
         self.delaidetir=5
         self.etat="actif"
-       
+
     def avancer(self):
         if self.cible:
             x=self.cible.x
-            y=self.cible.y 
+            y=self.cible.y
             ang=hlp.calcAngle(self.x,self.y,x,y)
             x1,y1=hlp.getAngledPoint(ang,self.vitesse,self.x,self.y)
             self.x,self.y=x1,y1 #int(x1),int(y1)
@@ -97,7 +97,7 @@ class Vaisseau():
                 elif self.cible == Planete:
                     print("RESSOURCES...",self.cible.id,self.cible.ressource,self.cible.proprietaire)
                     self.cible.proprietaire=self.proprietaire                #tempo=input("Continuersvp")
-                
+
                 self.cible=None
                 #print("Change cible")
         else:
@@ -175,6 +175,7 @@ class Joueur():
                       "ciblerflotteplanete":self.ciblerflotteplanete,
                       "modifRessource":self.modifRessource}
         
+
     def creervaisseau(self,params):
         #etoile,cible,type=params
         #is type=="explorer":
@@ -194,7 +195,7 @@ class Joueur():
                 i.batiment.append(b)
 
     #Ajouter le 9 avril par nic
-    def vendreBatiment(self,batiment): 
+    def vendreBatiment(self,batiment):
         self.minerai+=batiment.cout*0.5
         batiment.etat="detruit"
 
@@ -205,6 +206,7 @@ class Joueur():
             batiment.vitesse += 1
         else:
             print("MANQUE ARGENT")
+
 
     def modifRessource(self): 
         #Ajouter le 8 avril par nic ( Gere l'incrémentation des ressources des joueurs avec batiment et diminuer les ressource restante sur la planete du joueur)
@@ -238,7 +240,7 @@ class Joueur():
                         if k.id == int(iddesti):
                             i.cible=k
                             i.typecible="Vaisseau"
-    
+
     def ciblerflotteplanete(self,ids):
         idori,iddesti,etoile=ids
         for i in self.flotte:
@@ -260,8 +262,8 @@ class Joueur():
                         if k.id == int(iddesti):
                             i.cible=k
                             i.typecible="Vaisseau"
-        
-        
+
+
     def prochaineaction(self):
 
         self.modifRessource()
@@ -277,21 +279,22 @@ class Joueur():
             #    i.cible=random.choice(self.parent.etoiles)   
 
                     
+
     def prochaineaction2(self):
         for i in self.flotte:
             i.avancer()
-    
+
     def detruire(self):
 
         for i in self.flotte:
-            
+
 
             if i.etat=="detruit":
                 self.detruits.append(i)
                 if i.projectiles:  ###assure la destruction des projectiles reliés au vaisseau détruit
                     for j in i.projectiles:
                         j.etat="detruit"
-                        
+
             if i.projectiles:
                 for j in i.projectiles:
                     if j.etat=="detruit":
@@ -304,9 +307,9 @@ class Joueur():
 # IA- nouvelle classe de joueur
 class IA(Joueur):
     def __init__(self,parent,nom,planetemere,couleur):
-        Joueur.__init__(self, parent, nom, planetemere, couleur)  
+        Joueur.__init__(self, parent, nom, planetemere, couleur)
         self.tempo=random.randrange(100)+20
-        
+
     def prochaineaction(self):
         if self.detruits:
             self.detruire()
@@ -316,11 +319,11 @@ class IA(Joueur):
                 if i.cible:
                     i.avancer()
                 else:
-                    #i.cible=random.choice(self.parent.planetes)  
+                    #i.cible=random.choice(self.parent.planetes)
                     i.cible=random.choice(self.parent.etoiles)
         else:
-            self.creervaisseau(0) 
-    
+            self.creervaisseau(0)
+
 class Modele():
     def __init__(self,parent,joueurs):
         self.parent=parent
@@ -336,7 +339,7 @@ class Modele():
         self.creeretoiles()
         self.creerterrain()
         self.assignerplanetes(joueurs,2)
-        
+
     def creerterrain(self):
         self.terrain=[]
         for i in range(10):
@@ -348,7 +351,7 @@ class Modele():
                 else:
                     ligne.append(0)
             self.terrain.append(ligne)
-        
+
     def creeretoiles(self):
         bordure=0
         nbEtoile = 12
@@ -364,9 +367,9 @@ class Modele():
  #           for z in range(i):
   #              if self.xEtoile[i] - self.xEtoile[z] < 15 and self.yEtoile[i] - self.yEtoiley[z] < 15:
    #                 self.xEtoile[i] =  self.xEtoile[i] + 25
-    #                self.yEtoile[i] =  self.yEtoile[i] + 25     
+    #                self.yEtoile[i] =  self.yEtoile[i] + 25
      #       self.etoiles.append(Etoile(self.xEtoile[i],self.yEtoile[i],self))
-    
+
     def assignerplanetes(self, joueurs, ias=1):
         np=len(joueurs)+ias
         etoilej=[]
@@ -386,12 +389,12 @@ class Modele():
                   "lightblue","pink","gold","purple"]
         for i in joueurs:
             self.joueurs[i]=Joueur(self,i,planetej.pop(0),couleurs.pop(0))
-        
-        # IA- creation des ias - max 2 
+
+        # IA- creation des ias - max 2
         couleursia=["orange","green"]
         for i in range(ias):
-            self.ias.append(IA(self,"IA_"+str(i),planetej.pop(0),couleursia.pop(0)))            
-    
+            self.ias.append(IA(self,"IA_"+str(i),planetej.pop(0),couleursia.pop(0)))
+
     def prochaineaction(self,cadre):
         if cadre in self.actionsafaire:
             for i in self.actionsafaire[cadre]:
@@ -407,12 +410,10 @@ class Modele():
                 print("NOTE... c'est seulement changer la position de l'auto si sa vitesse est non-nul")
                 """
             del self.actionsafaire[cadre]
-                
+
         for i in self.joueurs:
             self.joueurs[i].prochaineaction()
 
         # IA- appelle prochaine action
         for i in self.ias:
             i.prochaineaction()
-        
- 
