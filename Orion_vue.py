@@ -29,6 +29,7 @@ class Vue():
         self.planeteselect=None
         self.flotteselect=None
         self.selectionBatiment=None
+        self.batimentChoisi="minerai"
 
 
     def fermerfenetre(self):
@@ -185,9 +186,13 @@ class Vue():
         self.btncreervaisseau=Button(self.lowerLeftFrame,text="Vaisseau",command=self.creervaisseau)
         self.btncreervaisseau.grid(row=0, column=0, sticky="we")
 
-        self.btncreerbatiment=Button(self.lowerLeftFrame,text="Batiment")
-        self.btncreerbatiment.bind("<Button>",self.creerBatiment)
+        self.btncreerbatiment=Button(self.lowerLeftFrame,text="Mine")
+        self.btncreerbatiment.bind("<Button>",self.initMine)
         self.btncreerbatiment.grid(row=1, column=0, sticky="we")
+
+        self.btncreerbatiment=Button(self.lowerLeftFrame,text="Gaz")
+        self.btncreerbatiment.bind("<Button>",self.initGaz)
+        self.btncreerbatiment.grid(row=2, column=0, sticky="we")
         #self.cadreinfo=Frame(self.rightFrame,width=200,height=200,bg="blue")
         #self.cadreinfo.grid(row=0, column=0, sticky="we")
 
@@ -476,11 +481,26 @@ class Vue():
 
             self.canevas.create_rectangle(evt.x-10,evt.y,evt.x+10,evt.y-40, fill="red",tags=("batiment"))
         else:
-            self.selectionBatiment=[1,1]
+            self.selectionBatiment=[self.batimentChoisi,1]
 
+    def initMine(self,evt):
+        self.selectionBatiment=None
+        self.batimentChoisi="minerai"
+        self.creerBatiment(evt)
+
+    def initGaz(self,evt):
+        self.selectionBatiment=None
+        self.batimentChoisi="gaz"
+        self.creerBatiment(evt)
+
+    def initEnergie(self,evt):
+        self.selectionBatiment=None
+        self.batimentChoisi="energie"
+        self.creerBatiment(evt)
 
     def afficherpartie(self,mod):
         self.canevas.delete("artefact")
+        self.etatBouton()
 
         if self.maselection!=None:
 
@@ -615,7 +635,7 @@ class Vue():
 
         if self.vueactive == 0:
             if self.selectionBatiment != None:
-                self.selectionBatiment=["minerai",tag[1]]
+                self.selectionBatiment=[self.selectionBatiment[0],tag[1]]
                 self.creerBatiment(evt)
                 self.selectionBatiment=None
 
