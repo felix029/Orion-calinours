@@ -711,7 +711,7 @@ class Vue():
                             #j.y = j.sysplanetecur.y+25
                             #j.sysplanetecur = None
                             #j.cible = None
-                            self.parent.flotteretour(j.id)
+                            self.parent.flotteretour2(j.id)
                         else:
                             self.canevas.create_rectangle(j.x-7,j.y-7,j.x+7,j.y+7,fill=i.couleur,
                                                     tags=("flotte", str(j.id), j.proprietaire, "artefact"))
@@ -723,7 +723,7 @@ class Vue():
                             #j.y = j.planetecur.y+17
                             #j.planetecur = None
                             #j.cible = None
-                            self.parent.flotteretour(j.id)
+                            self.parent.flotteretour1(j.id)
                         else:
                             self.canevas.create_rectangle(j.x-11,j.y-11,j.x+11,j.y+11,fill=i.couleur,
                                                     tags=("flotte", str(j.id), j.proprietaire, "artefact"))
@@ -745,7 +745,7 @@ class Vue():
                             #j.y = j.sysplanetecur.y+25
                             #j.sysplanetecur = None
                             #j.cible = None
-                            self.parent.flotteretour(j.id)
+                            self.parent.flotteretour2(j.id)
                         else:
                             self.canevas.create_rectangle(j.x-7,j.y-7,j.x+7,j.y+7,fill=i.couleur,
                                                     tags=("flotte", str(j.id), j.proprietaire, "artefact"))
@@ -757,7 +757,7 @@ class Vue():
                             #j.y = j.planetecur.y+17
                             #j.planetecur = None
                             #j.cible = None
-                            self.parent.flotteretour(j.id)
+                            self.parent.flotteretour1(j.id)
                         else:
                             self.canevas.create_rectangle(j.x-11,j.y-11,j.x+11,j.y+11,fill=i.couleur,
                                                     tags=("flotte", str(j.id), j.proprietaire, "artefact"))

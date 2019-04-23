@@ -182,7 +182,8 @@ class Joueur():
                       "cibleretour":self.cibleretour, #Ajout Felix-O 16 avril
                       "versvue1":self.versvue1, #Ajout Felix-O 23 Avril
                       "versvue0":self.versvue0, #Ajout Felix-O 23 Avril
-                      "flotteretour":self.flotteretour} #Ajout Felix-O 23 Avril
+                      "flotteretour2":self.flotteretour2, #Ajout Felix-O 23 Avril
+                      "flotteretour1":self.flotteretour1} #Ajout Felix-O 23 Avril
 
     def creervaisseau(self,params):
         #etoile,cible,type=params
@@ -350,29 +351,34 @@ class Joueur():
                 break
     
     #Ajout Felix-O 23 Avril
-    def flotteretour(self,id):
+    def flotteretour2(self,id):
         idflotte=id
         for i in self.flotte:
             if i.id == idflotte:
                 flottecur = i
                 break
-        
-        if flottecur.planetecur == None and flottecur.sysplanetecur != None:
+
+        if flottecur.sysplanetecur != None:
             flottecur.x = flottecur.sysplanetecur.x+25
             flottecur.y = flottecur.sysplanetecur.y+25
             flottecur.sysplanetecur = None
             flottecur.cible = None
+        
+    
+    #Ajout Felix-O 23 Avril
+    def flotteretour1(self,id):
+        idflotte=id
+        for i in self.flotte:
+            if i.id == idflotte:
+                flottecur = i
+                break
 
-        elif flottecur.planetecur != None and flottecur.sysplanetecur != None:
+        if flottecur.planetecur != None:
             flottecur.x = flottecur.planetecur.x+25
             flottecur.y = flottecur.planetecur.y+25
             flottecur.planetecur = None
             flottecur.cible = None
 
-        
-
-    
-        
 
 # IA- nouvelle classe de joueur
 class IA(Joueur):
