@@ -579,12 +579,22 @@ class Vue():
             t=self.planeteselect.taille
             self.canevas.create_oval(mod.largeur/2-(t*20),mod.hauteur/2-(t*20),mod.largeur/2+(t*20),mod.hauteur/2+(t*20), width=2, outline="white", fill=self.planeteselect.color,
                                     tags=("planetezoom", str(self.planeteselect.id), self.planeteselect.proprietaire, str(self.etoileselect.id)))
-            #affiche les batiment
-            for e in self.mod.etoiles:
-                for p in e.planetes:
-                    if p.id == self.planeteselect.id:
-                        for b in p.batiment:
+
+        self.afficherBatiment()
+
+
+
+    def afficherBatiment(self):
+        for e in self.mod.etoiles:
+            for p in e.planetes:
+                if p.id == self.planeteselect.id:
+                    for b in p.batiment:
+                        if b.typeBatiment == "minerai":
                             self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="red",tags=("batiment"))
+                        elif b.typeBatiment == "gaz":
+                            self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="blue",tags=("batiment"))
+                        elif b.typeBatiment == "energie":
+                            self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="yellow",tags=("batiment"))
 
 
 ################################################################################################ Charles
@@ -651,7 +661,7 @@ class Vue():
             self.canevas.delete("marqueur")
             #self.btncreerbatiment.pack_forget()
 
-            self.canevas.create_rectangle(evt.x-10,evt.y,evt.x+10,evt.y-40, fill="red",tags=("batiment"))
+            self.afficherBatiment()
         else:
             self.selectionBatiment=[self.batimentChoisi,1]
 
