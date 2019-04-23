@@ -31,6 +31,7 @@ class Vue():
         self.flotteselect=None
         self.selectionBatiment=None
         self.batimentChoisi="minerai"
+        self.upgBatiment= None
 
         ###################################################
         #    Variables utiles pour le formatage du menu   #
@@ -588,11 +589,14 @@ class Vue():
             if self.mod.joueurs[j].nom == self.planeteselect.proprietaire:
                 for b in self.planeteselect.batiment:
                     if b.typeBatiment == "minerai":
-                        self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="red",tags=("batiment"))
+                        self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="red",tags=("batiment",b.id)) #Affiche le batiment
+                        self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="niveau") #affiche le niveau du batiment
                     elif b.typeBatiment == "gaz":
-                        self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="blue",tags=("batiment"))
+                        self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="blue",tags=("batiment",b.id))
+                        self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="niveau") #affiche le niveau du batiment
                     elif b.typeBatiment == "energie":
-                        self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="yellow",tags=("batiment"))
+                        self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="yellow",tags=("batiment",b.id))
+                        self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="black",tags="vitesse") #affiche le niveau du batiment
 
 
 ################################################################################################ Charles
@@ -674,6 +678,16 @@ class Vue():
         self.selectionBatiment=None
         self.batimentChoisi="energie"
         self.creerBatiment(evt)
+
+    def upgradeBatiment(self):
+        if self.upgBatiment != None:
+            for j in self.mod.joueurs:
+                if self.mod.joueurs[j].nom == self.planeteselect.proprietaire:
+                    for b in self.planeteselect.batiment:
+                        if b.id = self.upgBatiment:
+                            b.vitesse += 1
+            self.upgBatiment = None
+                        
 
     def afficherpartie(self,mod):
         self.canevas.delete("artefact")
@@ -845,6 +859,16 @@ class Vue():
                 self.selectionBatiment=[self.selectionBatiment[0],tag[1]]
                 self.creerBatiment(evt)
                 self.selectionBatiment=None
+
+            if self.upgBatiment != None:
+                self.upgBatiment = None
+                self.canevas.delete("BatimentSelection")
+            elif "Batiment" in tag:
+                self.upgBatiment = tag[1]
+                self.create_oval(evt.x-50,evt.y-50,evt.x+50,evt.y+50.color="white",tags="BatimentSelection")
+                
+
+
 
         if tag and tag[0] == "flotte":
                 self.maselection=[tag[0], tag[1], tag[2], tag[3]]

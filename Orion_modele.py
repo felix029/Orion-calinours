@@ -54,7 +54,6 @@ class Batiment(): #Ajouter le 8 avril par nic
         self.x = x
         self.y = y
         self.vitesse = 1
-        self.cout = 100
         self.nom=""
         self.etat=""
 
