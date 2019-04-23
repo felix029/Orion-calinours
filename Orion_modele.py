@@ -80,8 +80,9 @@ class Vaisseau():
         self.range=10
         self.projectiles=[]
         self.delaidetir=0
-        self.delairmax=5 ###à modifier avec le dictionnaire si on fait d'autres vaisseaux
+        self.delaimax=5 ###à modifier avec le dictionnaire si on fait d'autres vaisseaux
         self.etat="actif"
+        self.attaquant=None
 
     def avancer(self):
         if self.cible:
@@ -110,13 +111,32 @@ class Vaisseau():
             self.avancer()
         elif self.cible.etat!="detruit":  ###ajouter le délai de tir
             if self.delaidetir==0:
+                if self.cible.attaquant==None:  ###ok
+                    self.cible.attaquant=self
                 p=Projectile(self.cible,self.x,self.y,self.cible.x,self.cible.y)
                 self.projectiles.append(p)
-                self.delaidetir=self.delairmax
+                self.delaidetir=self.delaimax
             self.delaidetir-=1
 
         else:
             self.cible=None
+            self.delaidetir=0
+
+        for i in self.projectiles:
+            if i.etat!="detruit":
+                i.deplacer()
+
+    def defense(self):
+        d=hlp.calcDistance(self.x,self.y,self.attaquant.x,self.attaquant.y)
+        if self.attaquant and self.attaquant.etat!="detruit" and d<=self.range:
+            if self.delaidetir==0:
+                p=Projectile(self.attaquant,self.x,self.y,self.attaquant.x,self.attaquant.y)
+                self.projectiles.append(p)
+                self.delaidetir=self.delaimax
+            self.delaidetir-=1
+
+        elif self.attaquant.etat=="detruit":
+            self.attaquant=None
             self.delaidetir=0
 
         for i in self.projectiles:
@@ -229,18 +249,18 @@ class Joueur():
                 elif b.typeBatiment == "energie":
                     self.energie += b.vitesse
 
-    def ciblerflotte(self,ids):
+    def ciblerflotte(self,ids):  ######################################
         idori,iddesti=ids
         for i in self.flotte:
             if i.id== int(idori):
-                for j in self.parent.etoiles:
-                    if j.id== int(iddesti):
-                        i.cible=j
-                        print("GOT TARGET")
-                        return
+              #  for j in self.parent.etoiles:
+               #     if j.id== int(iddesti):
+                #        i.cible=j
+                 #       print("GOT TARGET")
+                  #      return
                 for j in self.parent.ias:
                     for k in j.flotte:
-                        if k.id == int(iddesti):
+                        if k.id:# == int(iddesti):
                             i.cible=k
                             i.typecible="Vaisseau"
                 for j in self.parent.joueurs:
@@ -289,6 +309,8 @@ class Joueur():
                 i.tirer()
             elif i.cible:
                 i.avancer()
+            if i.attaquant!=None:
+                i.defense()
             #else:
             #    i.cible=random.choice(self.parent.planetes)
             #    i.cible=random.choice(self.parent.etoiles)
@@ -392,6 +414,8 @@ class IA(Joueur):
                 else:
                     #i.cible=random.choice(self.parent.planetes)
                     i.cible=random.choice(self.parent.etoiles)
+                if i.attaquant:
+                    i.defense()
         else:
             self.creervaisseau(0)
 
