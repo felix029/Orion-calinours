@@ -18,7 +18,7 @@ class Vue():
         self.maselection=None
         #self.posSouris=None
         self.root.title(os.path.basename(sys.argv[0]))
-        self.modele=None
+        #self.modele=self.parent.modele
         self.nom=""
         self.cadreapp=Frame(self.root,width=800,height=600)
         self.cadreapp.pack()
@@ -584,16 +584,15 @@ class Vue():
             self.afficherBatiment()
 
     def afficherBatiment(self):
-        for e in self.mod.etoiles:
-            for p in e.planetes:
-                if p.id == self.planeteselect.id:
-                    for b in p.batiment:
-                        if b.typeBatiment == "minerai":
-                            self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="red",tags=("batiment"))
-                        elif b.typeBatiment == "gaz":
-                            self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="blue",tags=("batiment"))
-                        elif b.typeBatiment == "energie":
-                            self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="yellow",tags=("batiment"))
+        for j in self.mod.joueurs:
+            if self.mod.joueurs[j].nom == self.planeteselect.proprietaire:
+                for b in self.planeteselect.batiment:
+                    if b.typeBatiment == "minerai":
+                        self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="red",tags=("batiment"))
+                    elif b.typeBatiment == "gaz":
+                        self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="blue",tags=("batiment"))
+                    elif b.typeBatiment == "energie":
+                        self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="yellow",tags=("batiment"))
 
 
 ################################################################################################ Charles
@@ -657,8 +656,9 @@ class Vue():
         if self.selectionBatiment != None:
             print("Creer batiment")
             self.parent.creerBatiment(self.selectionBatiment[1],self.selectionBatiment[0],evt.x,evt.y)
-            self.afficherBatiment()
             self.canevas.delete("marqueur")
+            #self.btncreerbatiment.pack_forget()
+            self.afficherBatiment()
         else:
             self.selectionBatiment=[self.batimentChoisi,1]
 
