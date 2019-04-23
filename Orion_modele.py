@@ -357,17 +357,19 @@ class Joueur():
                 flottecur = i
                 break
         
-        if flottecur.planetecur != None and flottecur.sysplanetecur != None:
+        if flottecur.planetecur == None and flottecur.sysplanetecur != None:
+            flottecur.x = flottecur.sysplanetecur.x+25
+            flottecur.y = flottecur.sysplanetecur.y+25
+            flottecur.sysplanetecur = None
+            flottecur.cible = None
+
+        elif flottecur.planetecur != None and flottecur.sysplanetecur != None:
             flottecur.x = flottecur.planetecur.x+25
             flottecur.y = flottecur.planetecur.y+25
             flottecur.planetecur = None
             flottecur.cible = None
 
-        elif flottecur.planetecur == None and flottecur.sysplanetecur != None:
-            flottecur.x = flottecur.sysplanetecur.x+25
-            flottecur.y = flottecur.sysplanetecur.y+25
-            flottecur.sysplanetecur = None
-            flottecur.cible = None
+        
 
     
         
