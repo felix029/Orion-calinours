@@ -34,9 +34,6 @@ class Vue():
         self.selectionBatiment=None
         self.batimentChoisi="minerai"
 
-        ####################################################
-        # Variables utiles pour le formatage du menu/cadre #
-        ####################################################
         self.couleurLabelMenu  = "white"
         self.couleurBackgroundMenu  = "gray27"
         self.couleurBackgroundCotes = "SteelBlue4"
@@ -552,9 +549,72 @@ class Vue():
                 self.canevas.create_oval(-100, -100, 100, 100, fill="orange", tags=("soleil", "fond"))
 
             for i in self.etoileselect.planetes:
+                s=i.planetImage
                 t=i.taille
-                self.canevas.create_oval(i.x-t,i.y-t,i.x+t,i.y+t,fill="grey80",
-                                        tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+                """
+                if s == 1:
+                    self.planet1 = Image.open("./images/planet1.png")
+                    self.resized = self.planet1.resize((t+30,t+30),Image.ANTIALIAS)
+                    self.planet1 = ImageTk.PhotoImage(self.resized)
+                    self.canevas.create_image(i.x, i.y, image=self.planet1, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+                elif s == 2:
+                    self.planet2 = Image.open("./images/planet2.png")
+                    self.resized = self.planet2.resize((t+30,t+30),Image.ANTIALIAS)
+                    self.planet2 = ImageTk.PhotoImage(self.resized)
+                    self.canevas.create_image(i.x, i.y, image=self.planet2, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+                elif s == 3:
+                    self.planet3 = Image.open("./images/planet3.png")
+                    self.resized = self.planet3.resize((t+30,t+30),Image.ANTIALIAS)
+                    self.planet3 = ImageTk.PhotoImage(self.resized)
+                    self.canevas.create_image(i.x, i.y, image=self.planet3, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+                elif s == 4:
+                    self.planet4 = Image.open("./images/planet4.png")
+                    self.resized = self.planet4.resize((t+30,t+30),Image.ANTIALIAS)
+                    self.planet4 = ImageTk.PhotoImage(self.resized)
+                    self.canevas.create_image(i.x, i.y, image=self.planet4, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+                elif s == 5:
+                    self.planet5 = Image.open("./images/planet5.png")
+                    self.resized = self.planet5.resize((t+30,t+30),Image.ANTIALIAS)
+                    self.planet5 = ImageTk.PhotoImage(self.resized)
+                    self.canevas.create_image(i.x, i.y, image=self.planet5, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+                elif s == 6:
+                    self.planet6 = Image.open("./images/planet6.png")
+                    self.resized = self.planet6.resize((t+30,t+30),Image.ANTIALIAS)
+                    self.planet6 = ImageTk.PhotoImage(self.resized)
+                    self.canevas.create_image(i.x, i.y, image=self.planet6, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+                elif s == 7:
+                    self.planet7 = Image.open("./images/planet7.png")
+                    self.resized = self.planet7.resize((t+30,t+30),Image.ANTIALIAS)
+                    self.planet7 = ImageTk.PhotoImage(self.resized)
+                    self.canevas.create_image(i.x, i.y, image=self.planet7, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+                elif s == 8:
+                    self.planet8 = Image.open("./images/planet8.png")
+                    self.resized = self.planet8.resize((t+30,t+30),Image.ANTIALIAS)
+                    self.planet8 = ImageTk.PhotoImage(self.resized)
+                    self.canevas.create_image(i.x, i.y, image=self.planet8, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+                elif s == 9:
+                    self.planet9 = Image.open("./images/planet9.png")
+                    self.resized = self.planet9.resize((t+30,t+30),Image.ANTIALIAS)
+                    self.planet9 = ImageTk.PhotoImage(self.resized)
+                    self.canevas.create_image(i.x, i.y, image=self.planet9, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+                elif s == 10:
+                    self.planet10 = Image.open("./images/planet10.png")
+                    self.resized = self.planet10.resize((t+30,t+30),Image.ANTIALIAS)
+                    self.planet10 = ImageTk.PhotoImage(self.resized)
+                    self.canevas.create_image(i.x, i.y, image=self.planet10, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+
+                """
+
+                #self.resized = self.planet10.resize((t+30,t+30),Image.ANTIALIAS)
+                #self.planet10 = ImageTk.PhotoImage(self.resized)
+
+                #self.resized = self.planet10.resize((t+30,t+30),Image.ANTIALIAS)
+                #self.planet10 = ImageTk.PhotoImage(self.resized)
+                self.canevas.create_image(i.x, i.y, image=i.planetImage, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+                print(s, )
+                #self.canevas.create_oval(i.x-t,i.y-t,i.x+t,i.y+t,fill="grey80",
+                #                       tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+
 
             for i in mod.joueurs.keys():
                 for j in mod.joueurs[i].planetescontrolees:
@@ -619,7 +679,7 @@ class Vue():
             print(tag)
             self.planeteselect.gaz
             self.planeteselect.minerai
-            self.attributMinerai.set(textvariable = "Minerai : " + str(self.planeteselect.minerai))
+            self.attributMinerai.set(textvariable = "Minerai : " + str(self.planeteselect.minerai)) #nombre de minerai restant sur la planet a collecter
             self.attributGaz.set(textvariable = "Gaz : " + str(self.planeteselect.gaz))
 
         self.planeteselect.id

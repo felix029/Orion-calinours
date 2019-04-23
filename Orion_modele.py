@@ -1,5 +1,6 @@
  # -*- coding: utf-8 -*-
 import random
+from PIL import Image, ImageTk
 from Id import Id
 from helper import Helper as hlp
 
@@ -9,6 +10,16 @@ class Planete():
         self.x=x
         self.y=y
         self.taille=random.randrange(13,17)
+        planetImage=random.randrange(1,11)
+        img="./images/planet"+str(planetImage)+".png"
+
+        planet1 = Image.open(img)
+        resized = planet1.resize((self.taille+30,self.taille+30),Image.ANTIALIAS)
+        self.planetImage = ImageTk.PhotoImage(resized)
+
+
+
+
         self.gaz=random.randrange(4000, 10000)
         self.minerai=random.randrange(4000, 10000)
         self.proprietaire = " "
