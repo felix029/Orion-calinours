@@ -681,12 +681,11 @@ class Vue():
 
     def upgradeBatiment(self):
         if self.upgBatiment != None:
-            for j in self.mod.joueurs:
-                if self.mod.joueurs[j].nom == self.planeteselect.proprietaire:
-                    for b in self.planeteselect.batiment:
-                        if b.id == self.upgBatiment:
-                            b.vitesse += 1
+            #for j in self.mod.joueurs:
+                #if self.mod.joueurs[j].nom == self.planeteselect.proprietaire:
+            self.parent.upgBatiment(self.upgBatiment)
             self.upgBatiment = None
+            self.canevas.delete("BatimentSelection")
                         
 
     def afficherpartie(self,mod):
@@ -862,9 +861,9 @@ class Vue():
 
             if self.upgBatiment != None:
                 self.upgBatiment = None
-                self.canevas.delete("BatimentSelection")
             elif "batiment" in tag:
                 self.upgBatiment = tag[1]
+                print(tag[1])
                 self.canevas.create_oval(evt.x-50,evt.y-50,evt.x+50,evt.y+50,outline="white",tags="BatimentSelection")
                 
 

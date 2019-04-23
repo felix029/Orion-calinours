@@ -166,7 +166,7 @@ class Joueur():
         self.flotte=[]
         self.detruits=[]
         self.actions={"creervaisseau":self.creervaisseau,
-                      "ameliorerBatiment":self.ameliorerBatiment,  #Ajouter le 9 avril par Nic
+                      "upgBatiment":self.upgBatiment,  #Ajouter le 9 avril par Nic
                       "vendreBatiment":self.vendreBatiment,  #Ajouter le 9 avril par Nic
                       "creerBatiment":self.creerBatiment,  #Ajouter le 9 avril par Nic
                       "ciblerflotte":self.ciblerflotte,
@@ -192,7 +192,6 @@ class Joueur():
         for i in self.planetescontrolees:
             if i.id == int(p):
                 i.batiment.append(b)
-                #self.parent.parent.afficherNouveauBatiment(self.nom,typeBatiment,x,y)
                 self.parent.parent.vue.afficherBatiment()
 
     #Ajouter le 9 avril par nic
@@ -201,14 +200,13 @@ class Joueur():
         batiment.etat="detruit"
 
      #Ajouter le 9 avril par Nic
-    def ameliorerBatiment(self,batiment):
-        if batiment.cout <= self.minerai:
-            self.minerai -= batiment.cout
-            batiment.vitesse += 1
-        else:
-            print("MANQUE ARGENT")
-
-
+    def upgBatiment(self,idBatiment):
+        for p in self.planetescontrolees:
+            for b in p.batiment:
+                if int(idBatiment[0]) == b.id:
+                    b.vitesse += 1
+                    print("RENTRE")
+        
     def modifRessource(self):
         #Ajouter le 8 avril par nic ( Gere l'incrémentation des ressources des joueurs avec batiment et diminuer les ressource restante sur la planete du joueur)
         for p in self.planetescontrolees:

@@ -155,8 +155,8 @@ class Controleur():
         self.actions.append([self.monnom,"creerBatiment",[p,typeBatiment,x,y]])
 
      #Ajouter le 9 avril par Nic
-    def ameliorerBatiment(self,batiment):
-        self.actions.append([self.monnom,"ameliorerBatiment",[batiment]])
+    def upgBatiment(self,idBatiment):
+        self.actions.append([self.monnom,"upgBatiment",[idBatiment]])
 
      #Ajouter le 9 avril par Nic
     def vendreBatiment(self,batiment):
