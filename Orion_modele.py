@@ -1,5 +1,6 @@
  # -*- coding: utf-8 -*-
 import random
+from PIL import Image, ImageTk
 from Id import Id
 from helper import Helper as hlp
 
@@ -9,6 +10,16 @@ class Planete():
         self.x=x
         self.y=y
         self.taille=random.randrange(13,17)
+        planetImage=random.randrange(1,11)
+        img="./images/planet"+str(planetImage)+".png"
+
+        planet1 = Image.open(img)
+        resized = planet1.resize((self.taille+30,self.taille+30),Image.ANTIALIAS)
+        self.planetImage = ImageTk.PhotoImage(resized)
+
+
+
+
         self.gaz=random.randrange(4000, 10000)
         self.minerai=random.randrange(4000, 10000)
         self.proprietaire = " "
@@ -208,7 +219,7 @@ class Joueur():
             print("MANQUE ARGENT")
 
 
-    def modifRessource(self): 
+    def modifRessource(self):
         #Ajouter le 8 avril par nic ( Gere l'incrémentation des ressources des joueurs avec batiment et diminuer les ressource restante sur la planete du joueur)
         for p in self.planetescontrolees:
             for b in p.batiment:
@@ -220,7 +231,7 @@ class Joueur():
                     p.gaz -= b.vitesse
                 elif b.typeBatiment == "energie":
                     self.energie += b.vitesse
-        
+
     def ciblerflotte(self,ids):
         idori,iddesti=ids
         for i in self.flotte:
@@ -262,14 +273,14 @@ class Joueur():
                         if k.id == int(iddesti):
                             i.cible=k
                             i.typecible="Vaisseau"
-            
+
     def cibleretour(self,idori):
         for i in self.flotte:
             if i.id == int(idori):
                 ptemp=Planete(self.parent.largeur,self.parent.hauteur)
                 ptemp.taille=0
-                i.cible=ptemp    
-    
+                i.cible=ptemp
+
     def prochaineaction(self):
 
         self.modifRessource()
@@ -282,9 +293,9 @@ class Joueur():
                 i.avancer()
             #else:
             #    i.cible=random.choice(self.parent.planetes)
-            #    i.cible=random.choice(self.parent.etoiles)   
+            #    i.cible=random.choice(self.parent.etoiles)
 
-                    
+
 
     def prochaineaction2(self):
         for i in self.flotte:
