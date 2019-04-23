@@ -260,7 +260,7 @@ class Joueur():
                         return
                 for j in self.parent.ias:
                     for k in j.flotte:
-                        if k.id int(iddesti):
+                        if k.id == int(iddesti):
                             i.cible=k
                             i.typecible="Vaisseau"
                 for j in self.parent.joueurs:
