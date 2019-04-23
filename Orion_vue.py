@@ -370,18 +370,17 @@ class Vue():
         #self.boutonZoom = Button(self.cadreminimap,text="Zoom", bg="LightCyan3", borderwidth=None,font=self.simpleFont, pady=2, width= 25, height=3, cursor="hand2")
         self.boutonZoom = Button(self.lowerLowerFrame,text="Vue suivante", bg="#003182", width= 56, height=2, cursor="hand2", activebackground="red", fg="white")
         self.boutonZoom.bind("<Button>")
-        self.boutonZoom.grid(row=0, column=0)
+        self.boutonZoom.grid(row=0, column=1)
         #bouton d�-zomm
         self.boutonDzoom=Button(self.lowerLowerFrame,text="Vue precedente", bg="#003182", width= 56, height=2, cursor="hand2", activebackground="red", fg="white")
         self.boutonDzoom.bind("<Button>")
-        self.boutonDzoom.grid(row=0, column=1)
+        self.boutonDzoom.grid(row=0, column=0)
 
 
 
 
 
         #Boutons du lowerLeftFrame
-
 
 
 
@@ -440,16 +439,16 @@ class Vue():
         self.boutonDzoom.grid_forget()
 
         if self.vueactive==2:
-            self.boutonZoom.config(width =113, text = "Vue du système solaire")
+            self.boutonZoom.config(width=113, text = "Vue du système solaire", border=4)
             self.boutonZoom.grid(row=0, column=0, sticky="we")
 
         elif self.vueactive == 1:
             self.attributMineraiEtoile = 0
             self.attributGazEtoile = 0
-            self.boutonZoom.config(width = 56, text = "Vue planétaire")
-            self.boutonDzoom.config(width = 56, text = "Vue de la galaxie")
-            self.boutonZoom.grid(row=0, column=0, sticky="we")
-            self.boutonDzoom.grid(row=0, column=1, sticky="we")
+            self.boutonZoom.config(width = 56, text = "Vue planétaire", border=2)
+            self.boutonDzoom.config(width = 56, text = "Vue de la galaxie", border=2)
+            self.boutonZoom.grid(row=0, column=1, sticky="we")
+            self.boutonDzoom.grid(row=0, column=0, sticky="we")
 
             for i in self.etoileselect.planetes:
                 self.attributMineraiEtoile+= i.minerai
@@ -463,7 +462,7 @@ class Vue():
 
 
         elif self.vueactive == 0:
-            self.boutonDzoom.config(width =113, text = "Vue du système solaire")
+            self.boutonDzoom.config(width=113, text = "Vue du système solaire", border=4)
             self.boutonDzoom.grid(row=1, column=0, sticky="we")
 
             if self.planeteselect.proprietaire == " ":
