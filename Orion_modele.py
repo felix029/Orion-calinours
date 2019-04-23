@@ -379,7 +379,8 @@ class Joueur():
             if i.id == idflotte:
                 flottecur = i
                 break
-        if flottecur.sysplanetecur != None:            flottecur.x = flottecur.sysplanetecur.x+25
+        if flottecur.sysplanetecur != None:            
+            flottecur.x = flottecur.sysplanetecur.x+25
             flottecur.y = flottecur.sysplanetecur.y+25
             flottecur.sysplanetecur = None
             flottecur.cible = None
