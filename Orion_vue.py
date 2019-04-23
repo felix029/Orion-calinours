@@ -657,8 +657,6 @@ class Vue():
             print("Creer batiment")
             self.parent.creerBatiment(self.selectionBatiment[1],self.selectionBatiment[0],evt.x,evt.y)
             self.canevas.delete("marqueur")
-            #self.btncreerbatiment.pack_forget()
-            self.afficherBatiment()
         else:
             self.selectionBatiment=[self.batimentChoisi,1]
 
@@ -847,23 +845,6 @@ class Vue():
                 self.selectionBatiment=[self.selectionBatiment[0],tag[1]]
                 self.creerBatiment(evt)
                 self.selectionBatiment=None
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         if tag and tag[0] == "flotte":
                 self.maselection=[tag[0], tag[1], tag[2], tag[3]]

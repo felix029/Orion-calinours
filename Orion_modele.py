@@ -193,6 +193,8 @@ class Joueur():
         for i in self.planetescontrolees:
             if i.id == int(p):
                 i.batiment.append(b)
+                #self.parent.parent.afficherNouveauBatiment(self.nom,typeBatiment,x,y)
+                self.parent.parent.vue.afficherBatiment()
 
     #Ajouter le 9 avril par nic
     def vendreBatiment(self,batiment):
