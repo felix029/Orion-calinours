@@ -308,13 +308,13 @@ class Vue():
         self.upgVaisseau=Button(self.upgradeFrame,text="Upg Vaisseau")
         self.upgVaisseau.grid(row=2, column=0, sticky="we")
         self.upgVaisseau.config(height=3)
-        self.upgMines=Button(self.upgradeFrame,text="Upg Mines")
+        self.upgMines=Button(self.upgradeFrame,text="Upg Mines",command=self.upgradeBatiment)
         self.upgMines.grid(row=4, column=0, sticky="we")
         self.upgMines.config(height=3)
-        self.upgExtracteurs=Button(self.upgradeFrame,text="Upg Extracteurs")
+        self.upgExtracteurs=Button(self.upgradeFrame,text="Upg Extracteurs",command=self.upgradeBatiment)
         self.upgExtracteurs.grid(row=5, column=0, sticky="we")
         self.upgExtracteurs.config(height=3)
-        self.upgElectricite=Button(self.upgradeFrame,text="Upg Électricité")
+        self.upgElectricite=Button(self.upgradeFrame,text="Upg Électricité",command=self.upgradeBatiment)
         self.upgElectricite.grid(row=6, column=0, sticky="we")
         self.upgElectricite.config(height=3)
 
@@ -684,7 +684,7 @@ class Vue():
             for j in self.mod.joueurs:
                 if self.mod.joueurs[j].nom == self.planeteselect.proprietaire:
                     for b in self.planeteselect.batiment:
-                        if b.id = self.upgBatiment:
+                        if b.id == self.upgBatiment:
                             b.vitesse += 1
             self.upgBatiment = None
                         
@@ -863,9 +863,9 @@ class Vue():
             if self.upgBatiment != None:
                 self.upgBatiment = None
                 self.canevas.delete("BatimentSelection")
-            elif "Batiment" in tag:
+            elif "batiment" in tag:
                 self.upgBatiment = tag[1]
-                self.create_oval(evt.x-50,evt.y-50,evt.x+50,evt.y+50.color="white",tags="BatimentSelection")
+                self.canevas.create_oval(evt.x-50,evt.y-50,evt.x+50,evt.y+50,outline="white",tags="BatimentSelection")
                 
 
 
