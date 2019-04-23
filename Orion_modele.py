@@ -80,8 +80,9 @@ class Vaisseau():
         self.range=10
         self.projectiles=[]
         self.delaidetir=0
-        self.delairmax=5 ###à modifier avec le dictionnaire si on fait d'autres vaisseaux
+        self.delaimax=5 ###à modifier avec le dictionnaire si on fait d'autres vaisseaux
         self.etat="actif"
+        self.attaquant=None
 
     def avancer(self):
         if self.cible:
@@ -110,13 +111,32 @@ class Vaisseau():
             self.avancer()
         elif self.cible.etat!="detruit":  ###ajouter le délai de tir
             if self.delaidetir==0:
+                if self.cible.attaquant==None:  ###ok
+                    self.cible.attaquant=self
                 p=Projectile(self.cible,self.x,self.y,self.cible.x,self.cible.y)
                 self.projectiles.append(p)
-                self.delaidetir=self.delairmax
+                self.delaidetir=self.delaimax
             self.delaidetir-=1
 
         else:
             self.cible=None
+            self.delaidetir=0
+
+        for i in self.projectiles:
+            if i.etat!="detruit":
+                i.deplacer()
+
+    def defense(self):
+        d=hlp.calcDistance(self.x,self.y,self.attaquant.x,self.attaquant.y)
+        if self.attaquant and self.attaquant.etat!="detruit" and d<=self.range:
+            if self.delaidetir==0:
+                p=Projectile(self.attaquant,self.x,self.y,self.attaquant.x,self.attaquant.y)
+                self.projectiles.append(p)
+                self.delaidetir=self.delaimax
+            self.delaidetir-=1
+
+        elif self.attaquant.etat=="detruit":
+            self.attaquant=None
             self.delaidetir=0
 
         for i in self.projectiles:
@@ -290,6 +310,8 @@ class Joueur():
                 i.tirer()
             elif i.cible:
                 i.avancer()
+            if i.attaquant!=None:
+                i.defense()
             #else:
             #    i.cible=random.choice(self.parent.planetes)
             #    i.cible=random.choice(self.parent.etoiles)
@@ -349,7 +371,7 @@ class Joueur():
                 flottecur.x = random.randrange(self.parent.largeur-50, self.parent.largeur)
                 flottecur.y = random.randrange(self.parent.hauteur-50, self.parent.hauteur)
                 break
-    
+
     #Ajout Felix-O 23 Avril
     def flotteretour2(self,id):
         idflotte=id
@@ -357,9 +379,7 @@ class Joueur():
             if i.id == idflotte:
                 flottecur = i
                 break
-
-        if flottecur.sysplanetecur != None:
-            flottecur.x = flottecur.sysplanetecur.x+25
+        if flottecur.sysplanetecur != None:            flottecur.x = flottecur.sysplanetecur.x+25
             flottecur.y = flottecur.sysplanetecur.y+25
             flottecur.sysplanetecur = None
             flottecur.cible = None
@@ -380,6 +400,9 @@ class Joueur():
             flottecur.cible = None
 
 
+
+
+
 # IA- nouvelle classe de joueur
 class IA(Joueur):
     def __init__(self,parent,nom,planetemere,couleur):
@@ -398,6 +421,8 @@ class IA(Joueur):
                 else:
                     #i.cible=random.choice(self.parent.planetes)
                     i.cible=random.choice(self.parent.etoiles)
+                if i.attaquant:
+                    i.defense()
         else:
             self.creervaisseau(0)
 
