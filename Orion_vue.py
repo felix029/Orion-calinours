@@ -3,6 +3,8 @@ from tkinter import *
 from PIL import Image, ImageOps, ImageTk, ImageChops
 import random
 import os,os.path
+from PIL.ImageOps import expand
+from PIL._imaging import font
 #from numpy.distutils.conv_template import file
 
 class Vue():
@@ -32,11 +34,12 @@ class Vue():
         self.selectionBatiment=None
         self.batimentChoisi="minerai"
 
-        ###################################################
-        #    Variables utiles pour le formatage du menu   #
-        ###################################################
+        ####################################################
+        # Variables utiles pour le formatage du menu/cadre #
+        ####################################################
         self.couleurLabelMenu  = "white"
         self.couleurBackgroundMenu  = "gray27"
+        self.couleurBackgroundCotes = "SteelBlue4"
         self.espacementDonneesMenu = 20
 
 
@@ -335,17 +338,23 @@ class Vue():
 
         #Labels  et sous-frames du lowerRighttFrame
 
-        self.cadreinfogen=Frame(self.lowerRightFrame,width=150,height=200,bg="pink")
+        self.cadreinfogen=Frame(self.lowerRightFrame,width=150,height=200,bg=self.couleurBackgroundCotes)
         self.cadreinfogen.grid(row=0, column=0, sticky="we")
 
-        self.labid=Label(self.cadreinfogen,text=self.nom,fg=mod.joueurs[self.nom].couleur)
-        self.labid.grid(row=0, column=0, sticky="we")
+
+        self.lblJoueurs = Label(self.cadreinfogen, text=" .: AUTRES JOUEURS :. ",fg="white", bg=self.couleurBackgroundCotes)
+        self.lblJoueurs.grid(row=1,column=1,sticky="we")
+        
+        
+        self.labid=Label(self.cadreinfogen,text=self.nom,fg=mod.joueurs[self.nom].couleur,bg=self.couleurBackgroundCotes)
+        self.labid.grid(row=2, column=0, sticky="we")
 
 
         self.cadreminimap=Frame(self.lowerRightFrame,height=150,width=200,bg="green")
-        self.cadreminimap.grid(row=1, column=0, sticky="we")
+        self.cadreminimap.grid(row=3, column=0, sticky="we")
+        
         self.canevasMini=Canvas(self.cadreminimap,width=200,height=200,bg="orange")
-        self.canevasMini.grid(row=0, column=0, sticky="we")
+        self.canevasMini.grid(row=4, column=0, sticky="we")
         self.canevasMini.bind("<Button>",self.moveCanevas)
 
 
