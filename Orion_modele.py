@@ -249,18 +249,18 @@ class Joueur():
                 elif b.typeBatiment == "energie":
                     self.energie += b.vitesse
 
-    def ciblerflotte(self,ids):  ######################################
+    def ciblerflotte(self,ids):
         idori,iddesti=ids
         for i in self.flotte:
             if i.id== int(idori):
-              #  for j in self.parent.etoiles:
-               #     if j.id== int(iddesti):
-                #        i.cible=j
-                 #       print("GOT TARGET")
-                  #      return
+                for j in self.parent.etoiles:
+                    if j.id== int(iddesti):
+                        i.cible=j
+                        print("GOT TARGET")
+                        return
                 for j in self.parent.ias:
                     for k in j.flotte:
-                        if k.id:# == int(iddesti):
+                        if k.id int(iddesti):
                             i.cible=k
                             i.typecible="Vaisseau"
                 for j in self.parent.joueurs:
@@ -370,7 +370,7 @@ class Joueur():
                 flottecur.x = random.randrange(self.parent.largeur-50, self.parent.largeur)
                 flottecur.y = random.randrange(self.parent.hauteur-50, self.parent.hauteur)
                 break
-    
+
     #Ajout Felix-O 23 Avril
     def flotteretour(self,id):
         idflotte=id
@@ -378,7 +378,7 @@ class Joueur():
             if i.id == idflotte:
                 flottecur = i
                 break
-        
+
         if flottecur.planetecur == None and flottecur.sysplanetecur != None:
             flottecur.x = flottecur.sysplanetecur.x+25
             flottecur.y = flottecur.sysplanetecur.y+25
@@ -391,10 +391,10 @@ class Joueur():
             flottecur.planetecur = None
             flottecur.cible = None
 
-        
 
-    
-        
+
+
+
 
 # IA- nouvelle classe de joueur
 class IA(Joueur):
