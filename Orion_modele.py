@@ -201,10 +201,8 @@ class Joueur():
                       "modifRessource":self.modifRessource,
                       "cibleretour":self.cibleretour, #Ajout Felix-O 16 avril
                       "versvue1":self.versvue1, #Ajout Felix-O 23 Avril
-                      "versvue0":self.versvue0, #Ajout Felix-O 23 Avril
-                      "flotteretour2":self.flotteretour2, #Ajout Felix-O 23 Avril
-                      "flotteretour1":self.flotteretour1} #Ajout Felix-O 23 Avril
-
+                      "versvue0":self.versvue0} #Ajout Felix-O 23 Avril
+                      
     def creervaisseau(self,params):
         #etoile,cible,type=params
         #is type=="explorer":
@@ -310,6 +308,11 @@ class Joueur():
                 i.tirer()
             elif i.cible:
                 i.avancer()
+                if i.x >= 796 and i.y >= 596:
+                    if i.sysplanetecur != None and i.planetecur == None:
+                        self.flotteretour2(i.id)
+                    elif i.sysplanetecur != None and i.planetecur != None:
+                        self.flotteretour1(i.id)
             if i.attaquant!=None:
                 i.defense()
             #else:

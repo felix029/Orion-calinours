@@ -179,15 +179,6 @@ class Controleur():
     def versvue0(self,idflotte,idplanete):
         self.actions.append([self.monnom, "versvue0", [idflotte, idplanete]])
 
-    #Ajouter par Felix-O le 23 avril
-    def flotteretour2(self,idflotte):
-        self.actions.append([self.monnom, "flotteretour2", idflotte])
-    
-    #Ajouter par Felix-O le 23 avril
-    def flotteretour1(self,idflotte):
-        self.actions.append([self.monnom, "flotteretour1", idflotte])
-
-        
 if __name__=="__main__":
     c=Controleur()
     print("End Orion_mini")
