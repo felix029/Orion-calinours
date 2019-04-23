@@ -172,9 +172,12 @@ class Joueur():
                       "creerBatiment":self.creerBatiment,  #Ajouter le 9 avril par Nic
                       "ciblerflotte":self.ciblerflotte,
                       "detruire": self.detruire,
-                      "ciblerflotteplanete":self.ciblerflotteplanete,
+                      "ciblerflotteplanete":self.ciblerflotteplanete, #Ajout Felix-O
                       "modifRessource":self.modifRessource,
-                      "cibleretour":self.cibleretour} #Ajout Felix-O 16 avril
+                      "cibleretour":self.cibleretour, #Ajout Felix-O 16 avril
+                      "versvue1":self.versvue1, #Ajout Felix-O 23 Avril
+                      "versvue0":self.versvue0, #Ajout Felix-O 23 Avril
+                      "flotteretour":self.flotteretour} #Ajout Felix-O 23 Avril
 
     def creervaisseau(self,params):
         #etoile,cible,type=params
@@ -311,6 +314,58 @@ class Joueur():
         for i in self.detruits:
             self.flotte.remove(i)
             self.detruits.remove(i)
+
+    #Ajout Felix-O 23 Avril
+    def versvue1(self,ids):
+        idflotte,idetoile=ids
+        for i in self.flotte:
+            if i.id == idflotte:
+                flottecur = i
+                break
+        for e in self.parent.etoiles:
+            if e.id == idetoile:
+                flottecur.sysplanetecur = e
+                flottecur.x = random.randrange(self.parent.largeur-50, self.parent.largeur)
+                flottecur.y = random.randrange(self.parent.hauteur-50, self.parent.hauteur)
+                break
+
+    #Ajout Felix-O 23 Avril
+    def versvue0(self,ids):
+        idflotte,idplanete=ids
+        for i in self.flotte:
+            if i.id == idflotte:
+                flottecur = i
+                break
+        syscur = flottecur.sysplanetecur
+        for p in syscur.planetes:
+            if p.id == idplanete:
+                flottecur.planetecur = p
+                flottecur.x = random.randrange(self.parent.largeur-50, self.parent.largeur)
+                flottecur.y = random.randrange(self.parent.hauteur-50, self.parent.hauteur)
+                break
+    
+    #Ajout Felix-O 23 Avril
+    def flotteretour(self,id):
+        idflotte=id
+        for i in self.flotte:
+            if i.id == idflotte:
+                flottecur = i
+                break
+        
+        if flottecur.planetecur != None and flottecur.sysplanetecur != None:
+            flottecur.x = flottecur.planetecur.x+25
+            flottecur.y = flottecur.planetecur.y+25
+            flottecur.planetecur = None
+            flottecur.cible = None
+
+        elif flottecur.planetecur == None and flottecur.sysplanetecur != None:
+            flottecur.x = flottecur.sysplanetecur.x+25
+            flottecur.y = flottecur.sysplanetecur.y+25
+            flottecur.sysplanetecur = None
+            flottecur.cible = None
+
+    
+        
 
 # IA- nouvelle classe de joueur
 class IA(Joueur):

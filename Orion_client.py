@@ -170,6 +170,19 @@ class Controleur():
     #Ajouter par Felix-O le 16 avril
     def cibleretour(self,idori):
         self.actions.append([self.monnom,"cibleretour",idori])
+
+    #Ajouter par Felix-O le 23 avril
+    def versvue1(self,idflotte,idetoile):
+        self.actions.append([self.monnom, "versvue1",[idflotte, idetoile]])
+    
+    #Ajouter par Felix-O le 23 avril
+    def versvue0(self,idflotte,idplanete):
+        self.actions.append([self.monnom, "versvue0", [idflotte, idplanete]])
+
+    #Ajouter par Felix-O le 23 avril
+    def flotteretour(self,idflotte):
+        self.actions.append([self.monnom, "flotteretour", idflotte])
+
         
 if __name__=="__main__":
     c=Controleur()
