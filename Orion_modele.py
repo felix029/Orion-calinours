@@ -208,7 +208,7 @@ class Joueur():
             print("MANQUE ARGENT")
 
 
-    def modifRessource(self): 
+    def modifRessource(self):
         #Ajouter le 8 avril par nic ( Gere l'incrémentation des ressources des joueurs avec batiment et diminuer les ressource restante sur la planete du joueur)
         for p in self.planetescontrolees:
             for b in p.batiment:
@@ -220,7 +220,7 @@ class Joueur():
                     p.gaz -= b.vitesse
                 elif b.typeBatiment == "energie":
                     self.energie += b.vitesse
-        
+
     def ciblerflotte(self,ids):
         idori,iddesti=ids
         for i in self.flotte:
@@ -262,19 +262,20 @@ class Joueur():
                         if k.id == int(iddesti):
                             i.cible=k
                             i.typecible="Vaisseau"
-            
+
     def cibleretour(self,idori):
         for i in self.flotte:
             if i.id == int(idori):
                 ptemp=Planete(self.parent.largeur,self.parent.hauteur)
                 ptemp.taille=0
-                i.cible=ptemp    
-    
+                i.cible=ptemp
+
     def prochaineaction(self):
 
         self.modifRessource()
-        if self.detruits:
-            self.detruire()
+        #if self.detruits:
+         #   self.detruire()
+        self.detruire()
         for i in self.flotte:
             if i.cible and i.typecible == "Vaisseau":
                 i.tirer()
@@ -282,9 +283,9 @@ class Joueur():
                 i.avancer()
             #else:
             #    i.cible=random.choice(self.parent.planetes)
-            #    i.cible=random.choice(self.parent.etoiles)   
+            #    i.cible=random.choice(self.parent.etoiles)
 
-                    
+
 
     def prochaineaction2(self):
         for i in self.flotte:
@@ -299,15 +300,16 @@ class Joueur():
                 self.detruits.append(i)
                 if i.projectiles:  ###assure la destruction des projectiles reliés au vaisseau détruit
                     for j in i.projectiles:
-                        j.etat="detruit"
+                        i.projectiles.remove(j)
 
             if i.projectiles:
                 for j in i.projectiles:
                     if j.etat=="detruit":
-                        self.detruits.append(j)
+                        i.projectiles.remove(j)
 
 
         for i in self.detruits:
+            self.flotte.remove(i)
             self.detruits.remove(i)
 
 # IA- nouvelle classe de joueur
@@ -317,8 +319,9 @@ class IA(Joueur):
         self.tempo=random.randrange(100)+20
 
     def prochaineaction(self):
-        if self.detruits:
-            self.detruire()
+        #if self.detruits:
+         #   self.detruire()
+        self.detruire()
 
         if self.flotte:
             for i in self.flotte:
