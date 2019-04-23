@@ -311,12 +311,12 @@ class Vue():
         self.upgMines=Button(self.upgradeFrame,text="Upg Mines",command=self.upgradeBatiment)
         self.upgMines.grid(row=4, column=0, sticky="we")
         self.upgMines.config(height=3)
-        self.upgExtracteurs=Button(self.upgradeFrame,text="Upg Extracteurs",command=self.upgradeBatiment)
-        self.upgExtracteurs.grid(row=5, column=0, sticky="we")
-        self.upgExtracteurs.config(height=3)
-        self.upgElectricite=Button(self.upgradeFrame,text="Upg Électricité",command=self.upgradeBatiment)
-        self.upgElectricite.grid(row=6, column=0, sticky="we")
-        self.upgElectricite.config(height=3)
+        #self.upgExtracteurs=Button(self.upgradeFrame,text="Upg Extracteurs",command=self.upgradeBatiment) Pas besoin de 3 boutons pour upgrade un batiment
+        #self.upgExtracteurs.grid(row=5, column=0, sticky="we")
+        #self.upgExtracteurs.config(height=3)
+        #self.upgElectricite=Button(self.upgradeFrame,text="Upg Électricité",command=self.upgradeBatiment)
+        #self.upgElectricite.grid(row=6, column=0, sticky="we")
+        #self.upgElectricite.config(height=3)
 
         #self.cadreinfo=Frame(self.rightFrame,width=200,height=200,bg="blue")
         #self.cadreinfo.grid(row=0, column=0, sticky="we")

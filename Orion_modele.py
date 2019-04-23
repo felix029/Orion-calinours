@@ -205,7 +205,7 @@ class Joueur():
             for b in p.batiment:
                 if int(idBatiment[0]) == b.id:
                     b.vitesse += 1
-                    print("RENTRE")
+                    self.parent.parent.vue.afficherBatiment()
         
     def modifRessource(self):
         #Ajouter le 8 avril par nic ( Gere l'incrémentation des ressources des joueurs avec batiment et diminuer les ressource restante sur la planete du joueur)
