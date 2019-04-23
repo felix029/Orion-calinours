@@ -79,7 +79,8 @@ class Vaisseau():
         self.typecible=""
         self.range=10
         self.projectiles=[]
-        self.delaidetir=5
+        self.delaidetir=0
+        self.delairmax=5 ###à modifier avec le dictionnaire si on fait d'autres vaisseaux
         self.etat="actif"
 
     def avancer(self):
@@ -108,11 +109,15 @@ class Vaisseau():
         if self.cible and d>self.range:
             self.avancer()
         elif self.cible.etat!="detruit":  ###ajouter le délai de tir
-            p=Projectile(self.cible,self.x,self.y,self.cible.x,self.cible.y)
-            self.projectiles.append(p)
+            if self.delaidetir==0:
+                p=Projectile(self.cible,self.x,self.y,self.cible.x,self.cible.y)
+                self.projectiles.append(p)
+                self.delaidetir=self.delairmax
+            self.delaidetir-=1
 
         else:
             self.cible=None
+            self.delaidetir=0
 
         for i in self.projectiles:
             if i.etat!="detruit":
