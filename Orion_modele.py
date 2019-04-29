@@ -212,11 +212,19 @@ class Joueur():
         for p in self.planetescontrolees:
             for b in p.batiment:
                 if b.typeBatiment == "minerai":
-                    self.minerai += b.vitesse
-                    p.minerai -= b.vitesse
+                    if p.minerai-b.vitesse > 0:
+                        self.minerai += b.vitesse
+                        p.minerai -= b.vitesse
+                    elif p.minerai > 0:
+                        self.minerai += p.minerai
+                        p.minerai -= p.minerai
                 elif b.typeBatiment == "gaz":
-                    self.gaz += b.vitesse
-                    p.gaz -= b.vitesse
+                    if p.gaz-b.vitesse > 0:
+                        self.gaz += b.vitesse
+                        p.gaz -= b.vitesse
+                    elif p.gaz > 0:
+                        self.gaz += p.gaz
+                        p.gaz -= p.gaz
                 elif b.typeBatiment == "energie":
                     self.energie += b.vitesse
 
