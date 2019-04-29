@@ -122,10 +122,10 @@ class Vaisseau():
         self.sysplanetecur=None
         self.planetecur=None
         self.typecible=""
-        self.range=10
+        self.range=100
         self.projectiles=[]
         self.delaidetir=0
-        self.delaimax=5 ###à modifier avec le dictionnaire si on fait d'autres vaisseaux
+        self.delaimax=15 ###à modifier avec le dictionnaire si on fait d'autres vaisseaux
         self.etat="actif"
         self.attaquant=None
 
@@ -158,7 +158,7 @@ class Vaisseau():
             if self.delaidetir==0:
                 if self.cible.attaquant==None:  ###ok
                     self.cible.attaquant=self
-                p=Projectile(self.cible,self.x,self.y,self.cible.x,self.cible.y)
+                p=Projectile(self, self.cible,self.x,self.y,self.cible.x,self.cible.y)
                 self.projectiles.append(p)
                 self.delaidetir=self.delaimax
             self.delaidetir-=1
@@ -176,7 +176,7 @@ class Vaisseau():
         d=hlp.calcDistance(self.x,self.y,self.attaquant.x,self.attaquant.y)
         if self.attaquant and self.attaquant.etat!="detruit" and d<=self.range:
             if self.delaidetir==0:
-                p=Projectile(self.attaquant,self.x,self.y,self.attaquant.x,self.attaquant.y)
+                p=Projectile(self, self.attaquant,self.x,self.y,self.attaquant.x,self.attaquant.y)
                 self.projectiles.append(p)
                 self.delaidetir=self.delaimax
             self.delaidetir-=1
@@ -200,17 +200,21 @@ class Projectile():
                     #"normal":[15,25,0],
                     #"grenade":[50,10,50]}
 
-    def __init__(self,cible,x,y,ciblex,cibley):
-        #self.choixprojectile=choixprojectile
+    def __init__(self, parent, cible,x,y,ciblex,cibley):
         self.cible=cible
         self.x=x
         self.y=y
         self.ciblex=ciblex
         self.cibley=cibley
+        self.parent=parent
         self.puissance=20
+        self.proprietaire=self.parent.proprietaire
+        self.sysplanetecur=self.parent.sysplanetecur
+        self.planetecur=self.parent.planetecur
         self.vitesse=5
         self.etat="actif"
         self.angle=hlp.calcAngle(self.x,self.y,self.ciblex,self.cibley)
+        self.explosions=[]
 
     def deplacer(self):
             self.angle=hlp.calcAngle(self.x,self.y,self.ciblex,self.cibley)
@@ -218,19 +222,22 @@ class Projectile():
             d=hlp.calcDistance(self.x,self.y,self.ciblex,self.cibley)
             if d<=self.vitesse:
                 self.cible.toucher(self.puissance)
-                #self.
+                ex=Explosion(self, self.x, self.y, 40)
+                self.explosions.append(ex)
                 print(self.cible.etat)
                 print(self.cible.energie)
                 self.etat="detruit"
 
 class Explosion():
 
-    def __init__(self, x, y, range):
-        self.cible=cible
+    def __init__(self, parent, x, y, range):
         self.x=x
         self.y=y
+        self.parent = parent
         self.range = range
         self.vitesse=100
+        self.sysplanetecur=self.parent.sysplanetecur
+        self.planetecur=self.parent.planetecur
         self.etat="actif"
         self.eclats=[]
         self.vie=40
@@ -251,6 +258,8 @@ class Eclat():
         self.y=y
         self.xdep=x
         self.ydep=y
+        self.sysplanetecur=self.parent.sysplanetecur
+        self.planetecur=self.parent.planetecur
         self.range = range/2
         self.vitesse=vitesse
         self.etat="actif"
