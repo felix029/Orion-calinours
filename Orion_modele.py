@@ -68,6 +68,41 @@ class Batiment(): #Ajouter le 8 avril par nic
         self.nom=""
         self.etat=""
 
+class TourDefense():   ### à ajouter git
+    def __init__(self,nom,plan,x,y):
+        self.id=Id.prochainid()
+        self.proprietaire=nom
+        self.planete=plan
+        self.x = x
+        self.y = y
+        self.cout = 100
+        self.etat="" ##peut être inclu dans la destruction
+        self.energie=100
+        self.typecible=""
+        self.projectiles=[]
+        self.delaidetir=0
+        self.cible=None
+
+    def tirer(self):
+        d=hlp.calcDistance(self.x,self.y,self.cible.x,self.cible.y)
+
+        if self.cible.etat!="detruit" and d<=self.range:  ###ajouter le délai de tir
+            if self.delaidetir==0:
+                if self.cible.attaquant==None:  ###ok
+                    self.cible.attaquant=self
+                p=Projectile(self.cible,self.x,self.y,self.cible.x,self.cible.y)
+                self.projectiles.append(p)
+                self.delaidetir=self.delaimax
+            self.delaidetir-=1
+
+        else:
+            self.cible=None
+            self.delaidetir=0
+
+        for i in self.projectiles:
+            if i.etat!="detruit":
+                i.deplacer()
+
 class Vaisseau():
 
     ###définition des types de vaisseaux [energie,vitesse, puissance de feu]
@@ -212,7 +247,7 @@ class Joueur():
                       "cibleretour":self.cibleretour, #Ajout Felix-O 16 avril
                       "versvue1":self.versvue1, #Ajout Felix-O 23 Avril
                       "versvue0":self.versvue0} #Ajout Felix-O 23 Avril
-                      
+
     def creervaisseau(self,params):
         #etoile,cible,type=params
         #is type=="explorer":
@@ -244,7 +279,7 @@ class Joueur():
                 if int(idBatiment[0]) == b.id:
                     b.vitesse += 1
                     self.parent.parent.vue.afficherBatiment()
-        
+
     def modifRessource(self):
         #Ajouter le 8 avril par nic ( Gere l'incrémentation des ressources des joueurs avec batiment et diminuer les ressource restante sur la planete du joueur)
         for p in self.planetescontrolees:
@@ -400,13 +435,13 @@ class Joueur():
             if i.id == idflotte:
                 flottecur = i
                 break
-        if flottecur.sysplanetecur != None:            
+        if flottecur.sysplanetecur != None:
             flottecur.x = flottecur.sysplanetecur.x+25
             flottecur.y = flottecur.sysplanetecur.y+25
             flottecur.sysplanetecur = None
             flottecur.cible = None
-        
-    
+
+
     #Ajout Felix-O 23 Avril
     def flotteretour1(self,id):
         idflotte=id
