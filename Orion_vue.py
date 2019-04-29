@@ -679,18 +679,19 @@ class Vue():
             self.afficherBatiment()
 
     def afficherBatiment(self):
-        for j in self.mod.joueurs:
-            if self.mod.joueurs[j].nom == self.planeteselect.proprietaire:
-                for b in self.planeteselect.batiment:
-                    if b.typeBatiment == "minerai":
-                        self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="red",tags=("batiment",b.id)) #Affiche le batiment
-                        self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="niveau") #affiche le niveau du batiment
-                    elif b.typeBatiment == "gaz":
-                        self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="blue",tags=("batiment",b.id))
-                        self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="niveau") #affiche le niveau du batiment
-                    elif b.typeBatiment == "energie":
-                        self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="yellow",tags=("batiment",b.id))
-                        self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="black",tags="vitesse") #affiche le niveau du batiment
+        if self.vueactive == 0 and self.planeteselect != None: #Condition ajoutée par Félix-O 29 avril
+            for j in self.mod.joueurs:
+                if self.mod.joueurs[j].nom == self.planeteselect.proprietaire:
+                    for b in self.planeteselect.batiment:
+                        if b.typeBatiment == "minerai":
+                            self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="red",tags=("batiment",b.id)) #Affiche le batiment
+                            self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="niveau") #affiche le niveau du batiment
+                        elif b.typeBatiment == "gaz":
+                            self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="blue",tags=("batiment",b.id))
+                            self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="niveau") #affiche le niveau du batiment
+                        elif b.typeBatiment == "energie":
+                            self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="yellow",tags=("batiment",b.id))
+                            self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="black",tags="vitesse") #affiche le niveau du batiment
 
 
 ################################################################################################ Charles
