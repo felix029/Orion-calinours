@@ -262,6 +262,12 @@ class Joueur():
                     "colonisateur":[50,"minerai"],
                     "cargo":[50,"minerai"]}
         self.joueurami=[]  ### id des joueurs ###
+        self.cout = {"minerai":[100,self.energie],
+                    "gaz":[100,self.energie],
+                    "energie":[100,self.minerai],
+                    "upgminerai":[500,self.minerai],
+                    "upggaz":[500,self.minerai],
+                    "upgenergie":[500,self.minerai]}
         self.actions={"creervaisseau":self.creervaisseau,
                       "upgBatiment":self.upgBatiment,  #Ajouter le 9 avril par Nic
                       "creerBatiment":self.creerBatiment,  #Ajouter le 9 avril par Nic
@@ -345,6 +351,8 @@ class Joueur():
                             self.parent.parent.vue.afficherBatiment()
                         else:
                             print("MANQUE DE FOND")
+
+
     def modifRessource(self):
         #Ajouter le 8 avril par nic ( Gere l'incrémentation des ressources des joueurs avec batiment et diminuer les ressource restante sur la planete du joueur)
         for p in self.planetescontrolees:
