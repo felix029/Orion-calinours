@@ -940,7 +940,6 @@ class Vue():
                     print("Dans le else de flotte vue 1")
                     self.parent.ciblerflotte(self.flotteselect.id, self.maselection[1], "flotte")
                     self.flotteselect = None
-
                 self.maselection = None
 
             if tag and tag[0] == "retour2":
