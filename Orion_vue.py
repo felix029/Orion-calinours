@@ -3,6 +3,8 @@ from tkinter import *
 from PIL import Image, ImageOps, ImageTk, ImageChops
 import random
 import os,os.path
+from PIL.ImageOps import expand
+from PIL._imaging import font
 #from numpy.distutils.conv_template import file
 
 class Vue():
@@ -33,11 +35,9 @@ class Vue():
         self.batimentChoisi="minerai"
         self.upgBatiment= None
 
-        ###################################################
-        #    Variables utiles pour le formatage du menu   #
-        ###################################################
         self.couleurLabelMenu  = "white"
         self.couleurBackgroundMenu  = "gray27"
+        self.couleurBackgroundCotes = "SteelBlue4"
         self.espacementDonneesMenu = 20
 
 
@@ -336,17 +336,23 @@ class Vue():
 
         #Labels  et sous-frames du lowerRighttFrame
 
-        self.cadreinfogen=Frame(self.lowerRightFrame,width=150,height=200,bg="pink")
+        self.cadreinfogen=Frame(self.lowerRightFrame,width=150,height=200,bg=self.couleurBackgroundCotes)
         self.cadreinfogen.grid(row=0, column=0, sticky="we")
 
-        self.labid=Label(self.cadreinfogen,text=self.nom,fg=mod.joueurs[self.nom].couleur)
-        self.labid.grid(row=0, column=0, sticky="we")
+
+        self.lblJoueurs = Label(self.cadreinfogen, text=" .: AUTRES JOUEURS :. ",fg="white", bg=self.couleurBackgroundCotes)
+        self.lblJoueurs.grid(row=1,column=1,sticky="we")
+        
+        
+        self.labid=Label(self.cadreinfogen,text=self.nom,fg=mod.joueurs[self.nom].couleur,bg=self.couleurBackgroundCotes)
+        self.labid.grid(row=2, column=0, sticky="we")
 
 
         self.cadreminimap=Frame(self.lowerRightFrame,height=150,width=200,bg="green")
-        self.cadreminimap.grid(row=1, column=0, sticky="we")
+        self.cadreminimap.grid(row=3, column=0, sticky="we")
+        
         self.canevasMini=Canvas(self.cadreminimap,width=200,height=200,bg="orange")
-        self.canevasMini.grid(row=0, column=0, sticky="we")
+        self.canevasMini.grid(row=4, column=0, sticky="we")
         self.canevasMini.bind("<Button>",self.moveCanevas)
 
 
@@ -371,18 +377,17 @@ class Vue():
         #self.boutonZoom = Button(self.cadreminimap,text="Zoom", bg="LightCyan3", borderwidth=None,font=self.simpleFont, pady=2, width= 25, height=3, cursor="hand2")
         self.boutonZoom = Button(self.lowerLowerFrame,text="Vue suivante", bg="#003182", width= 56, height=2, cursor="hand2", activebackground="red", fg="white")
         self.boutonZoom.bind("<Button>")
-        self.boutonZoom.grid(row=0, column=0)
+        self.boutonZoom.grid(row=0, column=1)
         #bouton d�-zomm
         self.boutonDzoom=Button(self.lowerLowerFrame,text="Vue precedente", bg="#003182", width= 56, height=2, cursor="hand2", activebackground="red", fg="white")
         self.boutonDzoom.bind("<Button>")
-        self.boutonDzoom.grid(row=0, column=1)
+        self.boutonDzoom.grid(row=0, column=0)
 
 
 
 
 
         #Boutons du lowerLeftFrame
-
 
 
 
@@ -441,16 +446,16 @@ class Vue():
         self.boutonDzoom.grid_forget()
 
         if self.vueactive==2:
-            self.boutonZoom.config(width =113, text = "Vue du système solaire")
+            self.boutonZoom.config(width=113, text = "Vue du système solaire", border=4)
             self.boutonZoom.grid(row=0, column=0, sticky="we")
 
         elif self.vueactive == 1:
             self.attributMineraiEtoile = 0
             self.attributGazEtoile = 0
-            self.boutonZoom.config(width = 56, text = "Vue planétaire")
-            self.boutonDzoom.config(width = 56, text = "Vue de la galaxie")
-            self.boutonZoom.grid(row=0, column=0, sticky="we")
-            self.boutonDzoom.grid(row=0, column=1, sticky="we")
+            self.boutonZoom.config(width = 56, text = "Vue planétaire", border=2)
+            self.boutonDzoom.config(width = 56, text = "Vue de la galaxie", border=2)
+            self.boutonZoom.grid(row=0, column=1, sticky="we")
+            self.boutonDzoom.grid(row=0, column=0, sticky="we")
 
             for i in self.etoileselect.planetes:
                 self.attributMineraiEtoile+= i.minerai
@@ -464,7 +469,7 @@ class Vue():
 
 
         elif self.vueactive == 0:
-            self.boutonDzoom.config(width =113, text = "Vue du système solaire")
+            self.boutonDzoom.config(width=113, text = "Vue du système solaire", border=4)
             self.boutonDzoom.grid(row=1, column=0, sticky="we")
 
             if self.planeteselect.proprietaire == " ":
@@ -545,9 +550,72 @@ class Vue():
                 self.canevas.create_oval(-100, -100, 100, 100, fill="orange", tags=("soleil", "fond"))
 
             for i in self.etoileselect.planetes:
+                s=i.planetImage
                 t=i.taille
-                self.canevas.create_oval(i.x-t,i.y-t,i.x+t,i.y+t,fill="grey80",
-                                        tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+                """
+                if s == 1:
+                    self.planet1 = Image.open("./images/planet1.png")
+                    self.resized = self.planet1.resize((t+30,t+30),Image.ANTIALIAS)
+                    self.planet1 = ImageTk.PhotoImage(self.resized)
+                    self.canevas.create_image(i.x, i.y, image=self.planet1, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+                elif s == 2:
+                    self.planet2 = Image.open("./images/planet2.png")
+                    self.resized = self.planet2.resize((t+30,t+30),Image.ANTIALIAS)
+                    self.planet2 = ImageTk.PhotoImage(self.resized)
+                    self.canevas.create_image(i.x, i.y, image=self.planet2, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+                elif s == 3:
+                    self.planet3 = Image.open("./images/planet3.png")
+                    self.resized = self.planet3.resize((t+30,t+30),Image.ANTIALIAS)
+                    self.planet3 = ImageTk.PhotoImage(self.resized)
+                    self.canevas.create_image(i.x, i.y, image=self.planet3, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+                elif s == 4:
+                    self.planet4 = Image.open("./images/planet4.png")
+                    self.resized = self.planet4.resize((t+30,t+30),Image.ANTIALIAS)
+                    self.planet4 = ImageTk.PhotoImage(self.resized)
+                    self.canevas.create_image(i.x, i.y, image=self.planet4, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+                elif s == 5:
+                    self.planet5 = Image.open("./images/planet5.png")
+                    self.resized = self.planet5.resize((t+30,t+30),Image.ANTIALIAS)
+                    self.planet5 = ImageTk.PhotoImage(self.resized)
+                    self.canevas.create_image(i.x, i.y, image=self.planet5, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+                elif s == 6:
+                    self.planet6 = Image.open("./images/planet6.png")
+                    self.resized = self.planet6.resize((t+30,t+30),Image.ANTIALIAS)
+                    self.planet6 = ImageTk.PhotoImage(self.resized)
+                    self.canevas.create_image(i.x, i.y, image=self.planet6, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+                elif s == 7:
+                    self.planet7 = Image.open("./images/planet7.png")
+                    self.resized = self.planet7.resize((t+30,t+30),Image.ANTIALIAS)
+                    self.planet7 = ImageTk.PhotoImage(self.resized)
+                    self.canevas.create_image(i.x, i.y, image=self.planet7, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+                elif s == 8:
+                    self.planet8 = Image.open("./images/planet8.png")
+                    self.resized = self.planet8.resize((t+30,t+30),Image.ANTIALIAS)
+                    self.planet8 = ImageTk.PhotoImage(self.resized)
+                    self.canevas.create_image(i.x, i.y, image=self.planet8, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+                elif s == 9:
+                    self.planet9 = Image.open("./images/planet9.png")
+                    self.resized = self.planet9.resize((t+30,t+30),Image.ANTIALIAS)
+                    self.planet9 = ImageTk.PhotoImage(self.resized)
+                    self.canevas.create_image(i.x, i.y, image=self.planet9, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+                elif s == 10:
+                    self.planet10 = Image.open("./images/planet10.png")
+                    self.resized = self.planet10.resize((t+30,t+30),Image.ANTIALIAS)
+                    self.planet10 = ImageTk.PhotoImage(self.resized)
+                    self.canevas.create_image(i.x, i.y, image=self.planet10, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+
+                """
+
+                #self.resized = self.planet10.resize((t+30,t+30),Image.ANTIALIAS)
+                #self.planet10 = ImageTk.PhotoImage(self.resized)
+
+                #self.resized = self.planet10.resize((t+30,t+30),Image.ANTIALIAS)
+                #self.planet10 = ImageTk.PhotoImage(self.resized)
+                self.canevas.create_image(i.x, i.y, image=i.planetImage, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+                print(s, )
+                #self.canevas.create_oval(i.x-t,i.y-t,i.x+t,i.y+t,fill="grey80",
+                #                       tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+
 
             for i in mod.joueurs.keys():
                 for j in mod.joueurs[i].planetescontrolees:
@@ -623,7 +691,7 @@ class Vue():
             print(tag)
             self.planeteselect.gaz
             self.planeteselect.minerai
-            self.attributMinerai.set(textvariable = "Minerai : " + str(self.planeteselect.minerai))
+            self.attributMinerai.set(textvariable = "Minerai : " + str(self.planeteselect.minerai)) #nombre de minerai restant sur la planet a collecter
             self.attributGaz.set(textvariable = "Gaz : " + str(self.planeteselect.gaz))
 
         self.planeteselect.id
@@ -723,27 +791,16 @@ class Vue():
                     if j.sysplanetecur == None and j.planetecur == None:
                         self.canevas.create_rectangle(j.x-5,j.y-5,j.x+5,j.y+5,fill=i.couleur,
                                             tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+
                 if self.vueactive == 1:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == None:
-                        if j.x >= 796 and j.y >= 596:
-                            j.x = j.sysplanetecur.x+25
-                            j.y = j.sysplanetecur.y+25
-                            j.sysplanetecur = None
-                            j.cible = None
-                        else:
-                            self.canevas.create_rectangle(j.x-7,j.y-7,j.x+7,j.y+7,fill=i.couleur,
-                                                    tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+                        self.canevas.create_rectangle(j.x-7,j.y-7,j.x+7,j.y+7,fill=i.couleur,
+                                                tags=("flotte", str(j.id), j.proprietaire, "artefact"))
 
                 if self.vueactive == 0:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
-                        if j.x >= 796 and j.y >= 596:
-                            j.x = j.planetecur.x+17
-                            j.y = j.planetecur.y+17
-                            j.planetecur = None
-                            j.cible = None
-                        else:
-                            self.canevas.create_rectangle(j.x-11,j.y-11,j.x+11,j.y+11,fill=i.couleur,
-                                                    tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+                        self.canevas.create_rectangle(j.x-11,j.y-11,j.x+11,j.y+11,fill=i.couleur,
+                                                tags=("flotte", str(j.id), j.proprietaire, "artefact"))
 
                 #self.canevas.create_rectangle(j.x,j.y,image=self.imgs["vaiss"],
                 #                     tags=(j.proprietaire,"flotte",str(j.id),"artefact"))
@@ -757,25 +814,13 @@ class Vue():
                                             tags=("flotte", str(j.id), j.proprietaire, "artefact"))
                 if self.vueactive == 1:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == None:
-                        if j.x >= 796 and j.y >= 596:
-                            j.x = j.sysplanetecur.x+25
-                            j.y = j.sysplanetecur.y+25
-                            j.sysplanetecur = None
-                            j.cible = None
-                        else:
-                            self.canevas.create_rectangle(j.x-7,j.y-7,j.x+7,j.y+7,fill=i.couleur,
-                                                    tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+                        self.canevas.create_rectangle(j.x-7,j.y-7,j.x+7,j.y+7,fill=i.couleur,
+                                                tags=("flotte", str(j.id), j.proprietaire, "artefact"))
 
                 if self.vueactive == 0:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
-                        if j.x >= 796 and j.y >= 596:
-                            j.x = j.planetecur.x+17
-                            j.y = j.planetecur.y+17
-                            j.planetecur = None
-                            j.cible = None
-                        else:
-                            self.canevas.create_rectangle(j.x-11,j.y-11,j.x+11,j.y+11,fill=i.couleur,
-                                                    tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+                        self.canevas.create_rectangle(j.x-11,j.y-11,j.x+11,j.y+11,fill=i.couleur,
+                                                tags=("flotte", str(j.id), j.proprietaire, "artefact"))
 
     def cliquecosmos(self,evt):
         self.btncreervaisseau.pack_forget()
@@ -794,14 +839,13 @@ class Vue():
                         t=self.etoileselect.taille
                         if self.flotteselect.x <= (self.etoileselect.x + t) and self.flotteselect.x >= (self.etoileselect.x - t):
                             if self.flotteselect.y <= (self.etoileselect.y + t) and self.flotteselect.y >= (self.etoileselect.y - t):
-                                self.flotteselect.sysplanetecur = self.etoileselect
-                                self.flotteselect.x = self.mod.largeur-random.randrange(30, 45)
-                                self.flotteselect.y = self.mod.hauteur-random.randrange(30, 45)
+                                self.parent.versvue1(self.flotteselect.id, self.etoileselect.id)
                         else:
                             self.parent.ciblerflotte(self.flotteselect.id, self.etoileselect.id)
                             print(self.flotteselect.id, self.etoileselect.id)
-                            self.flotteselect = None
-                            self.etoileselect = None
+                            
+                        self.flotteselect = None
+                        self.etoileselect = None
 
             if tag and tag[0] == "flotte":
 
@@ -827,9 +871,10 @@ class Vue():
                     t=self.planeteselect.taille
                     if self.flotteselect.x <= (self.planeteselect.x + t) and self.flotteselect.x >= (self.planeteselect.x - t):
                         if self.flotteselect.y <= (self.planeteselect.y + t) and self.flotteselect.y >= (self.planeteselect.y - t):
-                            self.flotteselect.planetecur = self.planeteselect
-                            self.flotteselect.x = self.mod.largeur-random.randrange(30, 45)
-                            self.flotteselect.y = self.mod.hauteur-random.randrange(30, 45)
+                            #self.flotteselect.planetecur = self.planeteselect
+                            #self.flotteselect.x = self.mod.largeur-random.randrange(30, 45)
+                            #self.flotteselect.y = self.mod.hauteur-random.randrange(30, 45)
+                            self.parent.versvue0(self.flotteselect.id,self.planeteselect.id)
                     else:
                         print("dans else")
                         self.parent.ciblerflotteplanete(self.flotteselect.id, self.planeteselect.id, self.etoileselect.id)
