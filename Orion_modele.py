@@ -268,11 +268,7 @@ class Joueur():
                       "versvue1":self.versvue1, #Ajout Felix-O 23 Avril
                       "versvue0":self.versvue0} #Ajout Felix-O 23 Avril
 
-<<<<<<< HEAD
     def creervaisseau(self,idplanete):
-=======
-    def creervaisseau(self,params):
->>>>>>> ajout d'un soleil + StringVars de stats
         #etoile,cible,type=params
         #is type=="explorer":
         for i in self.parent.etoiles:
@@ -312,7 +308,6 @@ class Joueur():
         for p in self.planetescontrolees:
             for b in p.batiment:
                 if int(idBatiment[0]) == b.id:
-<<<<<<< HEAD
                     if self.cout["upg"+str(b.typeBatiment)][1] == "minerai":
                         if self.minerai >= self.cout["upg"+str(b.typeBatiment)][0]:
                             self.minerai -= self.cout["upg"+str(b.typeBatiment)][0]
@@ -336,12 +331,11 @@ class Joueur():
                             self.parent.parent.vue.afficherBatiment()
                         else:
                             print("MANQUE DE FOND")
-        
-=======
+
                     b.vitesse += 1
                     self.parent.parent.vue.afficherBatiment()
 
->>>>>>> ajout d'un soleil + StringVars de stats
+
     def modifRessource(self):
         #Ajouter le 8 avril par nic ( Gere l'incrémentation des ressources des joueurs avec batiment et diminuer les ressource restante sur la planete du joueur)
         for p in self.planetescontrolees:
