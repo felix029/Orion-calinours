@@ -171,6 +171,14 @@ class Vaisseau():
         for i in self.projectiles:
             if i.etat!="detruit":
                 i.deplacer()
+            # else:
+            #     for j in self.projectiles.explosions:
+            #         if j.etat!="detruit":
+            #             j.explose()
+
+            #         for l in j.etats:
+            #             if l.etat!="detruit":
+            #                 l.explose()
 
     def defense(self):
         d=hlp.calcDistance(self.x,self.y,self.attaquant.x,self.attaquant.y)
