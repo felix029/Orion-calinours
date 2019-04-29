@@ -65,9 +65,43 @@ class Batiment(): #Ajouter le 8 avril par nic
         self.x = x
         self.y = y
         self.vitesse = 1
-        self.cout = 100
         self.nom=""
         self.etat=""
+
+class TourDefense():   ### à ajouter git
+    def __init__(self,nom,plan,x,y):
+        self.id=Id.prochainid()
+        self.proprietaire=nom
+        self.planete=plan
+        self.x = x
+        self.y = y
+        self.cout = 100
+        self.etat="" ##peut être inclu dans la destruction
+        self.energie=100
+        self.typecible=""
+        self.projectiles=[]
+        self.delaidetir=0
+        self.cible=None
+
+    def tirer(self):
+        d=hlp.calcDistance(self.x,self.y,self.cible.x,self.cible.y)
+
+        if self.cible.etat!="detruit" and d<=self.range:  ###ajouter le délai de tir
+            if self.delaidetir==0:
+                if self.cible.attaquant==None:  ###ok
+                    self.cible.attaquant=self
+                p=Projectile(self.cible,self.x,self.y,self.cible.x,self.cible.y)
+                self.projectiles.append(p)
+                self.delaidetir=self.delaimax
+            self.delaidetir-=1
+
+        else:
+            self.cible=None
+            self.delaidetir=0
+
+        for i in self.projectiles:
+            if i.etat!="detruit":
+                i.deplacer()
 
 class Vaisseau():
 
@@ -204,7 +238,7 @@ class Joueur():
         self.flotte=[]
         self.detruits=[]
         self.actions={"creervaisseau":self.creervaisseau,
-                      "ameliorerBatiment":self.ameliorerBatiment,  #Ajouter le 9 avril par Nic
+                      "upgBatiment":self.upgBatiment,  #Ajouter le 9 avril par Nic
                       "vendreBatiment":self.vendreBatiment,  #Ajouter le 9 avril par Nic
                       "creerBatiment":self.creerBatiment,  #Ajouter le 9 avril par Nic
                       "ciblerflotte":self.ciblerflotte,
@@ -214,7 +248,7 @@ class Joueur():
                       "cibleretour":self.cibleretour, #Ajout Felix-O 16 avril
                       "versvue1":self.versvue1, #Ajout Felix-O 23 Avril
                       "versvue0":self.versvue0} #Ajout Felix-O 23 Avril
-                      
+
     def creervaisseau(self,params):
         #etoile,cible,type=params
         #is type=="explorer":
@@ -232,6 +266,7 @@ class Joueur():
         for i in self.planetescontrolees:
             if i.id == int(p):
                 i.batiment.append(b)
+                self.parent.parent.vue.afficherBatiment()
 
     #Ajouter le 9 avril par nic
     def vendreBatiment(self,batiment):
@@ -239,24 +274,31 @@ class Joueur():
         batiment.etat="detruit"
 
      #Ajouter le 9 avril par Nic
-    def ameliorerBatiment(self,batiment):
-        if batiment.cout <= self.minerai:
-            self.minerai -= batiment.cout
-            batiment.vitesse += 1
-        else:
-            print("MANQUE ARGENT")
-
+    def upgBatiment(self,idBatiment):
+        for p in self.planetescontrolees:
+            for b in p.batiment:
+                if int(idBatiment[0]) == b.id:
+                    b.vitesse += 1
+                    self.parent.parent.vue.afficherBatiment()
 
     def modifRessource(self):
         #Ajouter le 8 avril par nic ( Gere l'incrémentation des ressources des joueurs avec batiment et diminuer les ressource restante sur la planete du joueur)
         for p in self.planetescontrolees:
             for b in p.batiment:
                 if b.typeBatiment == "minerai":
-                    self.minerai += b.vitesse
-                    p.minerai -= b.vitesse
+                    if p.minerai-b.vitesse > 0:
+                        self.minerai += b.vitesse
+                        p.minerai -= b.vitesse
+                    elif p.minerai > 0:
+                        self.minerai += p.minerai
+                        p.minerai -= p.minerai
                 elif b.typeBatiment == "gaz":
-                    self.gaz += b.vitesse
-                    p.gaz -= b.vitesse
+                    if p.gaz-b.vitesse > 0:
+                        self.gaz += b.vitesse
+                        p.gaz -= b.vitesse
+                    elif p.gaz > 0:
+                        self.gaz += p.gaz
+                        p.gaz -= p.gaz
                 elif b.typeBatiment == "energie":
                     self.energie += b.vitesse
 
@@ -396,13 +438,13 @@ class Joueur():
             if i.id == idflotte:
                 flottecur = i
                 break
-        if flottecur.sysplanetecur != None:            
+        if flottecur.sysplanetecur != None:
             flottecur.x = flottecur.sysplanetecur.x+25
             flottecur.y = flottecur.sysplanetecur.y+25
             flottecur.sysplanetecur = None
             flottecur.cible = None
-        
-    
+
+
     #Ajout Felix-O 23 Avril
     def flotteretour1(self,id):
         idflotte=id

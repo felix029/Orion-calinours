@@ -20,7 +20,7 @@ class Vue():
         self.maselection=None
         #self.posSouris=None
         self.root.title(os.path.basename(sys.argv[0]))
-        self.modele=None
+        #self.modele=self.parent.modele
         self.nom=""
         self.cadreapp=Frame(self.root,width=800,height=600)
         self.cadreapp.pack()
@@ -33,6 +33,7 @@ class Vue():
         self.flotteselect=None
         self.selectionBatiment=None
         self.batimentChoisi="minerai"
+        self.upgBatiment= None
 
         self.couleurLabelMenu  = "white"
         self.couleurBackgroundMenu  = "gray27"
@@ -307,15 +308,15 @@ class Vue():
         self.upgVaisseau=Button(self.upgradeFrame,text="Upg Vaisseau")
         self.upgVaisseau.grid(row=2, column=0, sticky="we")
         self.upgVaisseau.config(height=3)
-        self.upgMines=Button(self.upgradeFrame,text="Upg Mines")
+        self.upgMines=Button(self.upgradeFrame,text="Upg Mines",command=self.upgradeBatiment)
         self.upgMines.grid(row=4, column=0, sticky="we")
         self.upgMines.config(height=3)
-        self.upgExtracteurs=Button(self.upgradeFrame,text="Upg Extracteurs")
-        self.upgExtracteurs.grid(row=5, column=0, sticky="we")
-        self.upgExtracteurs.config(height=3)
-        self.upgElectricite=Button(self.upgradeFrame,text="Upg Électricité")
-        self.upgElectricite.grid(row=6, column=0, sticky="we")
-        self.upgElectricite.config(height=3)
+        #self.upgExtracteurs=Button(self.upgradeFrame,text="Upg Extracteurs",command=self.upgradeBatiment) Pas besoin de 3 boutons pour upgrade un batiment
+        #self.upgExtracteurs.grid(row=5, column=0, sticky="we")
+        #self.upgExtracteurs.config(height=3)
+        #self.upgElectricite=Button(self.upgradeFrame,text="Upg Électricité",command=self.upgradeBatiment)
+        #self.upgElectricite.grid(row=6, column=0, sticky="we")
+        #self.upgElectricite.config(height=3)
 
         #self.cadreinfo=Frame(self.rightFrame,width=200,height=200,bg="blue")
         #self.cadreinfo.grid(row=0, column=0, sticky="we")
@@ -647,12 +648,23 @@ class Vue():
             t=self.planeteselect.taille
             self.canevas.create_oval(mod.largeur/2-(t*20),mod.hauteur/2-(t*20),mod.largeur/2+(t*20),mod.hauteur/2+(t*20), width=2, outline="white", fill=self.planeteselect.color,
                                     tags=("planetezoom", str(self.planeteselect.id), self.planeteselect.proprietaire, str(self.etoileselect.id)))
+            
             #affiche les batiment
-            for e in self.mod.etoiles:
-                for p in e.planetes:
-                    if p.id == self.planeteselect.id:
-                        for b in p.batiment:
-                            self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="red",tags=("batiment"))
+            self.afficherBatiment()
+
+    def afficherBatiment(self):
+        for j in self.mod.joueurs:
+            if self.mod.joueurs[j].nom == self.planeteselect.proprietaire:
+                for b in self.planeteselect.batiment:
+                    if b.typeBatiment == "minerai":
+                        self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="red",tags=("batiment",b.id)) #Affiche le batiment
+                        self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="niveau") #affiche le niveau du batiment
+                    elif b.typeBatiment == "gaz":
+                        self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="blue",tags=("batiment",b.id))
+                        self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="niveau") #affiche le niveau du batiment
+                    elif b.typeBatiment == "energie":
+                        self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="yellow",tags=("batiment",b.id))
+                        self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="black",tags="vitesse") #affiche le niveau du batiment
 
 
 ################################################################################################ Charles
@@ -712,14 +724,11 @@ class Vue():
         self.btncreervaisseau.pack_forget()
         self.maselection=None
 
-    def creerBatiment(self,evt): #Ajouter le 9 avril par nic pour la creation d'un batiment
+    def creerBatiment(self,evt):
         if self.selectionBatiment != None:
             print("Creer batiment")
             self.parent.creerBatiment(self.selectionBatiment[1],self.selectionBatiment[0],evt.x,evt.y)
             self.canevas.delete("marqueur")
-            #self.btncreerbatiment.pack_forget()
-
-            self.canevas.create_rectangle(evt.x-10,evt.y,evt.x+10,evt.y-40, fill="red",tags=("batiment"))
         else:
             self.selectionBatiment=[self.batimentChoisi,1]
 
@@ -737,6 +746,15 @@ class Vue():
         self.selectionBatiment=None
         self.batimentChoisi="energie"
         self.creerBatiment(evt)
+
+    def upgradeBatiment(self):
+        if self.upgBatiment != None:
+            #for j in self.mod.joueurs:
+                #if self.mod.joueurs[j].nom == self.planeteselect.proprietaire:
+            self.parent.upgBatiment(self.upgBatiment)
+            self.upgBatiment = None
+            self.canevas.delete("BatimentSelection")
+                        
 
     def afficherpartie(self,mod):
         self.canevas.delete("artefact")
@@ -903,20 +921,13 @@ class Vue():
                 self.creerBatiment(evt)
                 self.selectionBatiment=None
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            if self.upgBatiment != None:
+                self.upgBatiment = None
+            elif "batiment" in tag:
+                self.upgBatiment = tag[1]
+                print(tag[1])
+                self.canevas.create_oval(evt.x-50,evt.y-50,evt.x+50,evt.y+50,outline="white",tags="BatimentSelection")
+                
 
 
 
