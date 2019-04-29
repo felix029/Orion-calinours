@@ -320,13 +320,19 @@ class Joueur():
                     for j in self.parent.ias:
                         for k in j.flotte:
                             if k.id == int(iddesti):
+<<<<<<< HEAD
                                 print("TARGETED SHIP")
+=======
+>>>>>>> Ajout de la selection d'un vaisseau à ataquer (fonctionne seulement dans la galaxie pour l'instant)
                                 i.cible=k
                                 i.typecible="Vaisseau"
                     for j in self.parent.joueurs:
                         for k in self.parent.joueurs[j].flotte:
                             if k.id == int(iddesti):
+<<<<<<< HEAD
                                 print("TARGETED SHIP")
+=======
+>>>>>>> Ajout de la selection d'un vaisseau à ataquer (fonctionne seulement dans la galaxie pour l'instant)
                                 i.cible=k
                                 i.typecible="Vaisseau"
 

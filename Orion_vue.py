@@ -894,13 +894,21 @@ class Vue():
 
             if tag and tag[0] == "flotte":
                 
+<<<<<<< HEAD
                 if self.flotteselect == None:
+=======
+                if self.maselection == None:
+>>>>>>> Ajout de la selection d'un vaisseau à ataquer (fonctionne seulement dans la galaxie pour l'instant)
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
                     print(self.maselection)
                     j=self.mod.joueurs[self.nom]
                     for i in j.flotte:
                         if i.id == int(self.maselection[1]):
                             self.flotteselect = i
+<<<<<<< HEAD
+=======
+                            self.maselection=None
+>>>>>>> Ajout de la selection d'un vaisseau à ataquer (fonctionne seulement dans la galaxie pour l'instant)
                             break
                 elif self.flotteselect != None:
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
@@ -932,9 +940,15 @@ class Vue():
 
 
 
+<<<<<<< HEAD
             if tag and tag[0] == "flotte":
                 
                 if self.flotteselect == None:
+=======
+        if tag and tag[0] == "flotte":
+                
+                if self.maselection == None:
+>>>>>>> Ajout de la selection d'un vaisseau à ataquer (fonctionne seulement dans la galaxie pour l'instant)
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
                     print(self.maselection)
                     j=self.mod.joueurs[self.nom]
