@@ -797,7 +797,7 @@ class Vue():
                 self.gazStats.set(self.mod.joueurs[j].gaz)
 
         #if self.maselection!=None:
-
+        
             #joueur=mod.joueurs[self.maselection[0]]
             #if self.maselection[0]=="etoile":
                 #for i in joueur.planetescontrolees:
@@ -962,7 +962,6 @@ class Vue():
                 self.upgBatiment = tag[1]
                 print(tag[1])
                 self.canevas.create_oval(evt.x-50,evt.y-50,evt.x+50,evt.y+50,outline="white",tags="BatimentSelection")
-
 
 
 
