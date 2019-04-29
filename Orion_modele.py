@@ -217,9 +217,51 @@ class Projectile():
             d=hlp.calcDistance(self.x,self.y,self.ciblex,self.cibley)
             if d<=self.vitesse:
                 self.cible.toucher(self.puissance)
+                self.
                 print(self.cible.etat)
                 print(self.cible.energie)
                 self.etat="detruit"
+
+class Explosion():
+
+    def __init__(self, x, y, range):
+        self.cible=cible
+        self.x=x
+        self.y=y
+        self.range = range
+        self.vitesse=100
+        self.etat="actif"
+        self.eclats=[]
+        self.vie=40
+
+    def explose(self):
+            for i in range(40):
+                e = Eclat(self, 360-(9*i), self.vitesse % i, self.x, self.y, self.range)
+                self.eclats.append(e)
+
+            if self.vie <=40:
+                self.etat="detruit"
+
+class Eclat():
+
+    def __init__(self, parent, orientation, vitesse, x, y, range):
+        self.cible=cible
+        self.x=x
+        self.y=y
+        self.xdep=x
+        self.ydep=y
+        self.range = range/2
+        self.vitesse=vitesse
+        self.etat="actif"
+        self.orientation=orientation
+        self.parent=parent
+
+    def explose(self):
+            self.x,self.y=hlp.getAngledPoint(self.orientation,self.vitesse, self.x, self.y)
+
+            if self.y >=(self.ydep+self.range) and self.x >=(self.xdep+self.range):
+                self.etat="detruit"
+                self.parent.vie =self.parent.vie-1
 
 
 class Joueur():

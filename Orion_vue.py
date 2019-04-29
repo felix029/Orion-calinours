@@ -342,15 +342,15 @@ class Vue():
 
         self.lblJoueurs = Label(self.cadreinfogen, text=" .: AUTRES JOUEURS :. ",fg="white", bg=self.couleurBackgroundCotes)
         self.lblJoueurs.grid(row=1,column=1,sticky="we")
-        
-        
+
+
         self.labid=Label(self.cadreinfogen,text=self.nom,fg=mod.joueurs[self.nom].couleur,bg=self.couleurBackgroundCotes)
         self.labid.grid(row=2, column=0, sticky="we")
 
 
         self.cadreminimap=Frame(self.lowerRightFrame,height=150,width=200,bg="green")
         self.cadreminimap.grid(row=3, column=0, sticky="we")
-        
+
         self.canevasMini=Canvas(self.cadreminimap,width=200,height=200,bg="orange")
         self.canevasMini.grid(row=4, column=0, sticky="we")
         self.canevasMini.bind("<Button>",self.moveCanevas)
@@ -797,10 +797,40 @@ class Vue():
                         self.canevas.create_rectangle(j.x-7,j.y-7,j.x+7,j.y+7,fill=i.couleur,
                                                 tags=("flotte", str(j.id), j.proprietaire, "artefact"))
 
+
                 if self.vueactive == 0:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
                         self.canevas.create_rectangle(j.x-11,j.y-11,j.x+11,j.y+11,fill=i.couleur,
                                                 tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+
+                for k in j.projectiles:
+                    if self.vueactive == 2:
+                        if k.sysplanetecur == None and j.planetecur == None:
+                            if (k.etat=="detruit"):
+                                self.canevas.create_rectangle(k.x-2,k.y-2,k.x+2,j.y+2,fill="red",
+                                                    tags=("projectile", str(k.id), j.proprietaire, "artefact"))
+                            else:
+                                self.canevas.create_rectangle(k.x-2,k.y-2,k.x+2,j.y+2,fill=i.couleur,
+                                                    tags=("projectile", str(k.id), j.proprietaire, "artefact"))
+
+                    if self.vueactive == 1:
+                        if k.sysplanetecur == self.etoileselect and j.planetecur == None:
+                            if (k.etat=="detruit"):
+                                self.canevas.create_rectangle(k.x-4,k.y-4,k.x+4,k.y+4,fill="red",
+                                                    tags=("projectile", str(k.id), j.proprietaire, "artefact"))
+                            else:
+                                self.canevas.create_rectangle(k.x-4,k.y-4,k.x+4,k.y+4,fill=i.couleur,
+                                                    tags=("projectile", str(k.id), j.proprietaire, "artefact"))
+
+                    if self.vueactive == 0:
+                        if k.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
+                            if (k.etat=="detruit"):
+                                self.canevas.create_rectangle(k.x-7,k.y-7,k.x+7,k.y+7, fill="red",
+                                                        tags=("projectile", str(k.id), j.proprietaire, "artefact"))
+                            else:
+                                self.canevas.create_rectangle(k.x-7,k.y-7,k.x+7,k.y+7,fill=i.couleur,
+                                                        tags=("projectile", str(k.id), j.proprietaire, "artefact"))
+
 
                 #self.canevas.create_rectangle(j.x,j.y,image=self.imgs["vaiss"],
                 #                     tags=(j.proprietaire,"flotte",str(j.id),"artefact"))
@@ -843,7 +873,7 @@ class Vue():
                         else:
                             self.parent.ciblerflotte(self.flotteselect.id, self.etoileselect.id)
                             print(self.flotteselect.id, self.etoileselect.id)
-                            
+
                         self.flotteselect = None
                         self.etoileselect = None
 
@@ -904,6 +934,7 @@ class Vue():
                 self.creerBatiment(evt)
                 self.selectionBatiment=None
 
+<<<<<<< HEAD
             if self.upgBatiment != None:
                 self.upgBatiment = None
             elif "batiment" in tag:
@@ -914,6 +945,8 @@ class Vue():
 
 
 
+=======
+>>>>>>> création des explosion et des eclats
         if tag and tag[0] == "flotte":
                 self.maselection=[tag[0], tag[1], tag[2], tag[3]]
                 print(self.maselection)
