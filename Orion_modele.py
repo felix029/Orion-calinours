@@ -321,11 +321,13 @@ class Joueur():
                     for j in self.parent.ias:
                         for k in j.flotte:
                             if k.id == int(iddesti):
+                                print("TARGETED SHIP")
                                 i.cible=k
                                 i.typecible="Vaisseau"
                     for j in self.parent.joueurs:
                         for k in self.parent.joueurs[j].flotte:
                             if k.id == int(iddesti):
+                                print("TARGETED SHIP")
                                 i.cible=k
                                 i.typecible="Vaisseau"
 

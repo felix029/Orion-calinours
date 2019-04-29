@@ -926,14 +926,13 @@ class Vue():
 
             if tag and tag[0] == "flotte":
 
-                if self.maselection == None:
+                if self.flotteselect == None:
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
                     print(self.maselection)
                     j=self.mod.joueurs[self.nom]
                     for i in j.flotte:
                         if i.id == int(self.maselection[1]):
                             self.flotteselect = i
-                            self.maselection=None
                             break
                 elif self.flotteselect != None:
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
@@ -949,6 +948,7 @@ class Vue():
 
 
         if self.vueactive == 0:
+
             if self.selectionBatiment != None:
                 self.selectionBatiment=[self.selectionBatiment[0],tag[1]]
                 self.creerBatiment(evt)
@@ -964,9 +964,9 @@ class Vue():
 
 
 
-        if tag and tag[0] == "flotte":
+            if tag and tag[0] == "flotte":
 
-                if self.maselection == None:
+                if self.flotteselect == None:
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
                     print(self.maselection)
                     j=self.mod.joueurs[self.nom]
@@ -983,7 +983,7 @@ class Vue():
 
                 self.maselection = None
 
-        if tag and tag[0] == "retour1":
+            if tag and tag[0] == "retour1":
                 if self.flotteselect != None:
                     self.parent.cibleretour(self.flotteselect.id)
 
