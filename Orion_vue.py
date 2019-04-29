@@ -648,7 +648,7 @@ class Vue():
             t=self.planeteselect.taille
             self.canevas.create_oval(mod.largeur/2-(t*20),mod.hauteur/2-(t*20),mod.largeur/2+(t*20),mod.hauteur/2+(t*20), width=2, outline="white", fill=self.planeteselect.color,
                                     tags=("planetezoom", str(self.planeteselect.id), self.planeteselect.proprietaire, str(self.etoileselect.id)))
-            
+
             #affiche les batiment
             self.afficherBatiment()
 
@@ -754,7 +754,7 @@ class Vue():
             self.parent.upgBatiment(self.upgBatiment)
             self.upgBatiment = None
             self.canevas.delete("BatimentSelection")
-                        
+
 
     def afficherpartie(self,mod):
         self.canevas.delete("artefact")
@@ -878,7 +878,7 @@ class Vue():
                         self.etoileselect = None
 
             if tag and tag[0] == "flotte":
-                
+
                 if self.flotteselect == None:
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
                     print(self.maselection)
@@ -922,7 +922,7 @@ class Vue():
                     self.planeteselect=None
 
             if tag and tag[0] == "flotte":
-                
+
                 if self.maselection == None:
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
                     print(self.maselection)
@@ -951,21 +951,18 @@ class Vue():
                 self.creerBatiment(evt)
                 self.selectionBatiment=None
 
-<<<<<<< HEAD
             if self.upgBatiment != None:
                 self.upgBatiment = None
             elif "batiment" in tag:
                 self.upgBatiment = tag[1]
                 print(tag[1])
                 self.canevas.create_oval(evt.x-50,evt.y-50,evt.x+50,evt.y+50,outline="white",tags="BatimentSelection")
-                
 
 
 
-=======
->>>>>>> création des explosion et des eclats
+
         if tag and tag[0] == "flotte":
-                
+
                 if self.maselection == None:
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
                     print(self.maselection)

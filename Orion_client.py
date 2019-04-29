@@ -78,7 +78,7 @@ class Controleur():
     def initierpartie(self,rep):  # initalisation locale de la simulation, creation du modele, generation des assets et suppression du layout de lobby
         if rep[1][0][0]=="lancerpartie":
             self.modele=Modele(self,rep[1][0][1]) # on cree le modele
-            self.vue.creeraffichercadrepartie(self.modele)           
+            self.vue.creeraffichercadrepartie(self.modele)
             print(self.monnom,"LANCE PROCHAINTOUR")
             self.prochaintour()
 
@@ -145,11 +145,11 @@ class Controleur():
 
     def ciblerflotte(self,idorigine,iddestination,typedestination):
         self.actions.append([self.monnom,"ciblerflotte",[idorigine,iddestination,typedestination]])
-    
+
     #Ajouter 15 avril FelixO
     def ciblerflotteplanete(self,idorigine,iddestination,etoile):
         self.actions.append([self.monnom,"ciblerflotteplanete",[idorigine,iddestination,etoile]])
-    
+
     #Ajouter le 9 avril par Nic
     def creerBatiment(self,p,typeBatiment,x,y):
         self.actions.append([self.monnom,"creerBatiment",[p,typeBatiment,x,y]])
@@ -161,7 +161,7 @@ class Controleur():
      #Ajouter le 9 avril par Nic
     def vendreBatiment(self,batiment):
         self.actions.append([self.monnom,"vendreBatiment",[batiment]])
-    
+
     def detruire(self):
         self.actions.append([self.monnom,"detruire",""])
 
@@ -174,7 +174,7 @@ class Controleur():
     #Ajouter par Felix-O le 23 avril
     def versvue1(self,idflotte,idetoile):
         self.actions.append([self.monnom, "versvue1",[idflotte, idetoile]])
-    
+
     #Ajouter par Felix-O le 23 avril
     def versvue0(self,idflotte,idplanete):
         self.actions.append([self.monnom, "versvue0", [idflotte, idplanete]])

@@ -218,7 +218,7 @@ class Projectile():
             d=hlp.calcDistance(self.x,self.y,self.ciblex,self.cibley)
             if d<=self.vitesse:
                 self.cible.toucher(self.puissance)
-                self.
+                #self.
                 print(self.cible.etat)
                 print(self.cible.energie)
                 self.etat="detruit"
