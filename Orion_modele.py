@@ -10,11 +10,16 @@ class Planete():
         self.x=x
         self.y=y
         self.taille=random.randrange(13,17)
+        #1- Génèrer un int aléatoire pour choisir une image de planète
         planetImage=random.randrange(1,11)
+        #2- Créer une string représentant le chemin relatif de l'image, et ce, à l'aide du int aléatoire obtenu
         img="./images/planet"+str(planetImage)+".png"
-
+        #3- Créer une variable image à l'aide de la fonction Image.open qui prend en paramètre le chemin relatif créé à l'étape précédente
+        #       Pour ce faire, on utilise "Image" de la librairie "PIL" que l'on a importé
         planet1 = Image.open(img)
+        #4- Redimensionner l'image et stocker le tout dans une nouvelle variable
         resized = planet1.resize((self.taille+30,self.taille+30),Image.ANTIALIAS)
+        #5- Reformater la variable "Image" en variable "ImageTK" afin que TkInter la supporte, puis stocker le tout dans une variable d'instance "self.planetImage"
         self.planetImage = ImageTk.PhotoImage(resized)
 
 
@@ -212,7 +217,7 @@ class Joueur():
                       "cibleretour":self.cibleretour, #Ajout Felix-O 16 avril
                       "versvue1":self.versvue1, #Ajout Felix-O 23 Avril
                       "versvue0":self.versvue0} #Ajout Felix-O 23 Avril
-                      
+
     def creervaisseau(self,params):
         #etoile,cible,type=params
         #is type=="explorer":
@@ -244,7 +249,7 @@ class Joueur():
                 if int(idBatiment[0]) == b.id:
                     b.vitesse += 1
                     self.parent.parent.vue.afficherBatiment()
-        
+
     def modifRessource(self):
         #Ajouter le 8 avril par nic ( Gere l'incrémentation des ressources des joueurs avec batiment et diminuer les ressource restante sur la planete du joueur)
         for p in self.planetescontrolees:
@@ -400,13 +405,13 @@ class Joueur():
             if i.id == idflotte:
                 flottecur = i
                 break
-        if flottecur.sysplanetecur != None:            
+        if flottecur.sysplanetecur != None:
             flottecur.x = flottecur.sysplanetecur.x+25
             flottecur.y = flottecur.sysplanetecur.y+25
             flottecur.sysplanetecur = None
             flottecur.cible = None
-        
-    
+
+
     #Ajout Felix-O 23 Avril
     def flotteretour1(self,id):
         idflotte=id

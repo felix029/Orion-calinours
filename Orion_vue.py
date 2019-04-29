@@ -177,6 +177,12 @@ class Vue():
         ##########################################################################
         #Zone Dessus    KIM:)
         #Cadre Statistiques (upperFrame)
+        self.planetConquisesStats = StringVar()
+        self.electriciteStats = StringVar()
+        self.mineraisStats = StringVar()
+        self.gazStats = StringVar()
+
+
         self.upperFrame=Frame(self.cadrepartie,width=1100,height=50,bg= self.couleurBackgroundMenu)
         self.upperFrame.grid(row=0, column=0, sticky="we")
 
@@ -184,29 +190,41 @@ class Vue():
 
         self.lab_planete = Label(self.upperFrame, image = self.planete, bg = self.couleurBackgroundMenu)
         self.lblPlanConquises=Label(self.upperFrame,text="Planètes conquises: ", fg=self.couleurLabelMenu, bg= self.couleurBackgroundMenu)
+        self.statsPlanetConquisesLabel = Label(self.upperFrame, fg="red", bg= self.couleurBackgroundMenu, textvariable = self.planetConquisesStats)
+
         self.lab_planete.grid(row=0, column=2)
         self.lblPlanConquises.grid(row=0, column=3)
+        self.statsPlanetConquisesLabel.grid(row=0, column=4)
 
-        self.espaceVide1 = Label(self.upperFrame, bg = self.couleurBackgroundMenu,width=self.espacementDonneesMenu).grid(row=0, column=4)
+        self.espaceVide1 = Label(self.upperFrame, bg = self.couleurBackgroundMenu,width=self.espacementDonneesMenu).grid(row=0, column=5)
 
         self.lab_eclair = Label(self.upperFrame, image = self.light, bg = self.couleurBackgroundMenu)
         self.lblElectricite=Label(self.upperFrame,text="Électricité: ", fg=self.couleurLabelMenu, bg= self.couleurBackgroundMenu)
-        self.lab_eclair.grid(row=0, column=5)
-        self.lblElectricite.grid(row=0, column=6)
+        self.statsElectriciteLabel=Label(self.upperFrame, fg="red", bg= self.couleurBackgroundMenu, textvariable = self.electriciteStats)
 
-        self.espaceVide2 = Label(self.upperFrame, bg = self.couleurBackgroundMenu,width=self.espacementDonneesMenu).grid(row=0, column=7)
+        self.lab_eclair.grid(row=0, column=6)
+        self.lblElectricite.grid(row=0, column=7)
+        self.statsElectriciteLabel.grid(row=0, column=8)
+
+        self.espaceVide2 = Label(self.upperFrame, bg = self.couleurBackgroundMenu,width=self.espacementDonneesMenu).grid(row=0, column=9)
 
         self.lab_rock = Label(self.upperFrame, image = self.minerais, bg = self.couleurBackgroundMenu)
         self.lblMinerais=Label(self.upperFrame,text="Minerais: ", fg=self.couleurLabelMenu, bg= self.couleurBackgroundMenu)
-        self.lab_rock.grid(row=0, column=8)
-        self.lblMinerais.grid(row=0, column=9)
+        self.statsMineraisLabel=Label(self.upperFrame, fg="red", bg= self.couleurBackgroundMenu, textvariable = self.mineraisStats)
 
-        self.espaceVide3 = Label(self.upperFrame, bg = self.couleurBackgroundMenu,width=self.espacementDonneesMenu).grid(row=0, column=10)
+        self.lab_rock.grid(row=0, column=10)
+        self.lblMinerais.grid(row=0, column=11)
+        self.statsMineraisLabel.grid(row=0, column=12)
+
+        self.espaceVide3 = Label(self.upperFrame, bg = self.couleurBackgroundMenu,width=self.espacementDonneesMenu).grid(row=0, column=13)
 
         self.lab_gaz = Label(self.upperFrame, image = self.gaz, bg = self.couleurBackgroundMenu)
         self.lblGaz=Label(self.upperFrame,text="Gaz: ", fg=self.couleurLabelMenu, bg= self.couleurBackgroundMenu)
-        self.lab_gaz.grid(row=0, column=11)
-        self.lblGaz.grid(row=0, column=12)
+        self.statsGazLabel=Label(self.upperFrame, fg="red", bg= self.couleurBackgroundMenu, textvariable = self.gazStats)
+
+        self.lab_gaz.grid(row=0, column=14)
+        self.lblGaz.grid(row=0, column=15)
+        self.statsGazLabel.grid(row=0, column=16)
 
 
         #Zone Dessous
@@ -342,15 +360,15 @@ class Vue():
 
         self.lblJoueurs = Label(self.cadreinfogen, text=" .: AUTRES JOUEURS :. ",fg="white", bg=self.couleurBackgroundCotes)
         self.lblJoueurs.grid(row=1,column=1,sticky="we")
-        
-        
+
+
         self.labid=Label(self.cadreinfogen,text=self.nom,fg=mod.joueurs[self.nom].couleur,bg=self.couleurBackgroundCotes)
         self.labid.grid(row=2, column=0, sticky="we")
 
 
         self.cadreminimap=Frame(self.lowerRightFrame,height=150,width=200,bg="green")
         self.cadreminimap.grid(row=3, column=0, sticky="we")
-        
+
         self.canevasMini=Canvas(self.cadreminimap,width=200,height=200,bg="orange")
         self.canevasMini.grid(row=4, column=0, sticky="we")
         self.canevasMini.bind("<Button>",self.moveCanevas)
@@ -547,7 +565,13 @@ class Vue():
                 x=random.randrange(mod.largeur)
                 y=random.randrange(mod.hauteur)
                 self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond"))
-                self.canevas.create_oval(-100, -100, 100, 100, fill="orange", tags=("soleil", "fond"))
+                #Insertion de l'image du soleil
+                self.soleil = Image.open("./images/soleil.png")
+                self.resized = self.soleil.resize((200,200),Image.ANTIALIAS)
+                self.soleil = ImageTk.PhotoImage(self.resized)
+                self.canevas.create_image(0, 0, image=self.soleil, anchor=NW, tags=("soleil", "fond"))
+
+                #self.canevas.create_oval(-100, -100, 100, 100, fill="orange", tags=("soleil", "fond"))
 
             for i in self.etoileselect.planetes:
                 s=i.planetImage
@@ -611,6 +635,8 @@ class Vue():
 
                 #self.resized = self.planet10.resize((t+30,t+30),Image.ANTIALIAS)
                 #self.planet10 = ImageTk.PhotoImage(self.resized)
+
+                # Afficher l'image de chaque planètes du array "planetes" de l'étoile sélectionnée
                 self.canevas.create_image(i.x, i.y, image=i.planetImage, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
                 print(s, )
                 #self.canevas.create_oval(i.x-t,i.y-t,i.x+t,i.y+t,fill="grey80",
@@ -648,7 +674,7 @@ class Vue():
             t=self.planeteselect.taille
             self.canevas.create_oval(mod.largeur/2-(t*20),mod.hauteur/2-(t*20),mod.largeur/2+(t*20),mod.hauteur/2+(t*20), width=2, outline="white", fill=self.planeteselect.color,
                                     tags=("planetezoom", str(self.planeteselect.id), self.planeteselect.proprietaire, str(self.etoileselect.id)))
-            
+
             #affiche les batiment
             self.afficherBatiment()
 
@@ -754,11 +780,18 @@ class Vue():
             self.parent.upgBatiment(self.upgBatiment)
             self.upgBatiment = None
             self.canevas.delete("BatimentSelection")
-                        
+
 
     def afficherpartie(self,mod):
         self.canevas.delete("artefact")
         self.etatBouton()
+
+        for j in self.mod.joueurs:
+            if self.mod.joueurs[j].nom == self.nom:
+                self.planetConquisesStats.set(len(self.mod.joueurs[j].planetescontrolees))
+                self.electriciteStats.set(self.mod.joueurs[j].energie)
+                self.mineraisStats.set(self.mod.joueurs[j].minerai)
+                self.gazStats.set(self.mod.joueurs[j].gaz)
 
         if self.maselection!=None:
 
@@ -843,7 +876,7 @@ class Vue():
                         else:
                             self.parent.ciblerflotte(self.flotteselect.id, self.etoileselect.id)
                             print(self.flotteselect.id, self.etoileselect.id)
-                            
+
                         self.flotteselect = None
                         self.etoileselect = None
 
@@ -910,7 +943,7 @@ class Vue():
                 self.upgBatiment = tag[1]
                 print(tag[1])
                 self.canevas.create_oval(evt.x-50,evt.y-50,evt.x+50,evt.y+50,outline="white",tags="BatimentSelection")
-                
+
 
 
 
