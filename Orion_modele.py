@@ -201,15 +201,15 @@ class Joueur():
         self.gaz = 600
         self.flotte=[]
         self.detruits=[]
-        self.cout = {"minerai":[100,self.energie],
-                    "gaz":[100,self.energie],
-                    "energie":[100,self.minerai],
-                    "upgminerai":[500,self.minerai],
-                    "upggaz":[500,self.minerai],
-                    "upgenergie":[500,self.minerai],
-                    "chasseur":[50,self.minerai],
-                    "colonisateur":[50,self.minerai],
-                    "cargo":[50,self.minerai]}
+        self.cout = {"minerai":[100,"energie"],
+                    "gaz":[100,"energie"],
+                    "energie":[100,"minerai"],
+                    "upgminerai":[500,"minerai"],
+                    "upggaz":[500,"minerai"],
+                    "upgenergie":[500,"minerai"],
+                    "chasseur":[50,"minerai"],
+                    "colonisateur":[50,"minerai"],
+                    "cargo":[50,"minerai"]}
         self.actions={"creervaisseau":self.creervaisseau,
                       "upgBatiment":self.upgBatiment,  #Ajouter le 9 avril par Nic
                       "vendreBatiment":self.vendreBatiment,  #Ajouter le 9 avril par Nic
@@ -233,7 +233,7 @@ class Joueur():
 
         p,typeBatiment,x,y = params
 
-        if self.cout[typeBatiment][0] <= self.cout[typeBatiment][1]:
+        if self.minerai >= self.cout[typeBatiment][0]:
             b = Batiment(self.id,p,typeBatiment,x,y)
             print("Batiment",b.id)
 
@@ -256,16 +256,29 @@ class Joueur():
         for p in self.planetescontrolees:
             for b in p.batiment:
                 if int(idBatiment[0]) == b.id:
-                    print(b.typeBatiment)
-                    if self.cout["upg"+str(b.typeBatiment)][0] <= self.cout["upg"+str(b.typeBatiment)][1]:
-                        b.vitesse += 1
-                        print("argent joueur : ", self.cout["upg"+str(b.typeBatiment)][1])
-                        print("cout : ", self.cout["upg"+str(b.typeBatiment)][0])
-                        self.cout["upg"+str(b.typeBatiment)][1] -= self.cout["upg"+str(b.typeBatiment)][0]
-                        self.parent.parent.vue.afficherBatiment()
-                        print("argent joueur apres : ", self.cout["upg"+str(b.typeBatiment)][1])
-                    else:
-                        print("MANQUE DE FOND")
+                    if self.cout["upg"+str(b.typeBatiment)][1] == "minerai":
+                        if self.minerai >= self.cout["upg"+str(b.typeBatiment)][0]:
+                            self.minerai -= self.cout["upg"+str(b.typeBatiment)][0]
+                            b.vitesse += 1
+                            self.parent.parent.vue.afficherBatiment()
+                        else:
+                            print("MANQUE DE FOND")
+
+                    elif self.cout["upg"+str(b.typeBatiment)][1] == "energie":
+                        if self.energie >= self.cout["upg"+str(b.typeBatiment)][0]:
+                            self.energie -= self.cout["upg"+str(b.typeBatiment)][0]
+                            b.vitesse += 1
+                            self.parent.parent.vue.afficherBatiment()
+                        else:
+                            print("MANQUE DE FOND")
+
+                    elif self.cout["upg"+str(b.typeBatiment)][1] == "gaz":
+                        if self.gaz >= self.cout["upg"+str(b.typeBatiment)][0]:
+                            self.gaz -= self.cout["upg"+str(b.typeBatiment)][0]
+                            b.vitesse += 1
+                            self.parent.parent.vue.afficherBatiment()
+                        else:
+                            print("MANQUE DE FOND")
         
     def modifRessource(self):
         #Ajouter le 8 avril par nic ( Gere l'incrémentation des ressources des joueurs avec batiment et diminuer les ressource restante sur la planete du joueur)

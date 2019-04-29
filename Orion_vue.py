@@ -906,6 +906,7 @@ class Vue():
 
             if self.upgBatiment != None:
                 self.upgBatiment = None
+                self.canevas.delete("BatimentSelection")
             elif "batiment" in tag:
                 self.upgBatiment = tag[1]
                 print(tag[1])
