@@ -72,6 +72,9 @@ class Batiment(): #Ajouter le 8 avril par nic
         self.vitesse = 1
         self.nom=""
         self.etat=""
+        self.cout = {"minerai":100,
+                    "gaz":100,
+                    "energie":100}
 
 class TourDefense():   ### à ajouter git
     def __init__(self,nom,plan,x,y):
