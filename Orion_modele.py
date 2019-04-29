@@ -67,9 +67,6 @@ class Batiment(): #Ajouter le 8 avril par nic
         self.vitesse = 1
         self.nom=""
         self.etat=""
-        self.cout = {"minerai":100,
-                    "gaz":100,
-                    "energie":100}
 
 class Vaisseau():
 
@@ -199,11 +196,17 @@ class Joueur():
         self.planetemere.proprietaire=self.nom
         self.couleur=couleur
         self.planetescontrolees=[planetemere]
-        self.minerai = 0
-        self.energie = 0
-        self.gaz = 0
+        self.minerai = 600
+        self.energie = 600
+        self.gaz = 600
         self.flotte=[]
         self.detruits=[]
+        self.cout = {"minerai":[100,self.energie],
+                    "gaz":[100,self.energie],
+                    "energie":[100,self.minerai],
+                    "upgminerai":[500,self.minerai],
+                    "upggaz":[500,self.minerai],
+                    "upgenergie":[500,self.minerai]}
         self.actions={"creervaisseau":self.creervaisseau,
                       "upgBatiment":self.upgBatiment,  #Ajouter le 9 avril par Nic
                       "vendreBatiment":self.vendreBatiment,  #Ajouter le 9 avril par Nic
@@ -227,13 +230,18 @@ class Joueur():
 
         p,typeBatiment,x,y = params
 
-        b = Batiment(self.id,p,typeBatiment,x,y)
-        print("Batiment",b.id)
+        if self.cout[typeBatiment][0] <= self.cout[typeBatiment][1]:
+            b = Batiment(self.id,p,typeBatiment,x,y)
+            print("Batiment",b.id)
 
-        for i in self.planetescontrolees:
-            if i.id == int(p):
-                i.batiment.append(b)
-                self.parent.parent.vue.afficherBatiment()
+            for i in self.planetescontrolees:
+                if i.id == int(p):
+                    i.batiment.append(b)
+                    self.parent.parent.vue.afficherBatiment()
+
+            self.cout[typeBatiment][1] -= self.cout[typeBatiment][0]
+        else :
+            print("MANQUE DE FOND")
 
     #Ajouter le 9 avril par nic
     def vendreBatiment(self,batiment):
@@ -245,8 +253,16 @@ class Joueur():
         for p in self.planetescontrolees:
             for b in p.batiment:
                 if int(idBatiment[0]) == b.id:
-                    b.vitesse += 1
-                    self.parent.parent.vue.afficherBatiment()
+                    print(b.typeBatiment)
+                    if self.cout["upg"+str(b.typeBatiment)][0] <= self.cout["upg"+str(b.typeBatiment)][1]:
+                        b.vitesse += 1
+                        print("argent joueur : ", self.cout["upg"+str(b.typeBatiment)][1])
+                        print("cout : ", self.cout["upg"+str(b.typeBatiment)][0])
+                        self.cout["upg"+str(b.typeBatiment)][1] -= self.cout["upg"+str(b.typeBatiment)][0]
+                        self.parent.parent.vue.afficherBatiment()
+                        print("argent joueur apres : ", self.cout["upg"+str(b.typeBatiment)][1])
+                    else:
+                        print("MANQUE DE FOND")
         
     def modifRessource(self):
         #Ajouter le 8 avril par nic ( Gere l'incrémentation des ressources des joueurs avec batiment et diminuer les ressource restante sur la planete du joueur)
