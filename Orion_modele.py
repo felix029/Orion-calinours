@@ -206,7 +206,10 @@ class Joueur():
                     "energie":[100,self.minerai],
                     "upgminerai":[500,self.minerai],
                     "upggaz":[500,self.minerai],
-                    "upgenergie":[500,self.minerai]}
+                    "upgenergie":[500,self.minerai],
+                    "chasseur":[50,self.minerai],
+                    "colonisateur":[50,self.minerai],
+                    "cargo":[50,self.minerai]}
         self.actions={"creervaisseau":self.creervaisseau,
                       "upgBatiment":self.upgBatiment,  #Ajouter le 9 avril par Nic
                       "vendreBatiment":self.vendreBatiment,  #Ajouter le 9 avril par Nic
