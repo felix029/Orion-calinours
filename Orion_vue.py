@@ -708,9 +708,9 @@ class Vue():
     def creervaisseau(self):
         print("Creer vaisseau")
         self.parent.creervaisseau()
-        self.maselection=None
         self.canevas.delete("marqueur")
         self.btncreervaisseau.pack_forget()
+        self.maselection=None
 
     def creerBatiment(self,evt): #Ajouter le 9 avril par nic pour la creation d'un batiment
         if self.selectionBatiment != None:
@@ -742,7 +742,7 @@ class Vue():
         self.canevas.delete("artefact")
         self.etatBouton()
 
-        if self.maselection!=None:
+        #if self.maselection!=None:
 
             #joueur=mod.joueurs[self.maselection[0]]
             #if self.maselection[0]=="etoile":
@@ -753,15 +753,15 @@ class Vue():
                         #t=10
                         #self.canevas.create_oval(x-t,y-t,x+t,y+t,dash=(2,2),outline=mod.joueurs[self.nom].couleur,
                         #                         tags=("select","marqueur"))
-            if self.maselection[0]=="flotte":
-                for i in joueur.flotte:
-                    if i.id == int(self.maselection[1]):
-                        print(self.maselection)
-                        x=i.x
-                        y=i.y
-                        t=10
-                        self.canevas.create_rectangle(x-t,y-t,x+t,y+t,dash=(2,2),outline=mod.joueurs[self.nom].couleur,
-                                                 tags=("select","marqueur"))
+            #if self.maselection[0]=="flotte":
+            #    for i in joueur.flotte:
+            #        if i.id == int(self.maselection[1]):
+            #            print(self.maselection)
+            #            x=i.x
+            #            y=i.y
+            #            t=10
+            #            self.canevas.create_rectangle(x-t,y-t,x+t,y+t,dash=(2,2),outline=mod.joueurs[self.nom].couleur,
+            #                                     tags=("select","marqueur"))
         #else:
         #    self.canevas.delete("marqueur")
 
@@ -823,21 +823,29 @@ class Vue():
                             if self.flotteselect.y <= (self.etoileselect.y + t) and self.flotteselect.y >= (self.etoileselect.y - t):
                                 self.parent.versvue1(self.flotteselect.id, self.etoileselect.id)
                         else:
-                            self.parent.ciblerflotte(self.flotteselect.id, self.etoileselect.id)
+                            self.parent.ciblerflotte(self.flotteselect.id, self.etoileselect.id, "etoile")
                             print(self.flotteselect.id, self.etoileselect.id)
                             
                         self.flotteselect = None
                         self.etoileselect = None
 
             if tag and tag[0] == "flotte":
+                
+                if self.flotteselect == None:
+                    self.maselection=[tag[0], tag[1], tag[2], tag[3]]
+                    print(self.maselection)
+                    j=self.mod.joueurs[self.nom]
+                    for i in j.flotte:
+                        if i.id == int(self.maselection[1]):
+                            self.flotteselect = i
+                            break
+                elif self.flotteselect != None:
+                    self.maselection=[tag[0], tag[1], tag[2], tag[3]]
+                    print("Dans le else de flotte vue 2")
+                    self.parent.ciblerflotte(self.flotteselect.id, self.maselection[1], "flotte")
+                    self.flotteselect = None
 
-                self.maselection=[tag[0], tag[1], tag[2], tag[3]]
-                print(self.maselection)
-                j=self.mod.joueurs[self.nom]
-                for i in j.flotte:
-                    if i.id == int(self.maselection[1]):
-                        self.flotteselect = i
-                        break
+                self.maselection = None
 
         if self.vueactive == 1:
             if tag and tag[0] == "planete":
@@ -866,14 +874,23 @@ class Vue():
                     self.planeteselect=None
 
             if tag and tag[0] == "flotte":
-                self.maselection=[tag[0], tag[1], tag[2], tag[3]]
-                print(self.maselection)
-                j=self.mod.joueurs[self.nom]
-                for i in j.flotte:
-                    if i.id == int(self.maselection[1]):
-                        self.flotteselect = i
-                        self.maselection=None
-                        break
+                
+                if self.maselection == None:
+                    self.maselection=[tag[0], tag[1], tag[2], tag[3]]
+                    print(self.maselection)
+                    j=self.mod.joueurs[self.nom]
+                    for i in j.flotte:
+                        if i.id == int(self.maselection[1]):
+                            self.flotteselect = i
+                            self.maselection=None
+                            break
+                elif self.flotteselect != None:
+                    self.maselection=[tag[0], tag[1], tag[2], tag[3]]
+                    print("Dans le else de flotte vue 1")
+                    self.parent.ciblerflotte(self.flotteselect.id, self.maselection[1], "flotte")
+                    self.flotteselect = None
+
+                self.maselection = None
 
             if tag and tag[0] == "retour2":
                 if self.flotteselect != None:
@@ -904,14 +921,23 @@ class Vue():
 
 
         if tag and tag[0] == "flotte":
-                self.maselection=[tag[0], tag[1], tag[2], tag[3]]
-                print(self.maselection)
-                j=self.mod.joueurs[self.nom]
-                for i in j.flotte:
-                    if i.id == int(self.maselection[1]):
-                        self.flotteselect = i
-                        self.maselection=None
-                        break
+                
+                if self.maselection == None:
+                    self.maselection=[tag[0], tag[1], tag[2], tag[3]]
+                    print(self.maselection)
+                    j=self.mod.joueurs[self.nom]
+                    for i in j.flotte:
+                        if i.id == int(self.maselection[1]):
+                            self.flotteselect = i
+                            self.maselection=None
+                            break
+                elif self.flotteselect != None:
+                    self.maselection=[tag[0], tag[1], tag[2], tag[3]]
+                    print("Dans le else de flotte vue 0")
+                    self.parent.ciblerflotte(self.flotteselect.id, self.maselection[1], "flotte")
+                    self.flotteselect = None
+
+                self.maselection = None
 
         if tag and tag[0] == "retour1":
                 if self.flotteselect != None:

@@ -132,6 +132,7 @@ class Vaisseau():
         else:
             self.cible=None
             self.delaidetir=0
+            self.typecible = None
 
         for i in self.projectiles:
             if i.etat!="detruit":
@@ -260,24 +261,26 @@ class Joueur():
                     self.energie += b.vitesse
 
     def ciblerflotte(self,ids):
-        idori,iddesti=ids
+        idori,iddesti,typedestination=ids
         for i in self.flotte:
             if i.id== int(idori):
-                for j in self.parent.etoiles:
-                    if j.id== int(iddesti):
-                        i.cible=j
-                        print("GOT TARGET")
-                        return
-                for j in self.parent.ias:
-                    for k in j.flotte:
-                        if k.id == int(iddesti):
-                            i.cible=k
-                            i.typecible="Vaisseau"
-                for j in self.parent.joueurs:
-                    for k in self.parent.joueurs[j].flotte:
-                        if k.id == int(iddesti):
-                            i.cible=k
-                            i.typecible="Vaisseau"
+                if typedestination == "etoile":
+                    for j in self.parent.etoiles:
+                        if j.id== int(iddesti):
+                            i.cible=j
+                            print("GOT TARGET")
+                            return
+                elif typedestination == "flotte":
+                    for j in self.parent.ias:
+                        for k in j.flotte:
+                            if k.id == int(iddesti):
+                                i.cible=k
+                                i.typecible="Vaisseau"
+                    for j in self.parent.joueurs:
+                        for k in self.parent.joueurs[j].flotte:
+                            if k.id == int(iddesti):
+                                i.cible=k
+                                i.typecible="Vaisseau"
 
     def ciblerflotteplanete(self,ids):
         idori,iddesti,etoile=ids
