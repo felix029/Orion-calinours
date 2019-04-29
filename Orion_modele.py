@@ -372,6 +372,7 @@ class Joueur():
                         for k in j.flotte:
                             if k.id == int(iddesti):
                                 print("TARGETED SHIP")
+
                                 i.cible=k
                                 i.typecible="Vaisseau"
                     for j in self.parent.joueurs:

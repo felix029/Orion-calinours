@@ -838,7 +838,6 @@ class Vue():
                 self.mineraisStats.set(self.mod.joueurs[j].minerai)
                 self.gazStats.set(self.mod.joueurs[j].gaz)
 
-
             #joueur=mod.joueurs[self.maselection[0]]
             #if self.maselection[0]=="etoile":
                 #for i in joueur.planetescontrolees:
@@ -936,6 +935,9 @@ class Vue():
                             break
                 elif self.flotteselect != None:
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
+
+                    print("Dans le else de flotte vue 2")
+
                     self.parent.ciblerflotte(self.flotteselect.id, self.maselection[1], "flotte")
                     self.flotteselect = None
 
@@ -975,11 +977,14 @@ class Vue():
                     for i in j.flotte:
                         if i.id == int(self.maselection[1]):
                             self.flotteselect = i
+                            self.maselection=None
                             break
                 elif self.flotteselect != None:
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
+                    print("Dans le else de flotte vue 1")
                     self.parent.ciblerflotte(self.flotteselect.id, self.maselection[1], "flotte")
                     self.flotteselect = None
+
                 self.maselection = None
 
             if tag and tag[0] == "retour2":
@@ -1017,6 +1022,7 @@ class Vue():
                             break
                 elif self.flotteselect != None:
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
+                    print("Dans le else de flotte vue 0")
                     self.parent.ciblerflotte(self.flotteselect.id, self.maselection[1], "flotte")
                     self.flotteselect = None
 
