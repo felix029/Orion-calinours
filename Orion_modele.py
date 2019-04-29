@@ -322,6 +322,7 @@ class Joueur():
         for p in self.planetescontrolees:
             for b in p.batiment:
                 if int(idBatiment[0]) == b.id:
+
                     if self.cout["upg"+str(b.typeBatiment)][1] == "minerai":
                         if self.minerai >= self.cout["upg"+str(b.typeBatiment)][0]:
                             self.minerai -= self.cout["upg"+str(b.typeBatiment)][0]

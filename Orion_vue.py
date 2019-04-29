@@ -661,6 +661,10 @@ class Vue():
                 y=random.randrange(mod.hauteur)
                 self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond"))
                 #Insertion de l'image du soleil
+
+                self.soleil = Image.open("./images/soleil.png")
+                self.resized = self.soleil.resize((200,200),Image.ANTIALIAS)
+                self.soleil = ImageTk.PhotoImage(self.resized)
                 self.canevas.create_image(0, 0, image=self.soleil, anchor=NW, tags=("soleil", "fond"))
 
                 #self.canevas.create_oval(-100, -100, 100, 100, fill="orange", tags=("soleil", "fond"))
