@@ -143,8 +143,8 @@ class Controleur():
     def creervaisseau(self):
         self.actions.append([self.monnom,"creervaisseau",""])
 
-    def ciblerflotte(self,idorigine,iddestination):
-        self.actions.append([self.monnom,"ciblerflotte",[idorigine,iddestination]])
+    def ciblerflotte(self,idorigine,iddestination,typedestination):
+        self.actions.append([self.monnom,"ciblerflotte",[idorigine,iddestination,typedestination]])
     
     #Ajouter 15 avril FelixO
     def ciblerflotteplanete(self,idorigine,iddestination,etoile):
