@@ -657,26 +657,26 @@ class Vue():
                 #self.planet10 = ImageTk.PhotoImage(self.resized)
 
                 # Afficher l'image de chaque planètes du array "planetes" de l'étoile sélectionnée
-                self.canevas.create_image(i.x, i.y, image=i.planetImage, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+                self.canevas.create_image(i.x-i.taille/2, i.y-i.taille/2, image=i.planetImage, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
                 print(s, )
                 #self.canevas.create_oval(i.x-t,i.y-t,i.x+t,i.y+t,fill="grey80",
                 #                       tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
 
 
-            for i in mod.joueurs.keys():
-                for j in mod.joueurs[i].planetescontrolees:
-                    if j in self.etoileselect.planetes:
-                        t=j.taille
-                        self.canevas.create_oval(j.x-t,j.y-t,j.x+t,j.y+t,fill=mod.joueurs[i].couleur,
-                                            tags=("planete", str(j.id), j.proprietaire, str(self.etoileselect.id)))
+            #for i in mod.joueurs.keys():
+            #    for j in mod.joueurs[i].planetescontrolees:
+            #        if j in self.etoileselect.planetes:
+            #            t=j.taille
+            #            self.canevas.create_oval(j.x-t,j.y-t,j.x+t,j.y+t,fill=mod.joueurs[i].couleur,
+            #                                tags=("planete", str(j.id), j.proprietaire, str(self.etoileselect.id)))
             # dessine planetes IAs
 
-            for i in mod.ias:
-                for j in i.planetescontrolees:
-                    if j in self.etoileselect.planetes:
-                        t=j.taille
-                        self.canevas.create_oval(j.x-t,j.y-t,j.x+t,j.y+t,fill=i.couleur,
-                                            tags=("planete", str(j.id), j.proprietaire, str(self.etoileselect.id)))
+            #for i in mod.ias:
+            #    for j in i.planetescontrolees:
+            #        if j in self.etoileselect.planetes:
+            #            t=j.taille
+            #            self.canevas.create_oval(j.x-t,j.y-t,j.x+t,j.y+t,fill=i.couleur,
+            #                                tags=("planete", str(j.id), j.proprietaire, str(self.etoileselect.id)))
 
             #affichage de l'espace ou envoyer un vaisseau pour le retourner a la vue 2
             self.canevas.create_oval(mod.largeur-40, mod.hauteur-40, mod.largeur+40, mod.hauteur+40,fill="purple", tags=("retour2"))
@@ -768,13 +768,24 @@ class Vue():
             t=30
             self.canevas.create_oval(x-t,y-t,x+t,y+t,dash=(3,3),width=2,outline=couleur,
                                  tags=("planetemere","marqueur"))
+        
+        if self.vueactive == 1:
+            j=self.mod.joueurs[self.nom]
+
+            if self.etoileselect == j.planetemere.etoileparent:
+                couleur=j.couleur
+                x=j.planetemere.x+(j.planetemere.taille)
+                y=j.planetemere.y+(j.planetemere.taille)
+                t=35
+                self.canevas.create_oval(x-t,y-t,x+t,y+t,dash=(3,3),width=2,outline=couleur,
+                                 tags=("planetemere","marqueur"))
 
 
     def creervaisseau(self):
         if self.vueactive == 0:
             if self.planeteselect.proprietaire == self.nom:
                 print("Creer vaisseau")
-                self.parent.creervaisseau()
+                self.parent.creervaisseau(self.planeteselect.id)
                 self.canevas.delete("marqueur")
                 self.btncreervaisseau.pack_forget()
                 self.maselection=None
@@ -921,7 +932,6 @@ class Vue():
                             break
                 elif self.flotteselect != None:
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
-                    print("Dans le else de flotte vue 2")
                     self.parent.ciblerflotte(self.flotteselect.id, self.maselection[1], "flotte")
                     self.flotteselect = None
 
@@ -946,7 +956,6 @@ class Vue():
                             #self.flotteselect.y = self.mod.hauteur-random.randrange(30, 45)
                             self.parent.versvue0(self.flotteselect.id,self.planeteselect.id)
                     else:
-                        print("dans else")
                         self.parent.ciblerflotteplanete(self.flotteselect.id, self.planeteselect.id, self.etoileselect.id)
                         print(self.flotteselect.id, self.planeteselect.id)
 
@@ -965,7 +974,6 @@ class Vue():
                             break
                 elif self.flotteselect != None:
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
-                    print("Dans le else de flotte vue 1")
                     self.parent.ciblerflotte(self.flotteselect.id, self.maselection[1], "flotte")
                     self.flotteselect = None
                 self.maselection = None
@@ -1006,7 +1014,6 @@ class Vue():
                             break
                 elif self.flotteselect != None:
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
-                    print("Dans le else de flotte vue 0")
                     self.parent.ciblerflotte(self.flotteselect.id, self.maselection[1], "flotte")
                     self.flotteselect = None
 

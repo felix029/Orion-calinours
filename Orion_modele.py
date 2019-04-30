@@ -5,7 +5,7 @@ from Id import Id
 from helper import Helper as hlp
 
 class Planete():
-    def __init__(self,x,y):
+    def __init__(self,x,y,etoileparent):
         self.id=Id.prochainid()
         self.x=x
         self.y=y
@@ -32,6 +32,7 @@ class Planete():
         self.color = "#" + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab))
         self.setXY()
         self.batiment=[]
+        self.etoileparent=etoileparent
 
     #fonction qui va permettre aux planetes de ne pas etre par dessus le soleil
     def setXY(self):
@@ -59,7 +60,7 @@ class Etoile():
         for i in range(numRand):
             planX=random.randrange(150, 200)+(i*60)
             planY=random.randrange(150, 200)+(i*random.randrange(20,40))+10
-            self.planetes.append(Planete(planX, planY))
+            self.planetes.append(Planete(planX, planY, self))
 
 class Batiment(): #Ajouter le 8 avril par nic
     def __init__(self,nom,plan,typeBatiment,x,y):
@@ -117,17 +118,17 @@ class Vaisseau():
                     "cargo":[100,2,0],
                     "colonisateur":[150,1,0]}
 
-    def __init__(self,nom,x,y):
+    def __init__(self,nom,etoile,planete):
         self.id=Id.prochainid()
+        self.sysplanetecur=etoile
+        self.planetecur=planete
         self.proprietaire=nom
-        self.x=x
-        self.y=y
+        self.x=planete.x+10
+        self.y=planete.y+10
         self.cargo=0
         self.energie=100
         self.vitesse=2
         self.cible=None
-        self.sysplanetecur=None
-        self.planetecur=None
         self.typecible=""
         self.range=10
         self.projectiles=[]
@@ -267,12 +268,18 @@ class Joueur():
                       "versvue1":self.versvue1, #Ajout Felix-O 23 Avril
                       "versvue0":self.versvue0} #Ajout Felix-O 23 Avril
 
-    def creervaisseau(self,params):
+    def creervaisseau(self,idplanete):
         #etoile,cible,type=params
         #is type=="explorer":
-        v=Vaisseau(self.nom,self.planetemere.x+10,self.planetemere.y)
-        print("Vaisseau",v.id)
-        self.flotte.append(v)
+        for i in self.parent.etoiles:
+            for j in i.planetes:
+                if j.id == idplanete:
+                    planetevaisseau = j
+                    v=Vaisseau(self.nom,planetevaisseau.etoileparent,planetevaisseau)
+                    print("Vaisseau",v.id)
+                    self.flotte.append(v)
+                    break
+        
 
     def creerBatiment(self,params): #Ajouter le 8 avril par nic
 
@@ -414,7 +421,7 @@ class Joueur():
     def cibleretour(self,idori):
         for i in self.flotte:
             if i.id == int(idori):
-                ptemp=Planete(self.parent.largeur,self.parent.hauteur)
+                ptemp=Planete(self.parent.largeur,self.parent.hauteur,None)
                 ptemp.taille=0
                 i.cible=ptemp
 
@@ -544,12 +551,21 @@ class IA(Joueur):
                 if i.cible:
                     i.avancer()
                 else:
-                    #i.cible=random.choice(self.parent.planetes)
-                    i.cible=random.choice(self.parent.etoiles)
+                    if i.sysplanetecur == None and i.planetecur == None:
+                        #i.cible=random.choice(self.parent.planetes)
+                        i.cible=random.choice(self.parent.etoiles)
+                    else:
+                        if i.x >= self.parent.largeur-8 and i.y >= self.parent.hauteur-8:
+                            if i.sysplanetecur != None and i.planetecur != None:
+                                self.flotteretour1(i.id)
+                            elif i.sysplanetecur != None and i.planetecur == None:
+                                self.flotteretour2(i.id)
+                        else:
+                            self.cibleretour(i.id)
                 if i.attaquant:
                     i.defense()
         else:
-            self.creervaisseau(0)
+            self.creervaisseau(self.planetemere.id)
 
 class Modele():
     def __init__(self,parent,joueurs):
