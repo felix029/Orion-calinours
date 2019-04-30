@@ -242,7 +242,7 @@ class Joueur():
                     i.batiment.append(b)
                     self.parent.parent.vue.afficherBatiment()
 
-            self.cout[typeBatiment][1] -= self.cout[typeBatiment][0]
+            self.minerai -= self.cout[typeBatiment][0]
         else :
             print("MANQUE DE FOND")
 
@@ -548,6 +548,7 @@ class Modele():
                   "lightblue","pink","gold","purple"]
         for i in joueurs:
             self.joueurs[i]=Joueur(self,i,planetej.pop(0),couleurs.pop(0))
+            self.joueurs[i].planetescontrolees[0].batiment.append(Batiment(self.joueurs[i].id,planetej,"base",400,300))
 
         # IA- creation des ias - max 2
         couleursia=["orange","green"]
