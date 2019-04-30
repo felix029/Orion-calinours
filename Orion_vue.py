@@ -934,6 +934,10 @@ class Vue():
                     for i in j.flotte:
                         if i.id == int(self.maselection[1]):
                             self.flotteselect = i
+<<<<<<< HEAD
+=======
+                            self.maselection=None
+>>>>>>> test du git de GM...
                             break
                 elif self.flotteselect != None:
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
