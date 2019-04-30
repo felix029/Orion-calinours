@@ -10,11 +10,16 @@ class Planete():
         self.x=x
         self.y=y
         self.taille=random.randrange(13,17)
+        #1- Génèrer un int aléatoire pour choisir une image de planète
         planetImage=random.randrange(1,11)
+        #2- Créer une string représentant le chemin relatif de l'image, et ce, à l'aide du int aléatoire obtenu
         img="./images/planet"+str(planetImage)+".png"
-
+        #3- Créer une variable image à l'aide de la fonction Image.open qui prend en paramètre le chemin relatif créé à l'étape précédente
+        #       Pour ce faire, on utilise "Image" de la librairie "PIL" que l'on a importé
         planet1 = Image.open(img)
+        #4- Redimensionner l'image et stocker le tout dans une nouvelle variable
         resized = planet1.resize((self.taille+30,self.taille+30),Image.ANTIALIAS)
+        #5- Reformater la variable "Image" en variable "ImageTK" afin que TkInter la supporte, puis stocker le tout dans une variable d'instance "self.planetImage"
         self.planetImage = ImageTk.PhotoImage(resized)
 
 
@@ -68,6 +73,43 @@ class Batiment(): #Ajouter le 8 avril par nic
         self.nom=""
         self.etat=""
 
+class TourDefense():   ### à ajouter git
+    def __init__(self,nom,plan,x,y):
+        self.id=Id.prochainid()
+        self.proprietaire=nom
+        self.planete=plan
+        self.x = x
+        self.y = y
+        self.cout = 100
+        self.etat="" ##peut être inclu dans la destruction
+        self.energie=100
+        self.typecible=""
+        self.projectiles=[]
+        self.delaidetir=0
+        self.delaimax=5
+        self.cible=None
+        self.range=10
+
+    def tirer(self):  ###modifications GM 29 avril###
+        d=hlp.calcDistance(self.x,self.y,self.cible.x,self.cible.y)
+
+        if self.cible.etat!="detruit" and d<=self.range:
+            if self.delaidetir==0:
+                if self.cible.attaquant==None:  ###ok
+                    self.cible.attaquant=self
+                p=Projectile(self.cible,self.x,self.y,self.cible.x,self.cible.y)
+                self.projectiles.append(p)
+                self.delaidetir=self.delaimax
+            self.delaidetir-=1
+
+        else:
+            self.cible=None
+            self.delaidetir=0
+
+        for i in self.projectiles:
+            if i.etat!="detruit":
+                i.deplacer()
+
 class Vaisseau():
 
     ###définition des types de vaisseaux [energie,vitesse, puissance de feu]
@@ -119,7 +161,7 @@ class Vaisseau():
         d=hlp.calcDistance(self.x,self.y,self.cible.x,self.cible.y)
         if self.cible and d>self.range:
             self.avancer()
-        elif self.cible.etat!="detruit":  ###ajouter le délai de tir
+        elif self.cible.etat!="detruit":
             if self.delaidetir==0:
                 if self.cible.attaquant==None:  ###ok
                     self.cible.attaquant=self
@@ -131,6 +173,7 @@ class Vaisseau():
         else:
             self.cible=None
             self.delaidetir=0
+            self.typecible = None
 
         for i in self.projectiles:
             if i.etat!="detruit":
@@ -200,7 +243,9 @@ class Joueur():
         self.energie = 600
         self.gaz = 600
         self.flotte=[]
+        self.ToursDefense=[] ####ajout GM 29 avril##
         self.detruits=[]
+<<<<<<< HEAD
         self.cout = {"minerai":[100,"energie"],
                     "gaz":[100,"energie"],
                     "energie":[100,"minerai"],
@@ -210,6 +255,9 @@ class Joueur():
                     "chasseur":[50,"minerai"],
                     "colonisateur":[50,"minerai"],
                     "cargo":[50,"minerai"]}
+=======
+        self.joueurami=[]  ### id des joueurs ###
+>>>>>>> a185f2abe39e5e66f72ca0aa6d983820ef8d3a0b
         self.actions={"creervaisseau":self.creervaisseau,
                       "upgBatiment":self.upgBatiment,  #Ajouter le 9 avril par Nic
                       "vendreBatiment":self.vendreBatiment,  #Ajouter le 9 avril par Nic
@@ -221,7 +269,7 @@ class Joueur():
                       "cibleretour":self.cibleretour, #Ajout Felix-O 16 avril
                       "versvue1":self.versvue1, #Ajout Felix-O 23 Avril
                       "versvue0":self.versvue0} #Ajout Felix-O 23 Avril
-                      
+
     def creervaisseau(self,params):
         #etoile,cible,type=params
         #is type=="explorer":
@@ -256,6 +304,7 @@ class Joueur():
         for p in self.planetescontrolees:
             for b in p.batiment:
                 if int(idBatiment[0]) == b.id:
+<<<<<<< HEAD
                     if self.cout["upg"+str(b.typeBatiment)][1] == "minerai":
                         if self.minerai >= self.cout["upg"+str(b.typeBatiment)][0]:
                             self.minerai -= self.cout["upg"+str(b.typeBatiment)][0]
@@ -280,6 +329,11 @@ class Joueur():
                         else:
                             print("MANQUE DE FOND")
         
+=======
+                    b.vitesse += 1
+                    self.parent.parent.vue.afficherBatiment()
+
+>>>>>>> a185f2abe39e5e66f72ca0aa6d983820ef8d3a0b
     def modifRessource(self):
         #Ajouter le 8 avril par nic ( Gere l'incrémentation des ressources des joueurs avec batiment et diminuer les ressource restante sur la planete du joueur)
         for p in self.planetescontrolees:
@@ -302,24 +356,29 @@ class Joueur():
                     self.energie += b.vitesse
 
     def ciblerflotte(self,ids):
-        idori,iddesti=ids
+        idori,iddesti,typedestination=ids
         for i in self.flotte:
             if i.id== int(idori):
-                for j in self.parent.etoiles:
-                    if j.id== int(iddesti):
-                        i.cible=j
-                        print("GOT TARGET")
-                        return
-                for j in self.parent.ias:
-                    for k in j.flotte:
-                        if k.id == int(iddesti):
-                            i.cible=k
-                            i.typecible="Vaisseau"
-                for j in self.parent.joueurs:
-                    for k in self.parent.joueurs[j].flotte:
-                        if k.id == int(iddesti):
-                            i.cible=k
-                            i.typecible="Vaisseau"
+                if typedestination == "etoile":
+                    for j in self.parent.etoiles:
+                        if j.id== int(iddesti):
+                            i.cible=j
+                            print("GOT TARGET")
+                            return
+                elif typedestination == "flotte":
+                    for j in self.parent.ias:
+                        for k in j.flotte:
+                            if k.id == int(iddesti):
+                                print("TARGETED SHIP")
+                                i.cible=k
+                                i.typecible="Vaisseau"
+                    for j in self.parent.joueurs:
+                        for k in self.parent.joueurs[j].flotte:
+                            if self.parent.joueurs[j]!= self:
+                                if k.id == int(iddesti):
+                                    print("TARGETED SHIP")
+                                    i.cible=k
+                                    i.typecible="Vaisseau"
 
     def ciblerflotteplanete(self,ids):
         idori,iddesti,etoile=ids
@@ -342,6 +401,24 @@ class Joueur():
                         if k.id == int(iddesti):
                             i.cible=k
                             i.typecible="Vaisseau"
+
+    def ciblerTourDefense(self):  #### Ajout Guillaume-29 avril, à voir si impact de performance###
+        for i in self.ToursDefense:
+            for j in self.parent.ias:
+                if j.id not in self.joueurami:
+                    for k in j.flotte:
+                        d=hlp.calcDistance(i.x,i.y,k.x,k.y)
+                        if d<=i.range:
+                            i.cible=k
+                            i.typecible="Vaisseau" ##peut-être pas nécessaire pour les tours
+            for j in self.parent.joueurs:
+                if self.parent.joueurs[j].id not in self.joueurami:
+                    for k in self.parent.joueurs[j].flotte:
+                        d=hlp.calcDistance(i.x,i.y,k.x,k.y)
+                        if d<=i.range:
+                            i.cible=k
+                            i.typecible="Vaisseau"
+
 
     def cibleretour(self,idori):
         for i in self.flotte:
@@ -435,13 +512,13 @@ class Joueur():
             if i.id == idflotte:
                 flottecur = i
                 break
-        if flottecur.sysplanetecur != None:            
+        if flottecur.sysplanetecur != None:
             flottecur.x = flottecur.sysplanetecur.x+25
             flottecur.y = flottecur.sysplanetecur.y+25
             flottecur.sysplanetecur = None
             flottecur.cible = None
-        
-    
+
+
     #Ajout Felix-O 23 Avril
     def flotteretour1(self,id):
         idflotte=id
