@@ -27,7 +27,7 @@ class Vue():
         self.creercadresplash(ip,nom)
         self.creercadrelobby()
         self.changecadre(self.cadresplash)
-        self.vueactive = 2 # 0: vue planetaire, 1: vue systeme solaire, 2: vue galaxy
+        self.vueactive = 0 # 0: vue planetaire, 1: vue systeme solaire, 2: vue galaxy
         self.etoileselect=None
         self.planeteselect=None
         self.flotteselect=None
@@ -745,11 +745,13 @@ class Vue():
 
 
     def creervaisseau(self):
-        print("Creer vaisseau")
-        self.parent.creervaisseau()
-        self.canevas.delete("marqueur")
-        self.btncreervaisseau.pack_forget()
-        self.maselection=None
+        if self.vueactive == 0:
+            if self.planeteselect.proprietaire == self.nom:
+                print("Creer vaisseau")
+                self.parent.creervaisseau()
+                self.canevas.delete("marqueur")
+                self.btncreervaisseau.pack_forget()
+                self.maselection=None
 
     def creerBatiment(self,evt):
         if self.selectionBatiment != None:
