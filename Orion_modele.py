@@ -174,6 +174,8 @@ class Vaisseau():
             self.cible=None
             self.delaidetir=0
             self.typecible = None
+            for i in self.projectiles:
+                i.cible=None
 
         for i in self.projectiles:
             if i.etat!="detruit":
@@ -191,6 +193,8 @@ class Vaisseau():
         elif self.attaquant.etat=="detruit":
             self.attaquant=None
             self.delaidetir=0
+            for i in self.projectiles:
+                i.cible=None
 
         for i in self.projectiles:
             if i.etat!="detruit":
@@ -324,7 +328,7 @@ class Joueur():
                             self.parent.parent.vue.afficherBatiment()
                         else:
                             print("MANQUE DE FOND")
-        
+
     def modifRessource(self):
         #Ajouter le 8 avril par nic ( Gere l'incrémentation des ressources des joueurs avec batiment et diminuer les ressource restante sur la planete du joueur)
         for p in self.planetescontrolees:
@@ -459,7 +463,7 @@ class Joueur():
 
             if i.projectiles:
                 for j in i.projectiles:
-                    if j.etat=="detruit":
+                    if j.etat=="detruit" or j.cible==None:
                         i.projectiles.remove(j)
 
 
