@@ -154,6 +154,9 @@ class Controleur():
     def creerBatiment(self,p,typeBatiment,x,y):
         self.actions.append([self.monnom,"creerBatiment",[p,typeBatiment,x,y]])
 
+    def creerTourDefense(self,p,x,y):
+        self.actions.append([self.monnom,"creerTourDefense",[p,x,y]])
+
      #Ajouter le 9 avril par Nic
     def upgBatiment(self,idBatiment):
         self.actions.append([self.monnom,"upgBatiment",[idBatiment]])
