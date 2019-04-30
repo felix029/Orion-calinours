@@ -128,7 +128,7 @@ class Vaisseau():
         self.delaimax=15 ###à modifier avec le dictionnaire si on fait d'autres vaisseaux
         self.etat="actif"
         self.attaquant=None
-
+        self.explosions=[]
     def avancer(self):
         if self.cible:
             x=self.cible.x
@@ -171,14 +171,10 @@ class Vaisseau():
         for i in self.projectiles:
             if i.etat!="detruit":
                 i.deplacer()
-            # else:
-            #     for j in self.projectiles.explosions:
-            #         if j.etat!="detruit":
-            #             j.explose()
-
-            #         for l in j.etats:
-            #             if l.etat!="detruit":
-            #                 l.explose()
+            else:
+                ex=Explosion(self, i.x, i.y, True)
+                self.explosions.append(ex)
+                #ex.eclatEffectuer()
 
     def defense(self):
         d=hlp.calcDistance(self.x,self.y,self.attaquant.x,self.attaquant.y)
@@ -192,6 +188,8 @@ class Vaisseau():
         elif self.attaquant.etat=="detruit":
             self.attaquant=None
             self.delaidetir=0
+            for i in self.projectiles:
+                i.etat="detruit"
 
         for i in self.projectiles:
             if i.etat!="detruit":
@@ -201,6 +199,10 @@ class Vaisseau():
         self.energie-=puissance
         if(self.energie<=0):
             self.etat="detruit"
+            ex=Explosion(self, self.x, self.y)
+            self.explosions.append(ex)
+            #ex.eclatEffectuer()
+
 
 class Projectile():
     ###définition des types de projectiles [puissance,vitesse, aire d'effet]
@@ -222,7 +224,6 @@ class Projectile():
         self.vitesse=5
         self.etat="actif"
         self.angle=hlp.calcAngle(self.x,self.y,self.ciblex,self.cibley)
-        self.explosions=[]
 
     def deplacer(self):
             self.angle=hlp.calcAngle(self.x,self.y,self.ciblex,self.cibley)
@@ -230,56 +231,67 @@ class Projectile():
             d=hlp.calcDistance(self.x,self.y,self.ciblex,self.cibley)
             if d<=self.vitesse:
                 self.cible.toucher(self.puissance)
-                ex=Explosion(self, self.x, self.y, 40)
-                self.explosions.append(ex)
                 print(self.cible.etat)
                 print(self.cible.energie)
                 self.etat="detruit"
 
+
 class Explosion():
 
-    def __init__(self, parent, x, y, range):
-        self.x=x
-        self.y=y
-        self.parent = parent
-        self.range = range
-        self.vitesse=100
-        self.sysplanetecur=self.parent.sysplanetecur
-        self.planetecur=self.parent.planetecur
-        self.etat="actif"
-        self.eclats=[]
-        self.vie=40
-
-    def explose(self):
-            for i in range(40):
-                e = Eclat(self, 360-(9*i), self.vitesse % i, self.x, self.y, self.range)
-                self.eclats.append(e)
-
-            if self.vie <=40:
-                self.etat="detruit"
-
-class Eclat():
-
-    def __init__(self, parent, orientation, vitesse, x, y, range):
-        self.cible=cible
-        self.x=x
-        self.y=y
-        self.xdep=x
-        self.ydep=y
-        self.sysplanetecur=self.parent.sysplanetecur
-        self.planetecur=self.parent.planetecur
-        self.range = range/2
-        self.vitesse=vitesse
-        self.etat="actif"
-        self.orientation=orientation
+    def __init__(self, parent, x, y, projectile=False):
         self.parent=parent
+        self.x=x
+        self.y=y
+        self.proprietaire=self.parent.proprietaire
+        self.sysplanetecur=self.parent.sysplanetecur
+        self.planetecur=self.parent.planetecur
+        self.etat="actif"
+        self.vie=40
+        self.etats=[]
 
-    def explose(self):
-            self.x,self.y=hlp.getAngledPoint(self.orientation,self.vitesse, self.x, self.y)
+        #if projectile:
+        #    self.range=50
+        #else:
+        #    self.range=20
 
-            if self.y >=(self.ydep+self.range) and self.x >=(self.xdep+self.range):
-                self.etat="detruit"
-                self.parent.vie =self.parent.vie-1
+    #def eclatEffectuer:
+
+
+
+    # def exploToucher(self):
+    #     e = Eclat(self, 360-(9*1), self.vitesse % 1, self.x, self.y, self.rangeEx)
+    #     self.eclats.append(e)
+
+    # def explose(self):
+    #     self.vie =self.vie-1
+
+    #     if self.vie <=0:
+    #         self.etat="detruit"
+
+
+# class Eclat():
+
+#     def __init__(self, parent, orientation, vitesse, x, y, rangeEx):
+#         self.x=x
+#         self.y=y
+#         self.xdep=x
+#         self.ydep=y
+#         self.parent=parent
+#         self.proprietaire = self.parent.proprietaire
+#         self.sysplanetecur=self.parent.sysplanetecur
+#         self.planetecur=self.parent.planetecur
+#         self.rangeEx = rangeEx/2
+#         self.vitesse=vitesse
+#         self.etat="actif"
+#         self.orientation=orientation
+
+#     def explose(self):
+#             self.x,self.y=hlp.getAngledPoint(self.orientation,self.vitesse, self.x, self.y)
+
+#             if self.y >=(self.ydep+self.rangeEx) and self.x >=(self.xdep+self.rangeEx):
+#                 self.etat="detruit"
+#                 print("explosion morte")
+#                 self.parent.explose()
 
 
 class Joueur():

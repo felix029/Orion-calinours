@@ -825,39 +825,22 @@ class Vue():
                             else:
                                 self.canevas.create_rectangle(k.x-7,k.y-7,k.x+7,k.y+7,fill=i.couleur,tags=("projectile", k.proprietaire, "artefact"))
 
-                    if len(k.explosions) > 0:
+                if len(j.explosions) > 0:
+                    for l in j.explosions:
+                        if self.vueactive == 2:
+                            if l.sysplanetecur == None and j.planetecur == None:
+                                self.canevas.create_rectangle(l.x-20, l.y-20, l.x+20, l.y+20, fill="white",tags=("projectile", l.proprietaire, "artefact"))
 
-                        for l in k.explosions:
-                            for e in l.eclats:
-                                if self.vueactive == 2:
-                                    if l.sysplanetecur == None and k.planetecur == None:
-                                        if (k.etat=="detruit"):
-                                            self.canevas.create_rectangle(k.x-2, k.y-2, k.x+20, k.y+20, fill="purple",tags=("projectile",k.proprietaire, "artefact"))
-                                        else:
-                                            self.canevas.create_rectangle(k.x-2, k.y-2, k.x+20, k.y+20, fill="white",tags=("projectile", k.proprietaire, "artefact"))
+                        elif self.vueactive == 1:
+                            if l.sysplanetecur == self.etoileselect and k.planetecur == None:
+                                self.canevas.create_rectangle(l.x-40,l.y-40,l.x+40,l.y+40,fill="white", tags=("projectile", l.proprietaire, "artefact"))
 
-                                if self.vueactive == 1:
-                                    if l.sysplanetecur == self.etoileselect and k.planetecur == None:
-                                        if (k.etat=="detruit"):
-                                            self.canevas.create_rectangle(k.x-4,k.y-4,k.x+4,k.y+4,fill="purple",tags=("projectile", k.proprietaire, "artefact"))
-                                        else:
-                                            self.canevas.create_rectangle(k.x-4,k.y-4,k.x+4,k.y+4,fill="white", tags=("projectile", k.proprietaire, "artefact"))
-
-                                if self.vueactive == 0:
-                                    if l.sysplanetecur == self.etoileselect and k.planetecur == self.planeteselect:
-                                        if (k.etat=="detruit"):
-                                            self.canevas.create_rectangle(k.x-7,k.y-7,k.x+7,k.y+7, fill="purple",tags=("projectile", k.proprietaire, "artefact"))
-                                        else:
-                                            self.canevas.create_rectangle(k.x-7,k.y-7,k.x+7,k.y+7,fill="white",tags=("projectile", k.proprietaire, "artefact"))
+                        elif self.vueactive == 0:
+                            if l.sysplanetecur == self.etoileselect and k.planetecur == self.planeteselect:
+                                self.canevas.create_rectangle(l.x-7,l.y-7,l.x+7,l.y+7,fill="white",tags=("projectile", l.proprietaire, "artefact"))
 
 
-
-
-
-                #self.canevas.create_rectangle(j.x,j.y,image=self.imgs["vaiss"],
-                #                     tags=(j.proprietaire,"flotte",str(j.id),"artefact"))
-
-
+        #Affichage des AIs
         for i in self.mod.ias:
             for j in i.flotte:
                 if self.vueactive == 2:
