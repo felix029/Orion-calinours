@@ -129,6 +129,7 @@ class Vaisseau():
         self.etat="actif"
         self.attaquant=None
         self.explosions=[]
+
     def avancer(self):
         if self.cible:
             x=self.cible.x
@@ -174,7 +175,6 @@ class Vaisseau():
             else:
                 ex=Explosion(self, i.x, i.y, True)
                 self.explosions.append(ex)
-                #ex.eclatEffectuer()
 
     def defense(self):
         d=hlp.calcDistance(self.x,self.y,self.attaquant.x,self.attaquant.y)
@@ -188,8 +188,6 @@ class Vaisseau():
         elif self.attaquant.etat=="detruit":
             self.attaquant=None
             self.delaidetir=0
-            for i in self.projectiles:
-                i.etat="detruit"
 
         for i in self.projectiles:
             if i.etat!="detruit":
@@ -197,11 +195,12 @@ class Vaisseau():
 
     def toucher(self,puissance):
         self.energie-=puissance
+        ex=Explosion(self, self.x, self.y, True)
+        self.explosions.append(ex)
         if(self.energie<=0):
-            self.etat="detruit"
-            ex=Explosion(self, self.x, self.y)
+            ex=Explosion(self, self.x, self.y, False)
             self.explosions.append(ex)
-            #ex.eclatEffectuer()
+            self.etat="detruit"
 
 
 class Projectile():
@@ -233,7 +232,6 @@ class Projectile():
                 self.cible.toucher(self.puissance)
                 print(self.cible.etat)
                 print(self.cible.energie)
-                self.etat="detruit"
 
 
 class Explosion():
@@ -248,11 +246,12 @@ class Explosion():
         self.etat="actif"
         self.vie=40
         self.etats=[]
+        self.rayon=0
 
-        #if projectile:
-        #    self.range=50
-        #else:
-        #    self.range=20
+        if projectile:
+            self.rayon=5
+        else:
+            self.rayon=20
 
     #def eclatEffectuer:
 
@@ -455,7 +454,6 @@ class Joueur():
     def detruire(self):
 
         for i in self.flotte:
-
 
             if i.etat=="detruit":
                 self.detruits.append(i)
