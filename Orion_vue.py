@@ -60,6 +60,29 @@ class Vue():
         self.resized = self.gas.resize((30, 30),Image.ANTIALIAS)
         self.gaz = ImageTk.PhotoImage(self.resized)
 
+        #Soleil
+        self.soleil = Image.open("./images/soleil.png")
+        self.resized = self.soleil.resize((200,200),Image.ANTIALIAS)
+        self.soleil = ImageTk.PhotoImage(self.resized)
+
+        #Base
+        self.base1 = Image.open("./images/batibase1.png")
+        self.resized = self.base1.resize((100,100),Image.ANTIALIAS)
+        self.base1 = ImageTk.PhotoImage(self.resized)
+
+        #Batiment Mine
+        self.mine1 = Image.open("./images/batimine1.png")
+        self.resized = self.mine1.resize((75,75),Image.ANTIALIAS)
+        self.mine1 = ImageTk.PhotoImage(self.resized)
+        #Batiment Gaz
+        self.gaz1 = Image.open("./images/batigaz1.png")
+        self.resized = self.gaz1.resize((75,75),Image.ANTIALIAS)
+        self.gaz1 = ImageTk.PhotoImage(self.resized)
+        #Batiment Electricite
+        self.elec1 = Image.open("./images/batielec1.png")
+        self.resized = self.elec1.resize((100,100),Image.ANTIALIAS)
+        self.elec1 = ImageTk.PhotoImage(self.resized)
+
     def fermerfenetre(self):
         self.parent.fermefenetre()
 
@@ -566,9 +589,6 @@ class Vue():
                 y=random.randrange(mod.hauteur)
                 self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond"))
                 #Insertion de l'image du soleil
-                self.soleil = Image.open("./images/soleil.png")
-                self.resized = self.soleil.resize((200,200),Image.ANTIALIAS)
-                self.soleil = ImageTk.PhotoImage(self.resized)
                 self.canevas.create_image(0, 0, image=self.soleil, anchor=NW, tags=("soleil", "fond"))
 
                 #self.canevas.create_oval(-100, -100, 100, 100, fill="orange", tags=("soleil", "fond"))
@@ -683,17 +703,21 @@ class Vue():
             if self.mod.joueurs[j].nom == self.planeteselect.proprietaire:
                 for b in self.planeteselect.batiment:
                     if b.typeBatiment == "minerai":
-                        self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="red",tags=("batiment",b.id)) #Affiche le batiment
-                        self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="niveau") #affiche le niveau du batiment
+                        self.canevas.create_image(b.x - 25, b.y - 25, image=self.mine1, anchor=NW, tags=("batiment",b.id))
+                        #self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="red",tags=("batiment",b.id)) #Affiche le batiment
+                        #self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="niveau") #affiche le niveau du batiment
                     elif b.typeBatiment == "gaz":
-                        self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="blue",tags=("batiment",b.id))
-                        self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="niveau") #affiche le niveau du batiment
+                        self.canevas.create_image(b.x - 25, b.y - 25, image=self.gaz1, anchor=NW, tags=("batiment",b.id))
+                        #self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="blue",tags=("batiment",b.id))
+                        #self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="niveau") #affiche le niveau du batiment
                     elif b.typeBatiment == "energie":
-                        self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="yellow",tags=("batiment",b.id))
-                        self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="black",tags="vitesse") #affiche le niveau du batiment
+                        self.canevas.create_image(b.x - 50, b.y - 50, image=self.elec1, anchor=NW, tags=("batiment",b.id))
+                        #self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="yellow",tags=("batiment",b.id))
+                        #self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="black",tags="vitesse") #affiche le niveau du batiment
                     elif b.typeBatiment == "base":
-                        self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="purple",tags=("batiment",b.id))
-                        self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="vitesse") #affiche le niveau du batiment
+                        self.canevas.create_image(b.x - 50, b.y - 50, image=self.base1, anchor=NW, tags=("batiment",b.id))
+                        #self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="purple",tags=("batiment",b.id))
+                        #self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="vitesse") #affiche le niveau du batiment
 
 
 ################################################################################################ Charles
