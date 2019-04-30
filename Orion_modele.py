@@ -10,11 +10,16 @@ class Planete():
         self.x=x
         self.y=y
         self.taille=random.randrange(13,17)
+        #1- Génèrer un int aléatoire pour choisir une image de planète
         planetImage=random.randrange(1,11)
+        #2- Créer une string représentant le chemin relatif de l'image, et ce, à l'aide du int aléatoire obtenu
         img="./images/planet"+str(planetImage)+".png"
-
+        #3- Créer une variable image à l'aide de la fonction Image.open qui prend en paramètre le chemin relatif créé à l'étape précédente
+        #       Pour ce faire, on utilise "Image" de la librairie "PIL" que l'on a importé
         planet1 = Image.open(img)
+        #4- Redimensionner l'image et stocker le tout dans une nouvelle variable
         resized = planet1.resize((self.taille+30,self.taille+30),Image.ANTIALIAS)
+        #5- Reformater la variable "Image" en variable "ImageTK" afin que TkInter la supporte, puis stocker le tout dans une variable d'instance "self.planetImage"
         self.planetImage = ImageTk.PhotoImage(resized)
 
 
@@ -81,12 +86,14 @@ class TourDefense():   ### à ajouter git
         self.typecible=""
         self.projectiles=[]
         self.delaidetir=0
+        self.delaimax=5
         self.cible=None
+        self.range=10
 
-    def tirer(self):
+    def tirer(self):  ###modifications GM 29 avril###
         d=hlp.calcDistance(self.x,self.y,self.cible.x,self.cible.y)
 
-        if self.cible.etat!="detruit" and d<=self.range:  ###ajouter le délai de tir
+        if self.cible.etat!="detruit" and d<=self.range:
             if self.delaidetir==0:
                 if self.cible.attaquant==None:  ###ok
                     self.cible.attaquant=self
@@ -154,7 +161,7 @@ class Vaisseau():
         d=hlp.calcDistance(self.x,self.y,self.cible.x,self.cible.y)
         if self.cible and d>self.range:
             self.avancer()
-        elif self.cible.etat!="detruit":  ###ajouter le délai de tir
+        elif self.cible.etat!="detruit":
             if self.delaidetir==0:
                 if self.cible.attaquant==None:  ###ok
                     self.cible.attaquant=self
@@ -236,7 +243,9 @@ class Joueur():
         self.energie = 0
         self.gaz = 0
         self.flotte=[]
+        self.ToursDefense=[] ####ajout GM 29 avril##
         self.detruits=[]
+        self.joueurami=[]  ### id des joueurs ###
         self.actions={"creervaisseau":self.creervaisseau,
                       "upgBatiment":self.upgBatiment,  #Ajouter le 9 avril par Nic
                       "vendreBatiment":self.vendreBatiment,  #Ajouter le 9 avril par Nic
@@ -347,6 +356,24 @@ class Joueur():
                         if k.id == int(iddesti):
                             i.cible=k
                             i.typecible="Vaisseau"
+
+    def ciblerTourDefense(self):  #### Ajout Guillaume-29 avril, à voir si impact de performance###
+        for i in self.ToursDefense:
+            for j in self.parent.ias:
+                if j.id not in self.joueurami:
+                    for k in j.flotte:
+                        d=hlp.calcDistance(i.x,i.y,k.x,k.y)
+                        if d<=i.range:
+                            i.cible=k
+                            i.typecible="Vaisseau" ##peut-être pas nécessaire pour les tours
+            for j in self.parent.joueurs:
+                if self.parent.joueurs[j].id not in self.joueurami:
+                    for k in self.parent.joueurs[j].flotte:
+                        d=hlp.calcDistance(i.x,i.y,k.x,k.y)
+                        if d<=i.range:
+                            i.cible=k
+                            i.typecible="Vaisseau"
+
 
     def cibleretour(self,idori):
         for i in self.flotte:
