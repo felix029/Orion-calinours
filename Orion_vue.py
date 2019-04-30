@@ -60,38 +60,61 @@ class Vue():
         self.gas = Image.open("./images/gas.png")
         self.resized = self.gas.resize((30, 30),Image.ANTIALIAS)
         self.gas = ImageTk.PhotoImage(self.resized)
-        
+
         self.vaisseau = Image.open("./images/vaisseau.png")
         self.resized = self.vaisseau.resize((50, 50),Image.ANTIALIAS)
         self.vaisseauMenuGauche = ImageTk.PhotoImage(self.resized)
-        
+
         self.mine=Image.open("./images/mine.png")
         self.resized = self.mine.resize((35, 35),Image.ANTIALIAS)
         self.mineMenuGauche = ImageTk.PhotoImage(self.resized)
-        
+
         self.gaz=Image.open("./images/gaz.png")
         self.resized = self.gaz.resize((45, 45),Image.ANTIALIAS)
         self.gazMenuGauche = ImageTk.PhotoImage(self.resized)
-        
+
         self.electric=Image.open("./images/electricity.png")
         self.resized = self.electric.resize((40, 40),Image.ANTIALIAS)
         self.electricMenuGauche = ImageTk.PhotoImage(self.resized)
-        
+
         self.spaceship=Image.open("./images/falcon.png")
         self.resized = self.spaceship.resize((45, 45),Image.ANTIALIAS)
         self.spaceshipMenuGauche = ImageTk.PhotoImage(self.resized)
-        
+
         self.goldmine=Image.open("./images/goldmine.png")
         self.resized = self.goldmine.resize((45, 45),Image.ANTIALIAS)
         self.goldmineMenuGauche = ImageTk.PhotoImage(self.resized)
-        
+
         self.electricStation=Image.open("./images/electric.png")
         self.resized = self.electricStation.resize((85, 45),Image.ANTIALIAS)
         self.electricStationMenuGauche = ImageTk.PhotoImage(self.resized)
-        
+
         self.gazCan=Image.open("./images/can.png")
         self.resized = self.gazCan.resize((85, 50),Image.ANTIALIAS)
         self.gazCanMenuGauche = ImageTk.PhotoImage(self.resized)
+
+        #Soleil
+        self.soleil = Image.open("./images/soleil.png")
+        self.resized = self.soleil.resize((200,200),Image.ANTIALIAS)
+        self.soleil = ImageTk.PhotoImage(self.resized)
+
+        #Base
+        self.base1 = Image.open("./images/batibase1.png")
+        self.resized = self.base1.resize((100,100),Image.ANTIALIAS)
+        self.base1 = ImageTk.PhotoImage(self.resized)
+
+        #Batiment Mine
+        self.mine1 = Image.open("./images/batimine1.png")
+        self.resized = self.mine1.resize((75,75),Image.ANTIALIAS)
+        self.mine1 = ImageTk.PhotoImage(self.resized)
+        #Batiment Gaz
+        self.gaz1 = Image.open("./images/batigaz1.png")
+        self.resized = self.gaz1.resize((75,75),Image.ANTIALIAS)
+        self.gaz1 = ImageTk.PhotoImage(self.resized)
+        #Batiment Electricite
+        self.elec1 = Image.open("./images/batielec1.png")
+        self.resized = self.elec1.resize((100,100),Image.ANTIALIAS)
+        self.elec1 = ImageTk.PhotoImage(self.resized)
 
         #Soleil
         self.soleil = Image.open("./images/soleil.png")
@@ -385,18 +408,18 @@ class Vue():
         self.tourdefense.bind("<Button>", self.creerTourDefense)
 
         #Boutons du upgradeFrame
-        self.upgVaisseau=Button(self.upgradeFrame,image=self.spaceshipMenuGauche,bg =self.couleurBackgroundCotes) 
+        self.upgVaisseau=Button(self.upgradeFrame,image=self.spaceshipMenuGauche,bg =self.couleurBackgroundCotes)
         self.upgVaisseau.grid(row=2, column=0, sticky="we")
         self.upgVaisseau.config(height=45)
-        
+
         self.upgMines=Button(self.upgradeFrame,image=self.goldmineMenuGauche,bg =self.couleurBackgroundCotes)
         self.upgMines.grid(row=4, column=0, sticky="we")
         self.upgMines.config(height=45)
-        
+
         #self.upgExtracteurs=Button(self.upgradeFrame,image=self.gazCanMenuGauche,bg=self.couleurBackgroundCotes)
         #self.upgExtracteurs.grid(row=5, column=0, sticky="we")
         #self.upgExtracteurs.config(height=45)
-        
+
         #self.upgElectricite=Button(self.upgradeFrame,image=self.electricStationMenuGauche,bg =self.couleurBackgroundCotes)
         #self.upgElectricite.grid(row=6, column=0, sticky="we")
         #self.upgElectricite.config(height=45)
@@ -426,20 +449,20 @@ class Vue():
         self.lblJoueurs = Label(self.cadreinfogen, text=" .: AUTRES JOUEURS :. ",fg="white", width= 38, height=2, bg=self.couleurTitreCadre,borderwidth=3, relief="solid")
         self.lblJoueurs.grid(row=0,column=0,sticky = "we")
         #.lblJoueurs.pack(fill=X)
-        
+
         self.labid=Label(self.cadreinfogen,text=self.nom,fg=mod.joueurs[self.nom].couleur,bg=self.couleurBackgroundCotes)
         self.labid.grid(row=1, column=0, sticky="we")
 
         self.cadreminimap=Frame(self.lowerRightFrame,height=200,width=150,bg=self.couleurBackgroundCotes)
         self.cadreminimap.grid(row=1, column=0, sticky="we")
-        
+
         self.labelCadreMini = Label(self.cadreminimap, text=".: STATISTIQUES :.",fg="white", width= 25, height=2, bg=self.couleurTitreCadre,borderwidth=3, relief="solid")
         #self.labelCadreMini.grid(row=0,column=0,sticky="we")
         self.labelCadreMini.pack(fill=X)
-       
+
         self.statsFrame = Frame(self.lowerRightFrame, width=150,height=200)
         self.statsFrame.grid(row=2, column=0, sticky="we")
-        
+
         self.canevasMini=Canvas(self.statsFrame,width=150,height=200,bg=self.couleurBackgroundCotes)
         self.canevasMini.pack(fill=X)
         #self.canevasMini.grid(row=0, column=0, sticky="we")
@@ -638,10 +661,6 @@ class Vue():
                 y=random.randrange(mod.hauteur)
                 self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond"))
                 #Insertion de l'image du soleil
-
-                self.soleil = Image.open("./images/soleil.png")
-                self.resized = self.soleil.resize((200,200),Image.ANTIALIAS)
-                self.soleil = ImageTk.PhotoImage(self.resized)
                 self.canevas.create_image(0, 0, image=self.soleil, anchor=NW, tags=("soleil", "fond"))
 
                 #self.canevas.create_oval(-100, -100, 100, 100, fill="orange", tags=("soleil", "fond"))
@@ -825,7 +844,7 @@ class Vue():
             t=30
             self.canevas.create_oval(x-t,y-t,x+t,y+t,dash=(3,3),width=2,outline=couleur,
                                  tags=("planetemere","marqueur"))
-        
+
         if self.vueactive == 1:
             j=self.mod.joueurs[self.nom]
 
