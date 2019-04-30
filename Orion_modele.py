@@ -73,7 +73,7 @@ class Batiment(): #Ajouter le 8 avril par nic
         self.nom=""
         self.etat=""
 
-class TourDefense():   ### à ajouter git
+class TourDefense():   ### GM 29 avril
     def __init__(self,nom,plan,x,y):
         self.id=Id.prochainid()
         self.proprietaire=nom
