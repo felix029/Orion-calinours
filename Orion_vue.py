@@ -116,6 +116,29 @@ class Vue():
         self.resized = self.elec1.resize((100,100),Image.ANTIALIAS)
         self.elec1 = ImageTk.PhotoImage(self.resized)
 
+        #Soleil
+        self.soleil = Image.open("./images/soleil.png")
+        self.resized = self.soleil.resize((200,200),Image.ANTIALIAS)
+        self.soleil = ImageTk.PhotoImage(self.resized)
+
+        #Base
+        self.base1 = Image.open("./images/batibase1.png")
+        self.resized = self.base1.resize((100,100),Image.ANTIALIAS)
+        self.base1 = ImageTk.PhotoImage(self.resized)
+
+        #Batiment Mine
+        self.mine1 = Image.open("./images/batimine1.png")
+        self.resized = self.mine1.resize((75,75),Image.ANTIALIAS)
+        self.mine1 = ImageTk.PhotoImage(self.resized)
+        #Batiment Gaz
+        self.gaz1 = Image.open("./images/batigaz1.png")
+        self.resized = self.gaz1.resize((75,75),Image.ANTIALIAS)
+        self.gaz1 = ImageTk.PhotoImage(self.resized)
+        #Batiment Electricite
+        self.elec1 = Image.open("./images/batielec1.png")
+        self.resized = self.elec1.resize((100,100),Image.ANTIALIAS)
+        self.elec1 = ImageTk.PhotoImage(self.resized)
+
     def fermerfenetre(self):
         self.parent.fermefenetre()
 
@@ -637,10 +660,6 @@ class Vue():
                 y=random.randrange(mod.hauteur)
                 self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond"))
                 #Insertion de l'image du soleil
-
-                self.soleil = Image.open("./images/soleil.png")
-                self.resized = self.soleil.resize((200,200),Image.ANTIALIAS)
-                self.soleil = ImageTk.PhotoImage(self.resized)
                 self.canevas.create_image(0, 0, image=self.soleil, anchor=NW, tags=("soleil", "fond"))
 
                 #self.canevas.create_oval(-100, -100, 100, 100, fill="orange", tags=("soleil", "fond"))
