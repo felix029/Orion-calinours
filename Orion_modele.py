@@ -245,7 +245,6 @@ class Joueur():
         self.flotte=[]
         self.ToursDefense=[] ####ajout GM 29 avril##
         self.detruits=[]
-<<<<<<< HEAD
         self.cout = {"minerai":[100,"energie"],
                     "gaz":[100,"energie"],
                     "energie":[100,"minerai"],
@@ -255,9 +254,7 @@ class Joueur():
                     "chasseur":[50,"minerai"],
                     "colonisateur":[50,"minerai"],
                     "cargo":[50,"minerai"]}
-=======
         self.joueurami=[]  ### id des joueurs ###
->>>>>>> a185f2abe39e5e66f72ca0aa6d983820ef8d3a0b
         self.actions={"creervaisseau":self.creervaisseau,
                       "upgBatiment":self.upgBatiment,  #Ajouter le 9 avril par Nic
                       "vendreBatiment":self.vendreBatiment,  #Ajouter le 9 avril par Nic
@@ -304,7 +301,6 @@ class Joueur():
         for p in self.planetescontrolees:
             for b in p.batiment:
                 if int(idBatiment[0]) == b.id:
-<<<<<<< HEAD
                     if self.cout["upg"+str(b.typeBatiment)][1] == "minerai":
                         if self.minerai >= self.cout["upg"+str(b.typeBatiment)][0]:
                             self.minerai -= self.cout["upg"+str(b.typeBatiment)][0]
@@ -329,11 +325,6 @@ class Joueur():
                         else:
                             print("MANQUE DE FOND")
         
-=======
-                    b.vitesse += 1
-                    self.parent.parent.vue.afficherBatiment()
-
->>>>>>> a185f2abe39e5e66f72ca0aa6d983820ef8d3a0b
     def modifRessource(self):
         #Ajouter le 8 avril par nic ( Gere l'incrémentation des ressources des joueurs avec batiment et diminuer les ressource restante sur la planete du joueur)
         for p in self.planetescontrolees:
