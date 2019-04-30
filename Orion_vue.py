@@ -748,7 +748,7 @@ class Vue():
         if self.vueactive == 0:
             if self.planeteselect.proprietaire == self.nom:
                 print("Creer vaisseau")
-                self.parent.creervaisseau()
+                self.parent.creervaisseau(self.planeteselect.id)
                 self.canevas.delete("marqueur")
                 self.btncreervaisseau.pack_forget()
                 self.maselection=None
