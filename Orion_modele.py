@@ -240,12 +240,21 @@ class Joueur():
         self.planetemere.proprietaire=self.nom
         self.couleur=couleur
         self.planetescontrolees=[planetemere]
-        self.minerai = 0
-        self.energie = 0
-        self.gaz = 0
+        self.minerai = 600
+        self.energie = 600
+        self.gaz = 600
         self.flotte=[]
         self.ToursDefense=[] ####ajout GM 29 avril##
         self.detruits=[]
+        self.cout = {"minerai":[100,"energie"],
+                    "gaz":[100,"energie"],
+                    "energie":[100,"minerai"],
+                    "upgminerai":[500,"minerai"],
+                    "upggaz":[500,"minerai"],
+                    "upgenergie":[500,"minerai"],
+                    "chasseur":[50,"minerai"],
+                    "colonisateur":[50,"minerai"],
+                    "cargo":[50,"minerai"]}
         self.joueurami=[]  ### id des joueurs ###
         self.actions={"creervaisseau":self.creervaisseau,
                       "upgBatiment":self.upgBatiment,  #Ajouter le 9 avril par Nic
@@ -276,13 +285,18 @@ class Joueur():
 
         p,typeBatiment,x,y = params
 
-        b = Batiment(self.id,p,typeBatiment,x,y)
-        print("Batiment",b.id)
+        if self.minerai >= self.cout[typeBatiment][0]:
+            b = Batiment(self.id,p,typeBatiment,x,y)
+            print("Batiment",b.id)
 
-        for i in self.planetescontrolees:
-            if i.id == int(p):
-                i.batiment.append(b)
-                self.parent.parent.vue.afficherBatiment()
+            for i in self.planetescontrolees:
+                if i.id == int(p):
+                    i.batiment.append(b)
+                    self.parent.parent.vue.afficherBatiment()
+
+            self.minerai -= self.cout[typeBatiment][0]
+        else :
+            print("MANQUE DE FOND")
 
     #Ajouter le 9 avril par nic
     def vendreBatiment(self,batiment):
@@ -294,9 +308,30 @@ class Joueur():
         for p in self.planetescontrolees:
             for b in p.batiment:
                 if int(idBatiment[0]) == b.id:
-                    b.vitesse += 1
-                    self.parent.parent.vue.afficherBatiment()
+                    if self.cout["upg"+str(b.typeBatiment)][1] == "minerai":
+                        if self.minerai >= self.cout["upg"+str(b.typeBatiment)][0]:
+                            self.minerai -= self.cout["upg"+str(b.typeBatiment)][0]
+                            b.vitesse += 1
+                            self.parent.parent.vue.afficherBatiment()
+                        else:
+                            print("MANQUE DE FOND")
 
+                    elif self.cout["upg"+str(b.typeBatiment)][1] == "energie":
+                        if self.energie >= self.cout["upg"+str(b.typeBatiment)][0]:
+                            self.energie -= self.cout["upg"+str(b.typeBatiment)][0]
+                            b.vitesse += 1
+                            self.parent.parent.vue.afficherBatiment()
+                        else:
+                            print("MANQUE DE FOND")
+
+                    elif self.cout["upg"+str(b.typeBatiment)][1] == "gaz":
+                        if self.gaz >= self.cout["upg"+str(b.typeBatiment)][0]:
+                            self.gaz -= self.cout["upg"+str(b.typeBatiment)][0]
+                            b.vitesse += 1
+                            self.parent.parent.vue.afficherBatiment()
+                        else:
+                            print("MANQUE DE FOND")
+        
     def modifRessource(self):
         #Ajouter le 8 avril par nic ( Gere l'incrémentation des ressources des joueurs avec batiment et diminuer les ressource restante sur la planete du joueur)
         for p in self.planetescontrolees:
@@ -337,10 +372,11 @@ class Joueur():
                                 i.typecible="Vaisseau"
                     for j in self.parent.joueurs:
                         for k in self.parent.joueurs[j].flotte:
-                            if k.id == int(iddesti):
-                                print("TARGETED SHIP")
-                                i.cible=k
-                                i.typecible="Vaisseau"
+                            if self.parent.joueurs[j]!= self:
+                                if k.id == int(iddesti):
+                                    print("TARGETED SHIP")
+                                    i.cible=k
+                                    i.typecible="Vaisseau"
 
     def ciblerflotteplanete(self,ids):
         idori,iddesti,etoile=ids
@@ -596,6 +632,7 @@ class Modele():
                   "lightblue","pink","gold","purple"]
         for i in joueurs:
             self.joueurs[i]=Joueur(self,i,planetej.pop(0),couleurs.pop(0))
+            self.joueurs[i].planetescontrolees[0].batiment.append(Batiment(self.joueurs[i].id,planetej,"base",400,300))
 
         # IA- creation des ias - max 2
         couleursia=["orange","green"]
