@@ -89,7 +89,7 @@ class TourDefense():   ### à ajouter git
         self.energie=100
         self.typecible=""
         self.projectiles=[]
-         self.explosions=[]
+        self.explosions=[]
         self.delaidetir=0
         self.delaimax=5
         self.cible=None
@@ -117,7 +117,7 @@ class TourDefense():   ### à ajouter git
             if i.etat!="detruit":
                 i.deplacer()
             else:
-                ex=Explosion(self, self.cible.x,self.cible.y, True)
+                ex=Explosion(self, i.x, i.y, True)
                 self.explosions.append(ex)
 
 class Vaisseau():
@@ -191,6 +191,10 @@ class Vaisseau():
         for i in self.projectiles:
             if i.etat!="detruit":
                 i.deplacer()
+            elif i.cible == None:
+                ex=Explosion(self, i.x, i.y, True)
+                self.explosions.append(ex)
+                self.projectiles.remove(i)
             else:
                 ex=Explosion(self, i.x, i.y, True)
                 self.explosions.append(ex)
@@ -205,7 +209,7 @@ class Vaisseau():
             self.delaidetir-=1
 
         elif self.attaquant.etat=="detruit":
-            ex=Explosion(self, self.y, self.attaquant.x, False)
+            ex=Explosion(self, self.attaquant.y, self.attaquant.x, False)
             self.explosions.append(ex)
             self.attaquant=None
             self.delaidetir=0
@@ -253,6 +257,7 @@ class Projectile():
                 self.cible.toucher(self.puissance)
                 print(self.cible.etat)
                 print(self.cible.energie)
+
 
 
 class Explosion():
@@ -365,7 +370,7 @@ class Joueur():
                     print("Vaisseau",v.id)
                     self.flotte.append(v)
                     break
-        
+
 
     def creerBatiment(self,params): #Ajouter le 8 avril par nic
 
