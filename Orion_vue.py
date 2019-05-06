@@ -229,6 +229,7 @@ class Vue():
         self.lblElectricite.grid(row=0, column=7)
         self.statsElectriciteLabel.grid(row=0, column=8)
 
+
         self.espaceVide2 = Label(self.upperFrame, bg = self.couleurBackgroundMenu,width=self.espacementDonneesMenu).grid(row=0, column=9)
 
         self.lab_rock = Label(self.upperFrame, image = self.minerais, bg = self.couleurBackgroundMenu)
@@ -589,6 +590,10 @@ class Vue():
                 y=random.randrange(mod.hauteur)
                 self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond"))
                 #Insertion de l'image du soleil
+
+                self.soleil = Image.open("./images/soleil.png")
+                self.resized = self.soleil.resize((200,200),Image.ANTIALIAS)
+                self.soleil = ImageTk.PhotoImage(self.resized)
                 self.canevas.create_image(0, 0, image=self.soleil, anchor=NW, tags=("soleil", "fond"))
 
                 #self.canevas.create_oval(-100, -100, 100, 100, fill="orange", tags=("soleil", "fond"))
@@ -657,7 +662,7 @@ class Vue():
                 #self.planet10 = ImageTk.PhotoImage(self.resized)
 
                 # Afficher l'image de chaque planètes du array "planetes" de l'étoile sélectionnée
-                self.canevas.create_image(i.x-i.taille/2, i.y-i.taille/2, image=i.planetImage, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+                self.canevas.create_image(i.x, i.y, image=i.planetImage, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
                 print(s, )
                 #self.canevas.create_oval(i.x-t,i.y-t,i.x+t,i.y+t,fill="grey80",
                 #                       tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
@@ -833,8 +838,6 @@ class Vue():
                 self.mineraisStats.set(self.mod.joueurs[j].minerai)
                 self.gazStats.set(self.mod.joueurs[j].gaz)
 
-        #if self.maselection!=None:
-
             #joueur=mod.joueurs[self.maselection[0]]
             #if self.maselection[0]=="etoile":
                 #for i in joueur.planetescontrolees:
@@ -932,6 +935,9 @@ class Vue():
                             break
                 elif self.flotteselect != None:
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
+
+                    print("Dans le else de flotte vue 2")
+
                     self.parent.ciblerflotte(self.flotteselect.id, self.maselection[1], "flotte")
                     self.flotteselect = None
 
@@ -971,11 +977,14 @@ class Vue():
                     for i in j.flotte:
                         if i.id == int(self.maselection[1]):
                             self.flotteselect = i
+                            self.maselection=None
                             break
                 elif self.flotteselect != None:
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
+                    print("Dans le else de flotte vue 1")
                     self.parent.ciblerflotte(self.flotteselect.id, self.maselection[1], "flotte")
                     self.flotteselect = None
+
                 self.maselection = None
 
             if tag and tag[0] == "retour2":
@@ -1000,7 +1009,6 @@ class Vue():
 
 
 
-
             if tag and tag[0] == "flotte":
 
                 if self.flotteselect == None:
@@ -1014,6 +1022,7 @@ class Vue():
                             break
                 elif self.flotteselect != None:
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
+                    print("Dans le else de flotte vue 0")
                     self.parent.ciblerflotte(self.flotteselect.id, self.maselection[1], "flotte")
                     self.flotteselect = None
 
