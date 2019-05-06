@@ -174,19 +174,19 @@ class Vaisseau():
             self.avancer()
         elif self.cible.etat!="detruit":
             if self.delaidetir==0:
-                if self.cible.attaquant==None:  ###ok
+                if self.cible.attaquant==None:
                     self.cible.attaquant=self
                 p=Projectile(self, self.cible,self.x,self.y,self.cible.x,self.cible.y)
                 self.projectiles.append(p)
                 self.delaidetir=self.delaimax
             self.delaidetir-=1
 
-        else:
-            ex=Explosion(self, self.cible.x,self.cible.y, False)
+        elif self.cible.etat == "detruit":
+            ex=Explosion(self, self.cible.x,self.cible.y, True)
             self.explosions.append(ex)
             self.cible=None
             self.delaidetir=0
-            self.typecible = None
+            self.typecible=None
 
         for i in self.projectiles:
             if i.etat!="detruit":
@@ -205,7 +205,7 @@ class Vaisseau():
             self.delaidetir-=1
 
         elif self.attaquant.etat=="detruit":
-            ex=Explosion(self, self.attaquant.y, self.attaquant.x, False)
+            ex=Explosion(self, self.attaquant.x, self.attaquant.y, False)
             self.explosions.append(ex)
             self.attaquant=None
             self.delaidetir=0
@@ -213,6 +213,9 @@ class Vaisseau():
         for i in self.projectiles:
             if i.etat!="detruit":
                 i.deplacer()
+            else:
+                ex=Explosion(self, self.x, self.y, True)
+                self.explosions.append(ex)
 
     def toucher(self,puissance):
         self.energie-=puissance
@@ -657,6 +660,7 @@ class Modele():
         self.creeretoiles()
         self.creerterrain()
         self.assignerplanetes(joueurs,2)
+        self.wrongValue=0
 
     def creerterrain(self):
         self.terrain=[]
@@ -676,9 +680,30 @@ class Modele():
         #self.xEtoile = [nbEtoile+1]
         #self.yEtoile = [nbEtoile+1]
         for i in range(nbEtoile):
-            x=random.randrange(0, self.largeur-10)
-            y=random.randrange(0, self.hauteur-10)
-            self.etoiles.append(Etoile(x,y,self))
+            x=random.randrange(20, self.largeur-20)
+            y=random.randrange(20, self.hauteur-20)
+            verifValue = True
+
+            while verifValue:
+                self.wrongValue=0
+
+                for j in self.etoiles:
+                    if(x > j.x-(j.taille/2) or x < j.x +(j.taille/2)) and (y > j.y-(j.taille/2) or y < j.y +(j.taille/2):
+                        self.wrongValue+=1
+
+                if self.wrongValue == 0:
+                    self.etoiles.append(Etoile(x,y,self))
+                    verifValue=False
+                    break
+
+                elif  self.wrongValue >= 1:
+                    x=random.randrange(20,self.largeur-20) #largeur
+                    y=random.randrange(20,self.hauteur-20) #hauteur
+                    self.goodValue=0
+
+
+
+
        #     self.xEtoile[i]=random.randrange(self.largeur-(2*bordure))
         #    self.yEtoile[i]=random.randrange(self.hauteur-(2*bordure))
 #
