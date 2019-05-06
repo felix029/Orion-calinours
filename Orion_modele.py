@@ -191,10 +191,6 @@ class Vaisseau():
         for i in self.projectiles:
             if i.etat!="detruit":
                 i.deplacer()
-            elif i.cible == None:
-                ex=Explosion(self, i.x, i.y, True)
-                self.explosions.append(ex)
-                self.projectiles.remove(i)
             else:
                 ex=Explosion(self, i.x, i.y, True)
                 self.explosions.append(ex)
