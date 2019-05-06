@@ -152,11 +152,11 @@ class Vaisseau():
                     print("Vaisseau: ", self.cible.id)
                 elif self.cible == Etoile:
                     print("Etoile: ", self.cible.id)
-                elif self.cible == Planete:
-                    print("RESSOURCES...",self.cible.id,self.cible.ressource,self.cible.proprietaire)
-                    self.cible.proprietaire=self.proprietaire                #tempo=input("Continuersvp")
-
-                self.cible=None
+                elif isinstance(self.cible, Planete):
+                    if self.cible.proprietaire==" ":
+                        self.etat="colonisation"                  #tempo=input("Continuersvp")
+                if self.etat!="colonisation":
+                    self.cible=None
                 #print("Change cible")
         else:
             print("PAS DE CIBLE")
@@ -281,7 +281,7 @@ class Joueur():
                     print("Vaisseau",v.id)
                     self.flotte.append(v)
                     break
-        
+
 
     def creerBatiment(self,params): #Ajouter le 8 avril par nic
 
@@ -442,8 +442,12 @@ class Joueur():
         self.modifRessource()
         #if self.detruits:
          #   self.detruire()
+        self.colonisation()
         self.detruire()
         for i in self.flotte:
+            if i.etat=="colonisation":
+                i.cible=None
+                i.etat=""
             if i.cible and i.typecible == "Vaisseau":
                 i.tirer()
             elif i.cible:
@@ -485,6 +489,19 @@ class Joueur():
         for i in self.detruits:
             self.flotte.remove(i)
             self.detruits.remove(i)
+
+    def colonisation(self):
+        for i in self.flotte:
+            if i.etat=="colonisation":
+                print(i.cible, "TEST")
+                i.cible.proprietaire=self.nom
+                self.planetescontrolees.append(i.cible)
+                i.cible.batiment.append(Batiment(self.id,i.cible.id,"base",400,300))
+                #i.cible=None
+                #elf.etat=""
+
+
+
 
     #Ajout Felix-O 23 Avril
     def versvue1(self,ids):
