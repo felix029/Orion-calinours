@@ -160,10 +160,6 @@ class Controleur():
      #Ajouter le 9 avril par Nic
     def upgBatiment(self,idBatiment):
         self.actions.append([self.monnom,"upgBatiment",[idBatiment]])
-
-     #Ajouter le 9 avril par Nic
-    def vendreBatiment(self,batiment):
-        self.actions.append([self.monnom,"vendreBatiment",[batiment]])
     
     def detruire(self):
         self.actions.append([self.monnom,"detruire",""])

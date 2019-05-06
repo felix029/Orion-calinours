@@ -74,9 +74,6 @@ class Batiment(): #Ajouter le 8 avril par nic
         self.vitesse = 1
         self.nom=""
         self.etat=""
-        self.cout = {"minerai":100,
-                    "gaz":100,
-                    "energie":100}
 
 class TourDefense():   ### à ajouter git
     def __init__(self,nom,plan,x,y):
@@ -261,15 +258,8 @@ class Joueur():
                     "colonisateur":[50,"minerai"],
                     "cargo":[50,"minerai"]}
         self.joueurami=[]  ### id des joueurs ###
-        self.cout = {"minerai":[100,self.energie],
-                    "gaz":[100,self.energie],
-                    "energie":[100,self.minerai],
-                    "upgminerai":[500,self.minerai],
-                    "upggaz":[500,self.minerai],
-                    "upgenergie":[500,self.minerai]}
         self.actions={"creervaisseau":self.creervaisseau,
                       "upgBatiment":self.upgBatiment,  #Ajouter le 9 avril par Nic
-                      "vendreBatiment":self.vendreBatiment,  #Ajouter le 9 avril par Nic
                       "creerBatiment":self.creerBatiment,  #Ajouter le 9 avril par Nic
                       "ciblerflotte":self.ciblerflotte,
                       "detruire": self.detruire,
@@ -323,26 +313,34 @@ class Joueur():
                 i.toursDefense.append(b)
                 self.parent.parent.vue.afficherBatiment()
 
-    #Ajouter le 9 avril par nic
-    def vendreBatiment(self,batiment):
-        self.minerai+=batiment.cout*0.5
-        batiment.etat="detruit"
-
      #Ajouter le 9 avril par Nic
     def upgBatiment(self,idBatiment):
         for p in self.planetescontrolees:
             for b in p.batiment:
                 if int(idBatiment[0]) == b.id:
-                    print(b.typeBatiment)
-                    if self.cout["upg"+str(b.typeBatiment)][0] <= self.cout["upg"+str(b.typeBatiment)][1]:
-                        b.vitesse += 1
-                        print("argent joueur : ", self.cout["upg"+str(b.typeBatiment)][1])
-                        print("cout : ", self.cout["upg"+str(b.typeBatiment)][0])
-                        self.cout["upg"+str(b.typeBatiment)][1] -= self.cout["upg"+str(b.typeBatiment)][0]
-                        self.parent.parent.vue.afficherBatiment()
-                        print("argent joueur apres : ", self.cout["upg"+str(b.typeBatiment)][1])
-                    else:
-                        print("MANQUE DE FOND")
+                    if self.cout["upg"+str(b.typeBatiment)][1] == "minerai":
+                        if self.minerai >= self.cout["upg"+str(b.typeBatiment)][0]:
+                            self.minerai -= self.cout["upg"+str(b.typeBatiment)][0]
+                            b.vitesse += 1
+                            self.parent.parent.vue.afficherBatiment()
+                        else:
+                            print("MANQUE DE FOND")
+
+                    elif self.cout["upg"+str(b.typeBatiment)][1] == "energie":
+                        if self.energie >= self.cout["upg"+str(b.typeBatiment)][0]:
+                            self.energie -= self.cout["upg"+str(b.typeBatiment)][0]
+                            b.vitesse += 1
+                            self.parent.parent.vue.afficherBatiment()
+                        else:
+                            print("MANQUE DE FOND")
+
+                    elif self.cout["upg"+str(b.typeBatiment)][1] == "gaz":
+                        if self.gaz >= self.cout["upg"+str(b.typeBatiment)][0]:
+                            self.gaz -= self.cout["upg"+str(b.typeBatiment)][0]
+                            b.vitesse += 1
+                            self.parent.parent.vue.afficherBatiment()
+                        else:
+                            print("MANQUE DE FOND")
 
 
     def modifRessource(self):

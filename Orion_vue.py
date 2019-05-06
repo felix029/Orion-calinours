@@ -393,13 +393,13 @@ class Vue():
         self.upgMines.grid(row=4, column=0, sticky="we")
         self.upgMines.config(height=45)
         
-        self.upgExtracteurs=Button(self.upgradeFrame,image=self.gazCanMenuGauche,bg=self.couleurBackgroundCotes)
-        self.upgExtracteurs.grid(row=5, column=0, sticky="we")
-        self.upgExtracteurs.config(height=45)
+        #self.upgExtracteurs=Button(self.upgradeFrame,image=self.gazCanMenuGauche,bg=self.couleurBackgroundCotes)
+        #self.upgExtracteurs.grid(row=5, column=0, sticky="we")
+        #self.upgExtracteurs.config(height=45)
         
-        self.upgElectricite=Button(self.upgradeFrame,image=self.electricStationMenuGauche,bg =self.couleurBackgroundCotes)
-        self.upgElectricite.grid(row=6, column=0, sticky="we")
-        self.upgElectricite.config(height=45)
+        #self.upgElectricite=Button(self.upgradeFrame,image=self.electricStationMenuGauche,bg =self.couleurBackgroundCotes)
+        #self.upgElectricite.grid(row=6, column=0, sticky="we")
+        #self.upgElectricite.config(height=45)
 
 
         #self.cadreinfo=Frame(self.rightFrame,width=200,height=200,bg="blue")
