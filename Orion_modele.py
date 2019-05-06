@@ -317,34 +317,6 @@ class Joueur():
         for p in self.planetescontrolees:
             for b in p.batiment:
                 if int(idBatiment[0]) == b.id:
-<<<<<<< HEAD
-                    if self.cout["upg"+str(b.typeBatiment)][1] == "minerai":
-                        if self.minerai >= self.cout["upg"+str(b.typeBatiment)][0]:
-                            self.minerai -= self.cout["upg"+str(b.typeBatiment)][0]
-                            b.vitesse += 1
-                            self.parent.parent.vue.afficherBatiment()
-                        else:
-                            print("MANQUE DE FOND")
-
-                    elif self.cout["upg"+str(b.typeBatiment)][1] == "energie":
-                        if self.energie >= self.cout["upg"+str(b.typeBatiment)][0]:
-                            self.energie -= self.cout["upg"+str(b.typeBatiment)][0]
-                            b.vitesse += 1
-                            self.parent.parent.vue.afficherBatiment()
-                        else:
-                            print("MANQUE DE FOND")
-
-                    elif self.cout["upg"+str(b.typeBatiment)][1] == "gaz":
-                        if self.gaz >= self.cout["upg"+str(b.typeBatiment)][0]:
-                            self.gaz -= self.cout["upg"+str(b.typeBatiment)][0]
-                            b.vitesse += 1
-                            self.parent.parent.vue.afficherBatiment()
-                        else:
-                            print("MANQUE DE FOND")
-
-                    b.vitesse += 1
-                    self.parent.parent.vue.afficherBatiment()
-=======
                     print(b.typeBatiment)
                     if self.cout["upg"+str(b.typeBatiment)][0] <= self.cout["upg"+str(b.typeBatiment)][1]:
                         b.vitesse += 1
@@ -355,7 +327,6 @@ class Joueur():
                         print("argent joueur apres : ", self.cout["upg"+str(b.typeBatiment)][1])
                     else:
                         print("MANQUE DE FOND")
->>>>>>> Ajout cout pour tour + upgTour
 
 
     def modifRessource(self):
