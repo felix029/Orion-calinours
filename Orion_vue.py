@@ -116,29 +116,6 @@ class Vue():
         self.resized = self.elec1.resize((100,100),Image.ANTIALIAS)
         self.elec1 = ImageTk.PhotoImage(self.resized)
 
-        #Soleil
-        self.soleil = Image.open("./images/soleil.png")
-        self.resized = self.soleil.resize((200,200),Image.ANTIALIAS)
-        self.soleil = ImageTk.PhotoImage(self.resized)
-
-        #Base
-        self.base1 = Image.open("./images/batibase1.png")
-        self.resized = self.base1.resize((100,100),Image.ANTIALIAS)
-        self.base1 = ImageTk.PhotoImage(self.resized)
-
-        #Batiment Mine
-        self.mine1 = Image.open("./images/batimine1.png")
-        self.resized = self.mine1.resize((75,75),Image.ANTIALIAS)
-        self.mine1 = ImageTk.PhotoImage(self.resized)
-        #Batiment Gaz
-        self.gaz1 = Image.open("./images/batigaz1.png")
-        self.resized = self.gaz1.resize((75,75),Image.ANTIALIAS)
-        self.gaz1 = ImageTk.PhotoImage(self.resized)
-        #Batiment Electricite
-        self.elec1 = Image.open("./images/batielec1.png")
-        self.resized = self.elec1.resize((100,100),Image.ANTIALIAS)
-        self.elec1 = ImageTk.PhotoImage(self.resized)
-
     def fermerfenetre(self):
         self.parent.fermefenetre()
 
@@ -449,7 +426,6 @@ class Vue():
         self.lblJoueurs = Label(self.cadreinfogen, text=" .: AUTRES JOUEURS :. ",fg="white", width= 38, height=2, bg=self.couleurTitreCadre,borderwidth=3, relief="solid")
         self.lblJoueurs.grid(row=0,column=0,sticky = "we")
         #.lblJoueurs.pack(fill=X)
-
         self.labid=Label(self.cadreinfogen,text=self.nom,fg=mod.joueurs[self.nom].couleur,bg=self.couleurBackgroundCotes)
         self.labid.grid(row=1, column=0, sticky="we")
 
