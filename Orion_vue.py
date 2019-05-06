@@ -458,18 +458,18 @@ class Vue():
         ##############################################################################
         #################################################Charles!!!!!!#####################################################
         #lowerLowerFrame
-        self.lowerLowerFrame=Frame(self.lowerFrame,width=800,height=75,bg="blue")
+        self.lowerLowerFrame=Frame(self.lowerFrame,width=800,height=75,bg=self.couleurTitreCadre)
         self.lowerLowerFrame.grid(row=1, column=1, sticky="ns")
 
         #Labels du lowerLeftFrame
         #Bouton pour modifier la vue
         #bouton zoom
         #self.boutonZoom = Button(self.cadreminimap,text="Zoom", bg="LightCyan3", borderwidth=None,font=self.simpleFont, pady=2, width= 25, height=3, cursor="hand2")
-        self.boutonZoom = Button(self.lowerLowerFrame,text="Vue suivante", bg="#003182", width= 56, height=2, cursor="hand2", activebackground="red", fg="white")
+        self.boutonZoom = Button(self.lowerLowerFrame,text="Vue suivante", bg=self.couleurTitreCadre, width= 56, height=2, cursor="hand2", activebackground="red", fg="white")
         self.boutonZoom.bind("<Button>")
         self.boutonZoom.grid(row=0, column=1)
         #bouton d�-zomm
-        self.boutonDzoom=Button(self.lowerLowerFrame,text="Vue precedente", bg="#003182", width= 56, height=2, cursor="hand2", activebackground="red", fg="white")
+        self.boutonDzoom=Button(self.lowerLowerFrame,text="Vue precedente", bg=self.couleurTitreCadre, width= 56, height=2, cursor="hand2", activebackground="red", fg="white")
         self.boutonDzoom.bind("<Button>")
         self.boutonDzoom.grid(row=0, column=0)
 
