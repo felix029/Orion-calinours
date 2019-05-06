@@ -366,18 +366,24 @@ class Vue():
 
         self.mines=Button(self.creationFrame,image=self.mineMenuGauche,width = "50",height = "50",bg =self.couleurBackgroundCotes)
         self.mines.grid(row=4, column=0, sticky="we")
-        self.mines.config(height=45)
+
+        self.mines.config(height=45)        
         self.mines.bind("<Button>", self.initMine)
 
         self.extracteurs=Button(self.creationFrame,image=self.gazMenuGauche,bg =self.couleurBackgroundCotes)
         self.extracteurs.grid(row=5, column=0, sticky="we")
-        self.extracteurs.config(height=45)
+        self.extracteurs.config(height=45)        
         self.extracteurs.bind("<Button>", self.initGaz)
 
         self.electricite=Button(self.creationFrame,image=self.electricMenuGauche,bg =self.couleurBackgroundCotes)
         self.electricite.grid(row=6, column=0, sticky="we")
-        self.electricite.config(height=45)
+        self.electricite.config(height=45)        
         self.electricite.bind("<Button>", self.initEnergie)
+
+        self.tourdefense=Button(self.creationFrame,text="Tour Defense")
+        self.tourdefense.grid(row=7, column=0, sticky="we")
+        self.tourdefense.config(height=2)
+        self.tourdefense.bind("<Button>", self.creerTourDefense)
 
         #Boutons du upgradeFrame
         self.upgVaisseau=Button(self.upgradeFrame,image=self.spaceshipMenuGauche,bg =self.couleurBackgroundCotes) 
@@ -764,6 +770,10 @@ class Vue():
                         #self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="purple",tags=("batiment",b.id))
                         #self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="vitesse") #affiche le niveau du batiment
 
+                for b in self.planeteselect.toursDefense:
+                    self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="green",tags=("batiment",b.id))
+                    self.canevas.create_text(b.x,b.y-20,text=b.niveau,fill="white",tags="vitesse") #affiche le niveau du batiment
+
 
 ################################################################################################ Charles
     def afficheAttributsPlanete(self, maselection, planeteselect=None, etoileselect=None):
@@ -837,11 +847,29 @@ class Vue():
 
     def creerBatiment(self,evt):
         if self.selectionBatiment != None:
-            print("Creer batiment")
-            self.parent.creerBatiment(self.selectionBatiment[1],self.selectionBatiment[0],evt.x,evt.y)
-            self.canevas.delete("marqueur")
+            wid = str(evt.widget)
+            widget = wid.split("!")
+            if widget[len(widget)-1] == "canvas":
+                print("Creer batiment")
+                self.parent.creerBatiment(self.selectionBatiment[1],self.selectionBatiment[0],evt.x,evt.y)
+                self.canevas.delete("marqueur")
+            else:
+                self.selectionBatiment=[self.batimentChoisi,1]
         else:
             self.selectionBatiment=[self.batimentChoisi,1]
+
+    def creerTourDefense(self,evt):
+        if self.selectionBatiment != None:
+            wid = str(evt.widget)
+            widget = wid.split("!")
+            if widget[len(widget)-1] == "canvas":
+                print("Creer Tour Defense")
+                self.parent.creerTourDefense(self.selectionBatiment[1],evt.x,evt.y)
+                self.canevas.delete("marqueur")
+            else:
+                self.selectionBatiment=["tourDefense",1]
+        else:
+            self.selectionBatiment=["tourDefense",1]
 
     def initMine(self,evt):
         self.selectionBatiment=None
@@ -1036,8 +1064,13 @@ class Vue():
 
             if self.selectionBatiment != None:
                 self.selectionBatiment=[self.selectionBatiment[0],tag[1]]
-                self.creerBatiment(evt)
-                self.selectionBatiment=None
+                if (self.selectionBatiment[0] == "tourDefense"):
+                    print(evt.widget)
+                    self.creerTourDefense(evt)
+                    self.selectionBatiment=None
+                else:
+                    self.creerBatiment(evt)
+                    self.selectionBatiment=None
 
             if self.upgBatiment != None:
                 self.upgBatiment = None

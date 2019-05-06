@@ -32,8 +32,8 @@ class Planete():
         self.color = "#" + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab))
         self.setXY()
         self.batiment=[]
-        self.etoileparent=etoileparent
-
+        self.etoileparent=etoileparent        
+        self.toursDefense=[] ####ajout GM 29 avril##
     #fonction qui va permettre aux planetes de ne pas etre par dessus le soleil
     def setXY(self):
         if self.x <=100:
@@ -97,6 +97,8 @@ class TourDefense():   ### à ajouter git
         self.delaimax=5
         self.cible=None
         self.range=10
+        self.typeBatiment = "tourDefense"
+        self.niveau = 1
 
     def tirer(self):  ###modifications GM 29 avril###
         d=hlp.calcDistance(self.x,self.y,self.cible.x,self.cible.y)
@@ -255,7 +257,6 @@ class Joueur():
         self.energie = 600
         self.gaz = 600
         self.flotte=[]
-        self.ToursDefense=[] ####ajout GM 29 avril##
         self.detruits=[]
         self.cout = {"minerai":[100,"energie"],
                     "gaz":[100,"energie"],
@@ -283,7 +284,8 @@ class Joueur():
                       "modifRessource":self.modifRessource,
                       "cibleretour":self.cibleretour, #Ajout Felix-O 16 avril
                       "versvue1":self.versvue1, #Ajout Felix-O 23 Avril
-                      "versvue0":self.versvue0} #Ajout Felix-O 23 Avril
+                      "versvue0":self.versvue0,
+                      "creerTourDefense":self.creerTourDefense} #Ajout Nick le 30 avril
 
     def creervaisseau(self,idplanete):
         #etoile,cible,type=params
@@ -314,6 +316,19 @@ class Joueur():
             self.minerai -= self.cout[typeBatiment][0]
         else :
             print("MANQUE DE FOND")
+            print(self.minerai)
+
+    def creerTourDefense(self,params): #Ajouter le 8 avril par nic
+
+        p,x,y = params
+
+        b = TourDefense(self.id,p,x,y)
+        print("tour defense",b.id)
+
+        for i in self.planetescontrolees:
+            if i.id == int(p):
+                i.toursDefense.append(b)
+                self.parent.parent.vue.afficherBatiment()
 
     #Ajouter le 9 avril par nic
     def vendreBatiment(self,batiment):
@@ -572,6 +587,16 @@ class IA(Joueur):
                     i.defense()
         else:
             self.creervaisseau(self.planetemere.id)
+
+        #if self.planetemere.batiment:
+        #    print("FULL")
+        #else:
+        #    self.creerBatimentIA("minerai")
+
+    def creerBatimentIA(self,typeBatiment):
+        x = 50
+        y = 50
+        self.parent.parent.creerBatiment(self.planetemere.id,typeBatiment,x,y)
 
 class Modele():
     def __init__(self,parent,joueurs):
