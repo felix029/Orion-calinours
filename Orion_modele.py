@@ -54,6 +54,10 @@ class Etoile():
         self.largeur = parent.largeur
         self.hauteur = parent.hauteur
         self.creerplanetes()
+        #Image des étoiles (vue Galaxie)
+        star = Image.open("./images/star.png")
+        self.resized = star.resize((50,50),Image.ANTIALIAS)
+        self.starImage = ImageTk.PhotoImage(self.resized)
 
     def creerplanetes(self):
         numRand = random.randrange(7,10)
@@ -279,7 +283,7 @@ class Joueur():
                     print("Vaisseau",v.id)
                     self.flotte.append(v)
                     break
-        
+
 
     def creerBatiment(self,params): #Ajouter le 8 avril par nic
 
@@ -331,7 +335,7 @@ class Joueur():
                             self.parent.parent.vue.afficherBatiment()
                         else:
                             print("MANQUE DE FOND")
-        
+
     def modifRessource(self):
         #Ajouter le 8 avril par nic ( Gere l'incrémentation des ressources des joueurs avec batiment et diminuer les ressource restante sur la planete du joueur)
         for p in self.planetescontrolees:
