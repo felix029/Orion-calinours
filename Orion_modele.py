@@ -5,16 +5,21 @@ from Id import Id
 from helper import Helper as hlp
 
 class Planete():
-    def __init__(self,x,y):
+    def __init__(self,x,y,etoileparent):
         self.id=Id.prochainid()
         self.x=x
         self.y=y
         self.taille=random.randrange(13,17)
+        #1- Génèrer un int aléatoire pour choisir une image de planète
         planetImage=random.randrange(1,11)
+        #2- Créer une string représentant le chemin relatif de l'image, et ce, à l'aide du int aléatoire obtenu
         img="./images/planet"+str(planetImage)+".png"
-
+        #3- Créer une variable image à l'aide de la fonction Image.open qui prend en paramètre le chemin relatif créé à l'étape précédente
+        #       Pour ce faire, on utilise "Image" de la librairie "PIL" que l'on a importé
         planet1 = Image.open(img)
+        #4- Redimensionner l'image et stocker le tout dans une nouvelle variable
         resized = planet1.resize((self.taille+30,self.taille+30),Image.ANTIALIAS)
+        #5- Reformater la variable "Image" en variable "ImageTK" afin que TkInter la supporte, puis stocker le tout dans une variable d'instance "self.planetImage"
         self.planetImage = ImageTk.PhotoImage(resized)
 
 
@@ -27,6 +32,7 @@ class Planete():
         self.color = "#" + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab))
         self.setXY()
         self.batiment=[]
+        self.etoileparent=etoileparent
 
     #fonction qui va permettre aux planetes de ne pas etre par dessus le soleil
     def setXY(self):
@@ -54,7 +60,7 @@ class Etoile():
         for i in range(numRand):
             planX=random.randrange(150, 200)+(i*60)
             planY=random.randrange(150, 200)+(i*random.randrange(20,40))+10
-            self.planetes.append(Planete(planX, planY))
+            self.planetes.append(Planete(planX, planY, self))
 
 class Batiment(): #Ajouter le 8 avril par nic
     def __init__(self,nom,plan,typeBatiment,x,y):
@@ -67,6 +73,9 @@ class Batiment(): #Ajouter le 8 avril par nic
         self.vitesse = 1
         self.nom=""
         self.etat=""
+        self.cout = {"minerai":100,
+                    "gaz":100,
+                    "energie":100}
 
 class TourDefense():   ### à ajouter git
     def __init__(self,nom,plan,x,y):
@@ -81,12 +90,14 @@ class TourDefense():   ### à ajouter git
         self.typecible=""
         self.projectiles=[]
         self.delaidetir=0
+        self.delaimax=5
         self.cible=None
+        self.range=10
 
-    def tirer(self):
+    def tirer(self):  ###modifications GM 29 avril###
         d=hlp.calcDistance(self.x,self.y,self.cible.x,self.cible.y)
 
-        if self.cible.etat!="detruit" and d<=self.range:  ###ajouter le délai de tir
+        if self.cible.etat!="detruit" and d<=self.range:
             if self.delaidetir==0:
                 if self.cible.attaquant==None:  ###ok
                     self.cible.attaquant=self
@@ -110,17 +121,17 @@ class Vaisseau():
                     "cargo":[100,2,0],
                     "colonisateur":[150,1,0]}
 
-    def __init__(self,nom,x,y):
+    def __init__(self,nom,etoile,planete):
         self.id=Id.prochainid()
+        self.sysplanetecur=etoile
+        self.planetecur=planete
         self.proprietaire=nom
-        self.x=x
-        self.y=y
+        self.x=planete.x+10
+        self.y=planete.y+10
         self.cargo=0
         self.energie=100
         self.vitesse=2
         self.cible=None
-        self.sysplanetecur=None
-        self.planetecur=None
         self.typecible=""
         self.range=100
         self.projectiles=[]
@@ -155,7 +166,7 @@ class Vaisseau():
         d=hlp.calcDistance(self.x,self.y,self.cible.x,self.cible.y)
         if self.cible and d>self.range:
             self.avancer()
-        elif self.cible.etat!="detruit":  ###ajouter le délai de tir
+        elif self.cible.etat!="detruit":
             if self.delaidetir==0:
                 if self.cible.attaquant==None:  ###ok
                     self.cible.attaquant=self
@@ -302,11 +313,28 @@ class Joueur():
         self.planetemere.proprietaire=self.nom
         self.couleur=couleur
         self.planetescontrolees=[planetemere]
-        self.minerai = 0
-        self.energie = 0
-        self.gaz = 0
+        self.minerai = 600
+        self.energie = 600
+        self.gaz = 600
         self.flotte=[]
+        self.ToursDefense=[] ####ajout GM 29 avril##
         self.detruits=[]
+        self.cout = {"minerai":[100,"energie"],
+                    "gaz":[100,"energie"],
+                    "energie":[100,"minerai"],
+                    "upgminerai":[500,"minerai"],
+                    "upggaz":[500,"minerai"],
+                    "upgenergie":[500,"minerai"],
+                    "chasseur":[50,"minerai"],
+                    "colonisateur":[50,"minerai"],
+                    "cargo":[50,"minerai"]}
+        self.joueurami=[]  ### id des joueurs ###
+        self.cout = {"minerai":[100,self.energie],
+                    "gaz":[100,self.energie],
+                    "energie":[100,self.minerai],
+                    "upgminerai":[500,self.minerai],
+                    "upggaz":[500,self.minerai],
+                    "upgenergie":[500,self.minerai]}
         self.actions={"creervaisseau":self.creervaisseau,
                       "upgBatiment":self.upgBatiment,  #Ajouter le 9 avril par Nic
                       "vendreBatiment":self.vendreBatiment,  #Ajouter le 9 avril par Nic
@@ -319,24 +347,35 @@ class Joueur():
                       "versvue1":self.versvue1, #Ajout Felix-O 23 Avril
                       "versvue0":self.versvue0} #Ajout Felix-O 23 Avril
 
-    def creervaisseau(self,params):
+    def creervaisseau(self,idplanete):
         #etoile,cible,type=params
         #is type=="explorer":
-        v=Vaisseau(self.nom,self.planetemere.x+10,self.planetemere.y)
-        print("Vaisseau",v.id)
-        self.flotte.append(v)
+        for i in self.parent.etoiles:
+            for j in i.planetes:
+                if j.id == idplanete:
+                    planetevaisseau = j
+                    v=Vaisseau(self.nom,planetevaisseau.etoileparent,planetevaisseau)
+                    print("Vaisseau",v.id)
+                    self.flotte.append(v)
+                    break
+        
 
     def creerBatiment(self,params): #Ajouter le 8 avril par nic
 
         p,typeBatiment,x,y = params
 
-        b = Batiment(self.id,p,typeBatiment,x,y)
-        print("Batiment",b.id)
+        if self.minerai >= self.cout[typeBatiment][0]:
+            b = Batiment(self.id,p,typeBatiment,x,y)
+            print("Batiment",b.id)
 
-        for i in self.planetescontrolees:
-            if i.id == int(p):
-                i.batiment.append(b)
-                self.parent.parent.vue.afficherBatiment()
+            for i in self.planetescontrolees:
+                if i.id == int(p):
+                    i.batiment.append(b)
+                    self.parent.parent.vue.afficherBatiment()
+
+            self.minerai -= self.cout[typeBatiment][0]
+        else :
+            print("MANQUE DE FOND")
 
     #Ajouter le 9 avril par nic
     def vendreBatiment(self,batiment):
@@ -348,8 +387,17 @@ class Joueur():
         for p in self.planetescontrolees:
             for b in p.batiment:
                 if int(idBatiment[0]) == b.id:
-                    b.vitesse += 1
-                    self.parent.parent.vue.afficherBatiment()
+                    print(b.typeBatiment)
+                    if self.cout["upg"+str(b.typeBatiment)][0] <= self.cout["upg"+str(b.typeBatiment)][1]:
+                        b.vitesse += 1
+                        print("argent joueur : ", self.cout["upg"+str(b.typeBatiment)][1])
+                        print("cout : ", self.cout["upg"+str(b.typeBatiment)][0])
+                        self.cout["upg"+str(b.typeBatiment)][1] -= self.cout["upg"+str(b.typeBatiment)][0]
+                        self.parent.parent.vue.afficherBatiment()
+                        print("argent joueur apres : ", self.cout["upg"+str(b.typeBatiment)][1])
+                    else:
+                        print("MANQUE DE FOND")
+
 
     def modifRessource(self):
         #Ajouter le 8 avril par nic ( Gere l'incrémentation des ressources des joueurs avec batiment et diminuer les ressource restante sur la planete du joueur)
@@ -386,13 +434,17 @@ class Joueur():
                     for j in self.parent.ias:
                         for k in j.flotte:
                             if k.id == int(iddesti):
+                                print("TARGETED SHIP")
+
                                 i.cible=k
                                 i.typecible="Vaisseau"
                     for j in self.parent.joueurs:
                         for k in self.parent.joueurs[j].flotte:
-                            if k.id == int(iddesti):
-                                i.cible=k
-                                i.typecible="Vaisseau"
+                            if self.parent.joueurs[j]!= self:
+                                if k.id == int(iddesti):
+                                    print("TARGETED SHIP")
+                                    i.cible=k
+                                    i.typecible="Vaisseau"
 
     def ciblerflotteplanete(self,ids):
         idori,iddesti,etoile=ids
@@ -416,10 +468,28 @@ class Joueur():
                             i.cible=k
                             i.typecible="Vaisseau"
 
+    def ciblerTourDefense(self):  #### Ajout Guillaume-29 avril, à voir si impact de performance###
+        for i in self.ToursDefense:
+            for j in self.parent.ias:
+                if j.id not in self.joueurami:
+                    for k in j.flotte:
+                        d=hlp.calcDistance(i.x,i.y,k.x,k.y)
+                        if d<=i.range:
+                            i.cible=k
+                            i.typecible="Vaisseau" ##peut-être pas nécessaire pour les tours
+            for j in self.parent.joueurs:
+                if self.parent.joueurs[j].id not in self.joueurami:
+                    for k in self.parent.joueurs[j].flotte:
+                        d=hlp.calcDistance(i.x,i.y,k.x,k.y)
+                        if d<=i.range:
+                            i.cible=k
+                            i.typecible="Vaisseau"
+
+
     def cibleretour(self,idori):
         for i in self.flotte:
             if i.id == int(idori):
-                ptemp=Planete(self.parent.largeur,self.parent.hauteur)
+                ptemp=Planete(self.parent.largeur,self.parent.hauteur,None)
                 ptemp.taille=0
                 i.cible=ptemp
 
@@ -548,12 +618,21 @@ class IA(Joueur):
                 if i.cible:
                     i.avancer()
                 else:
-                    #i.cible=random.choice(self.parent.planetes)
-                    i.cible=random.choice(self.parent.etoiles)
+                    if i.sysplanetecur == None and i.planetecur == None:
+                        #i.cible=random.choice(self.parent.planetes)
+                        i.cible=random.choice(self.parent.etoiles)
+                    else:
+                        if i.x >= self.parent.largeur-8 and i.y >= self.parent.hauteur-8:
+                            if i.sysplanetecur != None and i.planetecur != None:
+                                self.flotteretour1(i.id)
+                            elif i.sysplanetecur != None and i.planetecur == None:
+                                self.flotteretour2(i.id)
+                        else:
+                            self.cibleretour(i.id)
                 if i.attaquant:
                     i.defense()
         else:
-            self.creervaisseau(0)
+            self.creervaisseau(self.planetemere.id)
 
 class Modele():
     def __init__(self,parent,joueurs):
@@ -620,6 +699,7 @@ class Modele():
                   "lightblue","pink","gold","purple"]
         for i in joueurs:
             self.joueurs[i]=Joueur(self,i,planetej.pop(0),couleurs.pop(0))
+            self.joueurs[i].planetescontrolees[0].batiment.append(Batiment(self.joueurs[i].id,planetej,"base",400,300))
 
         # IA- creation des ias - max 2
         couleursia=["orange","green"]
