@@ -55,10 +55,6 @@ class Etoile():
         self.largeur = parent.largeur
         self.hauteur = parent.hauteur
         self.creerplanetes()
-        #Image des étoiles (vue Galaxie)
-        star = Image.open("./images/star.png")
-        self.resized = star.resize((50,50),Image.ANTIALIAS)
-        self.starImage = ImageTk.PhotoImage(self.resized)
 
     def creerplanetes(self):
         numRand = random.randrange(7,10)
@@ -370,6 +366,7 @@ class Joueur():
                         p.gaz -= p.gaz
                 elif b.typeBatiment == "energie":
                     self.energie += b.vitesse
+                print (b.vitesse)
 
     def ciblerflotte(self,ids):
         idori,iddesti,typedestination=ids

@@ -60,61 +60,44 @@ class Vue():
         self.gas = Image.open("./images/gas.png")
         self.resized = self.gas.resize((30, 30),Image.ANTIALIAS)
         self.gas = ImageTk.PhotoImage(self.resized)
-
+        #Boutons vaisseau
         self.vaisseau = Image.open("./images/vaisseau.png")
         self.resized = self.vaisseau.resize((50, 50),Image.ANTIALIAS)
         self.vaisseauMenuGauche = ImageTk.PhotoImage(self.resized)
-
-        self.mine=Image.open("./images/mine.png")
+        #Boutons bâtiments
+        self.mine=Image.open("./images/goldmine.png")
         self.resized = self.mine.resize((35, 35),Image.ANTIALIAS)
         self.mineMenuGauche = ImageTk.PhotoImage(self.resized)
 
-        self.gaz=Image.open("./images/gaz.png")
+        self.gaz=Image.open("./images/can.png")
         self.resized = self.gaz.resize((45, 45),Image.ANTIALIAS)
         self.gazMenuGauche = ImageTk.PhotoImage(self.resized)
 
-        self.electric=Image.open("./images/electricity.png")
+        self.electric=Image.open("./images/electric.png")
         self.resized = self.electric.resize((40, 40),Image.ANTIALIAS)
         self.electricMenuGauche = ImageTk.PhotoImage(self.resized)
 
         self.spaceship=Image.open("./images/falcon.png")
         self.resized = self.spaceship.resize((45, 45),Image.ANTIALIAS)
         self.spaceshipMenuGauche = ImageTk.PhotoImage(self.resized)
-
+        #Boutons upgrade
         self.goldmine=Image.open("./images/goldmine.png")
         self.resized = self.goldmine.resize((45, 45),Image.ANTIALIAS)
         self.goldmineMenuGauche = ImageTk.PhotoImage(self.resized)
 
-        self.electricStation=Image.open("./images/electric.png")
+        self.electricStation=Image.open("./images/electricity.png")
         self.resized = self.electricStation.resize((85, 45),Image.ANTIALIAS)
         self.electricStationMenuGauche = ImageTk.PhotoImage(self.resized)
 
-        self.gazCan=Image.open("./images/can.png")
+        self.gazCan=Image.open("./images/gaz.png")
         self.resized = self.gazCan.resize((85, 50),Image.ANTIALIAS)
         self.gazCanMenuGauche = ImageTk.PhotoImage(self.resized)
 
-        #Soleil
-        self.soleil = Image.open("./images/soleil.png")
-        self.resized = self.soleil.resize((200,200),Image.ANTIALIAS)
-        self.soleil = ImageTk.PhotoImage(self.resized)
-
-        #Base
-        self.base1 = Image.open("./images/batibase1.png")
-        self.resized = self.base1.resize((100,100),Image.ANTIALIAS)
-        self.base1 = ImageTk.PhotoImage(self.resized)
-
-        #Batiment Mine
-        self.mine1 = Image.open("./images/batimine1.png")
-        self.resized = self.mine1.resize((75,75),Image.ANTIALIAS)
-        self.mine1 = ImageTk.PhotoImage(self.resized)
-        #Batiment Gaz
-        self.gaz1 = Image.open("./images/batigaz1.png")
-        self.resized = self.gaz1.resize((75,75),Image.ANTIALIAS)
-        self.gaz1 = ImageTk.PhotoImage(self.resized)
-        #Batiment Electricite
-        self.elec1 = Image.open("./images/batielec1.png")
-        self.resized = self.elec1.resize((100,100),Image.ANTIALIAS)
-        self.elec1 = ImageTk.PhotoImage(self.resized)
+        #Étoile (vue Galaxie)
+        #self.star = Image.open("./images/star.png")
+        self.starImage = Image.open("./images/star.png")
+        self.resized = self.starImage.resize((50,50),Image.ANTIALIAS)
+        self.starImage = ImageTk.PhotoImage(self.resized)
 
         #Soleil
         self.soleil = Image.open("./images/soleil.png")
@@ -127,15 +110,15 @@ class Vue():
         self.base1 = ImageTk.PhotoImage(self.resized)
 
         #Batiment Mine
-        self.mine1 = Image.open("./images/batimine1.png")
+        self.mine1 = Image.open("./images/goldmine.png")
         self.resized = self.mine1.resize((75,75),Image.ANTIALIAS)
         self.mine1 = ImageTk.PhotoImage(self.resized)
         #Batiment Gaz
-        self.gaz1 = Image.open("./images/batigaz1.png")
+        self.gaz1 = Image.open("./images/can.png")
         self.resized = self.gaz1.resize((75,75),Image.ANTIALIAS)
         self.gaz1 = ImageTk.PhotoImage(self.resized)
         #Batiment Electricite
-        self.elec1 = Image.open("./images/batielec1.png")
+        self.elec1 = Image.open("./images/electric.png")
         self.resized = self.elec1.resize((100,100),Image.ANTIALIAS)
         self.elec1 = ImageTk.PhotoImage(self.resized)
 
@@ -281,9 +264,9 @@ class Vue():
         self.lblElectricite=Label(self.upperFrame,text="Électricité: ", fg=self.couleurLabelMenu, bg= self.couleurBackgroundMenu)
         self.statsElectriciteLabel=Label(self.upperFrame, fg="red", bg= self.couleurBackgroundMenu, textvariable = self.electriciteStats)
 
-        self.lab_eclair.grid(row=0, column=6)
-        self.lblElectricite.grid(row=0, column=7)
-        self.statsElectriciteLabel.grid(row=0, column=8)
+        self.lab_eclair.grid(row=0, column=14)
+        self.lblElectricite.grid(row=0, column=15)
+        self.statsElectriciteLabel.grid(row=0, column=16)
 
 
         self.espaceVide2 = Label(self.upperFrame, bg = self.couleurBackgroundMenu,width=self.espacementDonneesMenu).grid(row=0, column=9)
@@ -292,9 +275,9 @@ class Vue():
         self.lblMinerais=Label(self.upperFrame,text="Minerais: ", fg=self.couleurLabelMenu, bg= self.couleurBackgroundMenu)
         self.statsMineraisLabel=Label(self.upperFrame, fg="red", bg= self.couleurBackgroundMenu, textvariable = self.mineraisStats)
 
-        self.lab_rock.grid(row=0, column=10)
-        self.lblMinerais.grid(row=0, column=11)
-        self.statsMineraisLabel.grid(row=0, column=12)
+        self.lab_rock.grid(row=0, column=6)
+        self.lblMinerais.grid(row=0, column=7)
+        self.statsMineraisLabel.grid(row=0, column=8)
 
         self.espaceVide3 = Label(self.upperFrame, bg = self.couleurBackgroundMenu,width=self.espacementDonneesMenu).grid(row=0, column=13)
 
@@ -302,9 +285,9 @@ class Vue():
         self.lblGaz=Label(self.upperFrame,text="Gaz: ", fg=self.couleurLabelMenu, bg= self.couleurBackgroundMenu)
         self.statsGazLabel=Label(self.upperFrame, fg="red", bg= self.couleurBackgroundMenu, textvariable = self.gazStats)
 
-        self.lab_gaz.grid(row=0, column=14)
-        self.lblGaz.grid(row=0, column=15)
-        self.statsGazLabel.grid(row=0, column=16)
+        self.lab_gaz.grid(row=0, column=10)
+        self.lblGaz.grid(row=0, column=11)
+        self.statsGazLabel.grid(row=0, column=12)
 
 
         #Zone Dessous
@@ -650,8 +633,9 @@ class Vue():
 
             for i in mod.etoiles:
                 t=i.taille
-                self.canevas.create_oval(i.x-t,i.y-t,i.x+t,i.y+t,fill="grey80",
-                                        tags=("etoile", str(i.id)))
+                self.canevas.create_image(i.x - t, i.y - t, image=self.starImage, anchor=NW, tags=("etoile", str(i.id)))
+                #self.canevas.create_oval(i.x-t,i.y-t,i.x+t,i.y+t,fill="grey80",
+                                       #tags=("etoile", str(i.id)))
 
         if self.vueactive == 1: #vue systeme solaire
             #self.etoileselect = random.choice(mod.etoiles)
@@ -728,8 +712,7 @@ class Vue():
                 #self.planet10 = ImageTk.PhotoImage(self.resized)
 
                 # Afficher l'image de chaque planètes du array "planetes" de l'étoile sélectionnée
-                self.canevas.create_image(i.x, i.y, image=i.planetImage, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
-                print(s, )
+                self.canevas.create_image(i.x - t, i.y - t, image=i.planetImage, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
                 #self.canevas.create_oval(i.x-t,i.y-t,i.x+t,i.y+t,fill="grey80",
                 #                       tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
 
