@@ -536,14 +536,14 @@ class Vue():
         self.boutonDzoom.grid_forget()
 
         if self.vueactive==2:
-            self.boutonZoom.config(width=113, text = "Vue du système solaire", border=4)
+            self.boutonZoom.config(width=113, text = "VUE SYSTÈME SOLAIRE", border=4)
             self.boutonZoom.grid(row=1, column=0, sticky="we")
 
         elif self.vueactive == 1:
             self.attributMineraiEtoile = 0
             self.attributGazEtoile = 0
-            self.boutonZoom.config(width = 56, text = "Vue planétaire", border=2)
-            self.boutonDzoom.config(width = 56, text = "Vue de la galaxie", border=2)
+            self.boutonZoom.config(width = 56, text = "VUE PLANÉTAIRE", border=2)
+            self.boutonDzoom.config(width = 56, text = "VUE GALAXIE", border=2)
             self.boutonZoom.grid(row=1, column=1, sticky="we")
             self.boutonDzoom.grid(row=1, column=0, sticky="we")
 
@@ -559,7 +559,7 @@ class Vue():
 
 
         elif self.vueactive == 0:
-            self.boutonDzoom.config(width=113, text = "Vue du système solaire", border=4)
+            self.boutonDzoom.config(width=113, text = "VUE SYSTÈME SOLAIRE", border=4)
             self.boutonDzoom.grid(row=1, column=0, sticky="we")
 
             if self.planeteselect.proprietaire == " ":
