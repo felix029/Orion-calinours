@@ -813,7 +813,7 @@ class Vue():
             t=30
             self.canevas.create_oval(x-t,y-t,x+t,y+t,dash=(3,3),width=2,outline=couleur,
                                  tags=("planetemere","marqueur"))
-        
+
         if self.vueactive == 1:
             j=self.mod.joueurs[self.nom]
 
