@@ -89,6 +89,7 @@ class TourDefense():   ### à ajouter git
         self.energie=100
         self.typecible=""
         self.projectiles=[]
+         self.explosions=[]
         self.delaidetir=0
         self.delaimax=5
         self.cible=None
@@ -107,12 +108,17 @@ class TourDefense():   ### à ajouter git
             self.delaidetir-=1
 
         else:
+            ex=Explosion(self, self.cible.x,self.cible.y, False)
+            self.explosions.append(ex)
             self.cible=None
             self.delaidetir=0
 
         for i in self.projectiles:
             if i.etat!="detruit":
                 i.deplacer()
+            else:
+                ex=Explosion(self, self.cible.x,self.cible.y, True)
+                self.explosions.append(ex)
 
 class Vaisseau():
 
@@ -176,6 +182,8 @@ class Vaisseau():
             self.delaidetir-=1
 
         else:
+            ex=Explosion(self, self.cible.x,self.cible.y, False)
+            self.explosions.append(ex)
             self.cible=None
             self.delaidetir=0
             self.typecible = None
@@ -197,6 +205,8 @@ class Vaisseau():
             self.delaidetir-=1
 
         elif self.attaquant.etat=="detruit":
+            ex=Explosion(self, self.y, self.attaquant.x, False)
+            self.explosions.append(ex)
             self.attaquant=None
             self.delaidetir=0
 
@@ -247,7 +257,7 @@ class Projectile():
 
 class Explosion():
 
-    def __init__(self, parent, x, y, projectile=False):
+    def __init__(self, parent, x, y, type):
         self.parent=parent
         self.x=x
         self.y=y
@@ -258,15 +268,12 @@ class Explosion():
         self.vie=40
         self.etats=[]
         self.rayon=0
+        self.type = type
 
-        if projectile:
+        if self.type:
             self.rayon=5
         else:
             self.rayon=20
-
-    #def eclatEffectuer:
-
-
 
     # def exploToucher(self):
     #     e = Eclat(self, 360-(9*1), self.vitesse % 1, self.x, self.y, self.rangeEx)
