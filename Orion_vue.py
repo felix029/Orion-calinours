@@ -38,6 +38,7 @@ class Vue():
         self.couleurLabelMenu  = "white"
         self.couleurBackgroundMenu  = "gray27"
         self.couleurBackgroundCotes = "SteelBlue4"
+        self.couleurTitreCadre = "#34344f"
         self.espacementDonneesMenu = 20
 
 
@@ -58,7 +59,39 @@ class Vue():
 
         self.gas = Image.open("./images/gas.png")
         self.resized = self.gas.resize((30, 30),Image.ANTIALIAS)
-        self.gaz = ImageTk.PhotoImage(self.resized)
+        self.gas = ImageTk.PhotoImage(self.resized)
+        
+        self.vaisseau = Image.open("./images/vaisseau.png")
+        self.resized = self.vaisseau.resize((50, 50),Image.ANTIALIAS)
+        self.vaisseauMenuGauche = ImageTk.PhotoImage(self.resized)
+        
+        self.mine=Image.open("./images/mine.png")
+        self.resized = self.mine.resize((35, 35),Image.ANTIALIAS)
+        self.mineMenuGauche = ImageTk.PhotoImage(self.resized)
+        
+        self.gaz=Image.open("./images/gaz.png")
+        self.resized = self.gaz.resize((45, 45),Image.ANTIALIAS)
+        self.gazMenuGauche = ImageTk.PhotoImage(self.resized)
+        
+        self.electric=Image.open("./images/electricity.png")
+        self.resized = self.electric.resize((40, 40),Image.ANTIALIAS)
+        self.electricMenuGauche = ImageTk.PhotoImage(self.resized)
+        
+        self.spaceship=Image.open("./images/falcon.png")
+        self.resized = self.spaceship.resize((45, 45),Image.ANTIALIAS)
+        self.spaceshipMenuGauche = ImageTk.PhotoImage(self.resized)
+        
+        self.goldmine=Image.open("./images/goldmine.png")
+        self.resized = self.goldmine.resize((45, 45),Image.ANTIALIAS)
+        self.goldmineMenuGauche = ImageTk.PhotoImage(self.resized)
+        
+        self.electricStation=Image.open("./images/electric.png")
+        self.resized = self.electricStation.resize((85, 45),Image.ANTIALIAS)
+        self.electricStationMenuGauche = ImageTk.PhotoImage(self.resized)
+        
+        self.gazCan=Image.open("./images/can.png")
+        self.resized = self.gazCan.resize((85, 50),Image.ANTIALIAS)
+        self.gazCanMenuGauche = ImageTk.PhotoImage(self.resized)
 
         #Soleil
         self.soleil = Image.open("./images/soleil.png")
@@ -242,7 +275,7 @@ class Vue():
 
         self.espaceVide3 = Label(self.upperFrame, bg = self.couleurBackgroundMenu,width=self.espacementDonneesMenu).grid(row=0, column=13)
 
-        self.lab_gaz = Label(self.upperFrame, image = self.gaz, bg = self.couleurBackgroundMenu)
+        self.lab_gaz = Label(self.upperFrame, image = self.gas, bg = self.couleurBackgroundMenu)
         self.lblGaz=Label(self.upperFrame,text="Gaz: ", fg=self.couleurLabelMenu, bg= self.couleurBackgroundMenu)
         self.statsGazLabel=Label(self.upperFrame, fg="red", bg= self.couleurBackgroundMenu, textvariable = self.gazStats)
 
@@ -327,38 +360,42 @@ class Vue():
 
         #Boutons du lowerLeftFrame
         #Boutons du creationFrame
-        self.btncreervaisseau=Button(self.creationFrame,text="Vaisseau",command=self.creervaisseau)
+        self.btncreervaisseau=Button(self.creationFrame,image=self.vaisseauMenuGauche,width = "50",height = "50",command=self.creervaisseau,bg =self.couleurBackgroundCotes)
         self.btncreervaisseau.grid(row=2, column=0, sticky="we")
-        self.btncreervaisseau.config(height=3)
+        self.btncreervaisseau.config(height=45)
 
-        self.mines=Button(self.creationFrame,text="Mine")
+        self.mines=Button(self.creationFrame,image=self.mineMenuGauche,width = "50",height = "50",bg =self.couleurBackgroundCotes)
         self.mines.grid(row=4, column=0, sticky="we")
-        self.mines.config(height=3)
+        self.mines.config(height=45)
         self.mines.bind("<Button>", self.initMine)
 
-        self.extracteurs=Button(self.creationFrame,text="Gaz")
+        self.extracteurs=Button(self.creationFrame,image=self.gazMenuGauche,bg =self.couleurBackgroundCotes)
         self.extracteurs.grid(row=5, column=0, sticky="we")
-        self.extracteurs.config(height=3)
+        self.extracteurs.config(height=45)
         self.extracteurs.bind("<Button>", self.initGaz)
 
-        self.electricite=Button(self.creationFrame,text="Électricité")
+        self.electricite=Button(self.creationFrame,image=self.electricMenuGauche,bg =self.couleurBackgroundCotes)
         self.electricite.grid(row=6, column=0, sticky="we")
-        self.electricite.config(height=3)
+        self.electricite.config(height=45)
         self.electricite.bind("<Button>", self.initEnergie)
 
         #Boutons du upgradeFrame
-        self.upgVaisseau=Button(self.upgradeFrame,text="Upg Vaisseau")
+        self.upgVaisseau=Button(self.upgradeFrame,image=self.spaceshipMenuGauche,bg =self.couleurBackgroundCotes) 
         self.upgVaisseau.grid(row=2, column=0, sticky="we")
-        self.upgVaisseau.config(height=3)
-        self.upgMines=Button(self.upgradeFrame,text="Upg Mines",command=self.upgradeBatiment)
+        self.upgVaisseau.config(height=45)
+        
+        self.upgMines=Button(self.upgradeFrame,image=self.goldmineMenuGauche,bg =self.couleurBackgroundCotes)
         self.upgMines.grid(row=4, column=0, sticky="we")
-        self.upgMines.config(height=3)
-        #self.upgExtracteurs=Button(self.upgradeFrame,text="Upg Extracteurs",command=self.upgradeBatiment) Pas besoin de 3 boutons pour upgrade un batiment
-        #self.upgExtracteurs.grid(row=5, column=0, sticky="we")
-        #self.upgExtracteurs.config(height=3)
-        #self.upgElectricite=Button(self.upgradeFrame,text="Upg Électricité",command=self.upgradeBatiment)
-        #self.upgElectricite.grid(row=6, column=0, sticky="we")
-        #self.upgElectricite.config(height=3)
+        self.upgMines.config(height=45)
+        
+        self.upgExtracteurs=Button(self.upgradeFrame,image=self.gazCanMenuGauche,bg=self.couleurBackgroundCotes)
+        self.upgExtracteurs.grid(row=5, column=0, sticky="we")
+        self.upgExtracteurs.config(height=45)
+        
+        self.upgElectricite=Button(self.upgradeFrame,image=self.electricStationMenuGauche,bg =self.couleurBackgroundCotes)
+        self.upgElectricite.grid(row=6, column=0, sticky="we")
+        self.upgElectricite.config(height=45)
+
 
         #self.cadreinfo=Frame(self.rightFrame,width=200,height=200,bg="blue")
         #self.cadreinfo.grid(row=0, column=0, sticky="we")
@@ -373,28 +410,34 @@ class Vue():
         #                            Zone Dessous-Droite                          #
         ###########################################################################
         #lowerRightFrame
-        self.lowerRightFrame=Frame(self.lowerFrame,width=150,height=626,bg="green")
-        self.lowerRightFrame.grid(row=0, column=2, rowspan=2, sticky="ns")
+        self.lowerRightFrame=Frame(self.lowerFrame,width=150,height=626,bg=self.couleurBackgroundCotes)
+        self.lowerRightFrame.grid(row=0, column=2, sticky="ns")
 
         #Labels  et sous-frames du lowerRighttFrame
-
         self.cadreinfogen=Frame(self.lowerRightFrame,width=150,height=200,bg=self.couleurBackgroundCotes)
         self.cadreinfogen.grid(row=0, column=0, sticky="we")
 
 
-        self.lblJoueurs = Label(self.cadreinfogen, text=" .: AUTRES JOUEURS :. ",fg="white", bg=self.couleurBackgroundCotes)
-        self.lblJoueurs.grid(row=1,column=1,sticky="we")
-
-
+        self.lblJoueurs = Label(self.cadreinfogen, text=" .: AUTRES JOUEURS :. ",fg="white", width= 38, height=2, bg=self.couleurTitreCadre,borderwidth=3, relief="solid")
+        self.lblJoueurs.grid(row=0,column=0,sticky = "we")
+        #.lblJoueurs.pack(fill=X)
+        
         self.labid=Label(self.cadreinfogen,text=self.nom,fg=mod.joueurs[self.nom].couleur,bg=self.couleurBackgroundCotes)
-        self.labid.grid(row=2, column=0, sticky="we")
+        self.labid.grid(row=1, column=0, sticky="we")
 
-
-        self.cadreminimap=Frame(self.lowerRightFrame,height=150,width=200,bg="green")
-        self.cadreminimap.grid(row=3, column=0, sticky="we")
-
-        self.canevasMini=Canvas(self.cadreminimap,width=200,height=200,bg="orange")
-        self.canevasMini.grid(row=4, column=0, sticky="we")
+        self.cadreminimap=Frame(self.lowerRightFrame,height=200,width=150,bg=self.couleurBackgroundCotes)
+        self.cadreminimap.grid(row=1, column=0, sticky="we")
+        
+        self.labelCadreMini = Label(self.cadreminimap, text=".: STATISTIQUES :.",fg="white", width= 25, height=2, bg=self.couleurTitreCadre,borderwidth=3, relief="solid")
+        #self.labelCadreMini.grid(row=0,column=0,sticky="we")
+        self.labelCadreMini.pack(fill=X)
+       
+        self.statsFrame = Frame(self.lowerRightFrame, width=150,height=200)
+        self.statsFrame.grid(row=2, column=0, sticky="we")
+        
+        self.canevasMini=Canvas(self.statsFrame,width=150,height=200,bg=self.couleurBackgroundCotes)
+        self.canevasMini.pack(fill=X)
+        #self.canevasMini.grid(row=0, column=0, sticky="we")
         self.canevasMini.bind("<Button>",self.moveCanevas)
 
 
@@ -457,15 +500,15 @@ class Vue():
         self.attributMineraiEtoile = 0
         self.attributGazEtoile = 0
 
-        self.attributPlaneteSelectionne = Label(self.cadreminimap,  width= 25, height=10, bg="white",borderwidth=1,font=self.simpleFont)
-        self.attributPlaneteSelectionne.grid(row=3, column=0, sticky="we")
+        self.attributPlaneteSelectionne = Label(self.canevasMini, width= 30, height=10, bg=self.couleurBackgroundCotes,fg=self.couleurLabelMenu,font=self.simpleFont)
+        self.attributPlaneteSelectionne.grid(row=0, column=0, sticky="we")
 
         self.textMinerai =  StringVar()
-        self.attributMinerai = Label(self.cadreminimap,  width= 25, height=2, bg="white",borderwidth=1,font=self.simpleFont)
-        self.attributMinerai.grid(row=4, column=0, sticky="we")
+        self.attributMinerai = Label(self.canevasMini,  width=30, height=2, bg=self.couleurBackgroundCotes,fg=self.couleurLabelMenu,font=self.simpleFont)
+        self.attributMinerai.grid(row=1, column=0, sticky="we")
 
-        self.attributGaz = Label(self.cadreminimap,  width= 25, height=2, bg="white",borderwidth=1,font=self.simpleFont)
-        self.attributGaz.grid(row=5, column=0, sticky="we")
+        self.attributGaz = Label(self.canevasMini,  width= 30, height=2, bg=self.couleurBackgroundCotes,fg=self.couleurLabelMenu,font=self.simpleFont)
+        self.attributGaz.grid(row=2, column=0, sticky="we")
 
         self.afficherdecor(mod)
 
@@ -489,25 +532,25 @@ class Vue():
 
         if self.vueactive==2:
             self.boutonZoom.config(width=113, text = "Vue du système solaire", border=4)
-            self.boutonZoom.grid(row=0, column=0, sticky="we")
+            self.boutonZoom.grid(row=1, column=0, sticky="we")
 
         elif self.vueactive == 1:
             self.attributMineraiEtoile = 0
             self.attributGazEtoile = 0
             self.boutonZoom.config(width = 56, text = "Vue planétaire", border=2)
             self.boutonDzoom.config(width = 56, text = "Vue de la galaxie", border=2)
-            self.boutonZoom.grid(row=0, column=1, sticky="we")
-            self.boutonDzoom.grid(row=0, column=0, sticky="we")
+            self.boutonZoom.grid(row=1, column=1, sticky="we")
+            self.boutonDzoom.grid(row=1, column=0, sticky="we")
 
             for i in self.etoileselect.planetes:
                 self.attributMineraiEtoile+= i.minerai
                 self.attributGazEtoile+= i.gaz
 
-            self.textGeneriquePlanete = "\n\n\n\nL'étoile possède :  \n"
+            self.textGeneriquePlanete = "L'étoile possède :  \n"
             self.textMinerai = "Minerai : " + str (self.attributMineraiEtoile) + "\n"
             self.textGaz = "Gaz : " + str(self.attributGazEtoile) + "\n"
-            self.attributPlaneteSelectionne.config(text =  self.textGeneriquePlanete + self.textMinerai + self.textGaz )
-            self.attributPlaneteSelectionne.grid(row = 3)
+            self.attributPlaneteSelectionne.config(text = self.textGeneriquePlanete + self.textMinerai + self.textGaz )
+            self.attributPlaneteSelectionne.grid(row = 1)
 
 
         elif self.vueactive == 0:
@@ -522,7 +565,7 @@ class Vue():
             self.textMinerai = "Minerai : " + str (self.planeteselect.minerai) + "\n"
             self.textGaz = "Gaz : " + str(self.planeteselect.gaz) + "\n"
             self.attributPlaneteSelectionne.config(text =  self.textGeneriquePlanete + self.textMinerai + self.textGaz )
-            self.attributPlaneteSelectionne.grid(row = 3)
+            self.attributPlaneteSelectionne.grid(row = 1)
 
 
     def moveCanevas(self,evt):
