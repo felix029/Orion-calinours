@@ -293,6 +293,7 @@ class Joueur():
             self.minerai -= self.cout[typeBatiment][0]
         else :
             print("MANQUE DE FOND")
+            print(self.minerai)
 
     def creerTourDefense(self,params): #Ajouter le 8 avril par nic
 
@@ -565,6 +566,16 @@ class IA(Joueur):
                     i.defense()
         else:
             self.creervaisseau(0)
+
+        #if self.planetemere.batiment:
+        #    print("FULL")
+        #else:
+        #    self.creerBatimentIA("minerai")
+
+    def creerBatimentIA(self,typeBatiment):
+        x = 50
+        y = 50
+        self.parent.parent.creerBatiment(self.planetemere.id,typeBatiment,x,y)
 
 class Modele():
     def __init__(self,parent,joueurs):
