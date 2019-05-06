@@ -335,7 +335,6 @@ class Joueur():
                             self.parent.parent.vue.afficherBatiment()
                         else:
                             print("MANQUE DE FOND")
-
                     elif self.cout["upg"+str(b.typeBatiment)][1] == "energie":
                         if self.energie >= self.cout["upg"+str(b.typeBatiment)][0]:
                             self.energie -= self.cout["upg"+str(b.typeBatiment)][0]
@@ -343,7 +342,6 @@ class Joueur():
                             self.parent.parent.vue.afficherBatiment()
                         else:
                             print("MANQUE DE FOND")
-
                     elif self.cout["upg"+str(b.typeBatiment)][1] == "gaz":
                         if self.gaz >= self.cout["upg"+str(b.typeBatiment)][0]:
                             self.gaz -= self.cout["upg"+str(b.typeBatiment)][0]
