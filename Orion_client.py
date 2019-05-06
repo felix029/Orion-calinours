@@ -140,8 +140,8 @@ class Controleur():
             self.serveur.jequitte(self.monnom)
         self.vue.root.destroy()
 
-    def creervaisseau(self):
-        self.actions.append([self.monnom,"creervaisseau",""])
+    def creervaisseau(self,idplanete):
+        self.actions.append([self.monnom,"creervaisseau",idplanete])
 
     def ciblerflotte(self,idorigine,iddestination,typedestination):
         self.actions.append([self.monnom,"ciblerflotte",[idorigine,iddestination,typedestination]])

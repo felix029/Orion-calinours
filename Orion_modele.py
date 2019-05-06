@@ -5,7 +5,7 @@ from Id import Id
 from helper import Helper as hlp
 
 class Planete():
-    def __init__(self,x,y):
+    def __init__(self,x,y,etoileparent):
         self.id=Id.prochainid()
         self.x=x
         self.y=y
@@ -33,6 +33,7 @@ class Planete():
         self.setXY()
         self.batiment=[]
         self.toursDefense=[] ####ajout GM 29 avril##
+        self.etoileparent=etoileparent
 
     #fonction qui va permettre aux planetes de ne pas etre par dessus le soleil
     def setXY(self):
@@ -60,7 +61,7 @@ class Etoile():
         for i in range(numRand):
             planX=random.randrange(150, 200)+(i*60)
             planY=random.randrange(150, 200)+(i*random.randrange(20,40))+10
-            self.planetes.append(Planete(planX, planY))
+            self.planetes.append(Planete(planX, planY, self))
 
 class Batiment(): #Ajouter le 8 avril par nic
     def __init__(self,nom,plan,typeBatiment,x,y):
@@ -73,6 +74,9 @@ class Batiment(): #Ajouter le 8 avril par nic
         self.vitesse = 1
         self.nom=""
         self.etat=""
+        self.cout = {"minerai":100,
+                    "gaz":100,
+                    "energie":100}
 
 class TourDefense():   ### à ajouter git
     def __init__(self,nom,plan,x,y):
@@ -120,17 +124,17 @@ class Vaisseau():
                     "cargo":[100,2,0],
                     "colonisateur":[150,1,0]}
 
-    def __init__(self,nom,x,y):
+    def __init__(self,nom,etoile,planete):
         self.id=Id.prochainid()
+        self.sysplanetecur=etoile
+        self.planetecur=planete
         self.proprietaire=nom
-        self.x=x
-        self.y=y
+        self.x=planete.x+10
+        self.y=planete.y+10
         self.cargo=0
         self.energie=100
         self.vitesse=2
         self.cible=None
-        self.sysplanetecur=None
-        self.planetecur=None
         self.typecible=""
         self.range=10
         self.projectiles=[]
@@ -257,6 +261,12 @@ class Joueur():
                     "colonisateur":[50,"minerai"],
                     "cargo":[50,"minerai"]}
         self.joueurami=[]  ### id des joueurs ###
+        self.cout = {"minerai":[100,self.energie],
+                    "gaz":[100,self.energie],
+                    "energie":[100,self.minerai],
+                    "upgminerai":[500,self.minerai],
+                    "upggaz":[500,self.minerai],
+                    "upgenergie":[500,self.minerai]}
         self.actions={"creervaisseau":self.creervaisseau,
                       "upgBatiment":self.upgBatiment,  #Ajouter le 9 avril par Nic
                       "vendreBatiment":self.vendreBatiment,  #Ajouter le 9 avril par Nic
@@ -270,12 +280,18 @@ class Joueur():
                       "versvue0":self.versvue0,
                       "creerTourDefense":self.creerTourDefense} #Ajout Nick le 30 avril
 
-    def creervaisseau(self,params):
+    def creervaisseau(self,idplanete):
         #etoile,cible,type=params
         #is type=="explorer":
-        v=Vaisseau(self.nom,self.planetemere.x+10,self.planetemere.y)
-        print("Vaisseau",v.id)
-        self.flotte.append(v)
+        for i in self.parent.etoiles:
+            for j in i.planetes:
+                if j.id == idplanete:
+                    planetevaisseau = j
+                    v=Vaisseau(self.nom,planetevaisseau.etoileparent,planetevaisseau)
+                    print("Vaisseau",v.id)
+                    self.flotte.append(v)
+                    break
+        
 
     def creerBatiment(self,params): #Ajouter le 8 avril par nic
 
@@ -317,30 +333,18 @@ class Joueur():
         for p in self.planetescontrolees:
             for b in p.batiment:
                 if int(idBatiment[0]) == b.id:
-                    if self.cout["upg"+str(b.typeBatiment)][1] == "minerai":
-                        if self.minerai >= self.cout["upg"+str(b.typeBatiment)][0]:
-                            self.minerai -= self.cout["upg"+str(b.typeBatiment)][0]
-                            b.vitesse += 1
-                            self.parent.parent.vue.afficherBatiment()
-                        else:
-                            print("MANQUE DE FOND")
+                    print(b.typeBatiment)
+                    if self.cout["upg"+str(b.typeBatiment)][0] <= self.cout["upg"+str(b.typeBatiment)][1]:
+                        b.vitesse += 1
+                        print("argent joueur : ", self.cout["upg"+str(b.typeBatiment)][1])
+                        print("cout : ", self.cout["upg"+str(b.typeBatiment)][0])
+                        self.cout["upg"+str(b.typeBatiment)][1] -= self.cout["upg"+str(b.typeBatiment)][0]
+                        self.parent.parent.vue.afficherBatiment()
+                        print("argent joueur apres : ", self.cout["upg"+str(b.typeBatiment)][1])
+                    else:
+                        print("MANQUE DE FOND")
 
-                    elif self.cout["upg"+str(b.typeBatiment)][1] == "energie":
-                        if self.energie >= self.cout["upg"+str(b.typeBatiment)][0]:
-                            self.energie -= self.cout["upg"+str(b.typeBatiment)][0]
-                            b.vitesse += 1
-                            self.parent.parent.vue.afficherBatiment()
-                        else:
-                            print("MANQUE DE FOND")
 
-                    elif self.cout["upg"+str(b.typeBatiment)][1] == "gaz":
-                        if self.gaz >= self.cout["upg"+str(b.typeBatiment)][0]:
-                            self.gaz -= self.cout["upg"+str(b.typeBatiment)][0]
-                            b.vitesse += 1
-                            self.parent.parent.vue.afficherBatiment()
-                        else:
-                            print("MANQUE DE FOND")
-        
     def modifRessource(self):
         #Ajouter le 8 avril par nic ( Gere l'incrémentation des ressources des joueurs avec batiment et diminuer les ressource restante sur la planete du joueur)
         for p in self.planetescontrolees:
@@ -377,6 +381,7 @@ class Joueur():
                         for k in j.flotte:
                             if k.id == int(iddesti):
                                 print("TARGETED SHIP")
+
                                 i.cible=k
                                 i.typecible="Vaisseau"
                     for j in self.parent.joueurs:
@@ -430,7 +435,7 @@ class Joueur():
     def cibleretour(self,idori):
         for i in self.flotte:
             if i.id == int(idori):
-                ptemp=Planete(self.parent.largeur,self.parent.hauteur)
+                ptemp=Planete(self.parent.largeur,self.parent.hauteur,None)
                 ptemp.taille=0
                 i.cible=ptemp
 
@@ -560,12 +565,21 @@ class IA(Joueur):
                 if i.cible:
                     i.avancer()
                 else:
-                    #i.cible=random.choice(self.parent.planetes)
-                    i.cible=random.choice(self.parent.etoiles)
+                    if i.sysplanetecur == None and i.planetecur == None:
+                        #i.cible=random.choice(self.parent.planetes)
+                        i.cible=random.choice(self.parent.etoiles)
+                    else:
+                        if i.x >= self.parent.largeur-8 and i.y >= self.parent.hauteur-8:
+                            if i.sysplanetecur != None and i.planetecur != None:
+                                self.flotteretour1(i.id)
+                            elif i.sysplanetecur != None and i.planetecur == None:
+                                self.flotteretour2(i.id)
+                        else:
+                            self.cibleretour(i.id)
                 if i.attaquant:
                     i.defense()
         else:
-            self.creervaisseau(0)
+            self.creervaisseau(self.planetemere.id)
 
         #if self.planetemere.batiment:
         #    print("FULL")
