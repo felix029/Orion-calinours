@@ -152,11 +152,11 @@ class Vaisseau():
                     print("Vaisseau: ", self.cible.id)
                 elif self.cible == Etoile:
                     print("Etoile: ", self.cible.id)
-                elif isinstance(self.cible, Planete):
-                    if self.cible.proprietaire==" ":
-                        self.etat="colonisation"                  #tempo=input("Continuersvp")
-                if self.etat!="colonisation":
-                    self.cible=None
+               # elif isinstance(self.cible, Planete):
+                #    if self.cible.proprietaire==" ":
+                 #       self.etat="colonisation"                  #tempo=input("Continuersvp")
+                #if self.etat!="colonisation":
+                self.cible=None
                 #print("Change cible")
         else:
             print("PAS DE CIBLE")
