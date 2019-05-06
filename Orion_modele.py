@@ -182,6 +182,8 @@ class Vaisseau():
             self.cible=None
             self.delaidetir=0
             self.typecible = None
+            for i in self.projectiles:
+                i.cible=None
 
         for i in self.projectiles:
             if i.etat!="detruit":
@@ -199,6 +201,8 @@ class Vaisseau():
         elif self.attaquant.etat=="detruit":
             self.attaquant=None
             self.delaidetir=0
+            for i in self.projectiles:
+                i.cible=None
 
         for i in self.projectiles:
             if i.etat!="detruit":
@@ -468,7 +472,7 @@ class Joueur():
 
             if i.projectiles:
                 for j in i.projectiles:
-                    if j.etat=="detruit":
+                    if j.etat=="detruit" or j.cible==None:
                         i.projectiles.remove(j)
 
 
