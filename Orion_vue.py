@@ -286,7 +286,7 @@ class Vue():
 
         #Zone Dessous
         #Cadre perspectives (lowerFrame)
-        self.lowerFrame=Frame(self.cadrepartie,width=1100,height=625,bg="red")
+        self.lowerFrame=Frame(self.cadrepartie,width=1100,height=625,bg=self.couleurBackgroundMenu)
         self.lowerFrame.grid(row=2, column=0, sticky="ns")
         ###########################################################################
         ###########################################################################
@@ -326,10 +326,10 @@ class Vue():
 
         #Labels et sous-frames du lowerLeftFrame
         #Frames creation et upgrade
-        self.creationFrame=Frame(self.lowerLeftFrame,width=150, height=313, bg="blue")
+        self.creationFrame=Frame(self.lowerLeftFrame,width=150, height=313, bg=self.couleurBackgroundCotes)
         self.creationFrame.grid(row=0, column=0, sticky="ns")
         self.creationFrame.grid_propagate(0)
-        self.upgradeFrame=Frame(self.lowerLeftFrame,width=150, height=312, bg="black")
+        self.upgradeFrame=Frame(self.lowerLeftFrame,width=150, height=312, bg=self.couleurBackgroundCotes)
         self.upgradeFrame.grid(row=1, column=0, sticky="ns")
         self.upgradeFrame.grid_propagate(0)
 
@@ -337,7 +337,7 @@ class Vue():
         self.upgradeFrame.columnconfigure(0, minsize=150)
 
         #Label Creation
-        self.creationLabel = Label(self.creationFrame, text="CREATION", anchor='center', fg="white", bg='#34344f')
+        self.creationLabel = Label(self.creationFrame, text=".: CREATION :.", anchor='center', fg="white", bg='#34344f',borderwidth=3, relief="solid")
         self.creationLabel.grid(row=0, column=0, sticky="we")
         self.vaisseauLabel = Label(self.creationFrame, text="Vaisseau", anchor='center', fg="white", bg='#34344f')
         self.vaisseauLabel.grid(row=1, column=0, sticky="we")
@@ -345,7 +345,7 @@ class Vue():
         self.batimentLabel.grid(row=3, column=0, sticky="we")
 
         #Label Upgrade
-        self.upgLabel = Label(self.upgradeFrame, text="UPGRADE", anchor='center', fg="white", bg='#34344f')
+        self.upgLabel = Label(self.upgradeFrame, text=".: UPGRADE :.", anchor='center', fg="white", bg='#34344f',borderwidth=3, relief="solid")
         self.upgLabel.grid(row=0, column=0, sticky="we")
         self.upgVaisseauLabel = Label(self.upgradeFrame, text="Vaisseau", anchor='center', fg="white", bg='#34344f')
         self.upgVaisseauLabel.grid(row=1, column=0, sticky="we")
