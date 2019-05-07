@@ -42,9 +42,9 @@ class Vue():
         self.espacementDonneesMenu = 20
 
 
-        ###################################################
-        #             Images redimensionnées              #
-        ###################################################
+#################################################################################################################################################################################
+#                                                                 IMAGES REDIMENSIONNÉES                                                                                        #
+#################################################################################################################################################################################
         self.plan = Image.open("./images/planete.png")
         self.resized = self.plan.resize((30, 30),Image.ANTIALIAS)
         self.planete = ImageTk.PhotoImage(self.resized)
@@ -229,108 +229,82 @@ class Vue():
 
         self.planeteselect = j.planetemere
 
-        ##########################################################################
-        ##########################################################################
-        #                          Principaux Frames                             #
-        ##########################################################################
-        #Zone globale
+        
+#################################################################################################################################################################################
+#                                                                                                                                                                               #
+#                                                                    PRINCIPAUX FRAMES                                                                                          #
+#                                                                                                                                                                               #
+#################################################################################################################################################################################
+        
+        
+        #########################################################################################################################################################################
+        ############################################################### ZONE GLOBALE ############################################################################################
+        #########################################################################################################################################################################
         self.cadrepartie=Frame(self.cadreapp)
         self.cadrejeu=Frame(self.cadrepartie)
-        ##########################################################################
-        #Zone Dessus    KIM:)
-        #Cadre Statistiques (upperFrame)
+        
+        
+        #########################################################################################################################################################################
+        ################################################################# FRAME MENU ############################################################################################
+        #########################################################################################################################################################################
         self.planetConquisesStats = StringVar()
         self.electriciteStats = StringVar()
         self.mineraisStats = StringVar()
         self.gazStats = StringVar()
 
-
+        #Frame du menu 
         self.upperFrame=Frame(self.cadrepartie,width=1100,height=50,bg= self.couleurBackgroundMenu)
         self.upperFrame.grid(row=0, column=0, sticky="we")
 
+        #Tous les label identifiant les variables + tous les label avec les images contextuelles
         self.espaceVide0 = Label(self.upperFrame, bg = self.couleurBackgroundMenu,width=self.espacementDonneesMenu).grid(row=0, column=1)
 
-        self.lab_planete = Label(self.upperFrame, image = self.planete, bg = self.couleurBackgroundMenu)
-        self.lblPlanConquises=Label(self.upperFrame,text="Planètes conquises: ", fg=self.couleurLabelMenu, bg= self.couleurBackgroundMenu)
-        self.statsPlanetConquisesLabel = Label(self.upperFrame, fg="red", bg= self.couleurBackgroundMenu, textvariable = self.planetConquisesStats)
-
-        self.lab_planete.grid(row=0, column=2)
-        self.lblPlanConquises.grid(row=0, column=3)
-        self.statsPlanetConquisesLabel.grid(row=0, column=4)
+        self.lab_planete = Label(self.upperFrame, image = self.planete, bg = self.couleurBackgroundMenu).grid(row=0, column=2)
+        self.lblPlanConquises=Label(self.upperFrame,text="Planètes conquises: ", fg=self.couleurLabelMenu, bg= self.couleurBackgroundMenu).grid(row=0, column=3)
+        self.statsPlanetConquisesLabel = Label(self.upperFrame, fg="red", bg= self.couleurBackgroundMenu, textvariable = self.planetConquisesStats).grid(row=0, column=4)
 
         self.espaceVide1 = Label(self.upperFrame, bg = self.couleurBackgroundMenu,width=self.espacementDonneesMenu).grid(row=0, column=5)
 
-        self.lab_eclair = Label(self.upperFrame, image = self.light, bg = self.couleurBackgroundMenu)
-        self.lblElectricite=Label(self.upperFrame,text="Électricité: ", fg=self.couleurLabelMenu, bg= self.couleurBackgroundMenu)
-        self.statsElectriciteLabel=Label(self.upperFrame, fg="red", bg= self.couleurBackgroundMenu, textvariable = self.electriciteStats)
-
-        self.lab_eclair.grid(row=0, column=14)
-        self.lblElectricite.grid(row=0, column=15)
-        self.statsElectriciteLabel.grid(row=0, column=16)
-
+        self.lab_eclair = Label(self.upperFrame, image = self.light, bg = self.couleurBackgroundMenu).grid(row=0, column=14)
+        self.lblElectricite=Label(self.upperFrame,text="Électricité: ", fg=self.couleurLabelMenu, bg= self.couleurBackgroundMenu).grid(row=0, column=15)
+        self.statsElectriciteLabel=Label(self.upperFrame, fg="red", bg= self.couleurBackgroundMenu, textvariable = self.electriciteStats).grid(row=0, column=16)
 
         self.espaceVide2 = Label(self.upperFrame, bg = self.couleurBackgroundMenu,width=self.espacementDonneesMenu).grid(row=0, column=9)
 
-        self.lab_rock = Label(self.upperFrame, image = self.minerais, bg = self.couleurBackgroundMenu)
-        self.lblMinerais=Label(self.upperFrame,text="Minerais: ", fg=self.couleurLabelMenu, bg= self.couleurBackgroundMenu)
-        self.statsMineraisLabel=Label(self.upperFrame, fg="red", bg= self.couleurBackgroundMenu, textvariable = self.mineraisStats)
-
-        self.lab_rock.grid(row=0, column=6)
-        self.lblMinerais.grid(row=0, column=7)
-        self.statsMineraisLabel.grid(row=0, column=8)
+        self.lab_rock = Label(self.upperFrame, image = self.minerais, bg = self.couleurBackgroundMenu).grid(row=0, column=6)
+        self.lblMinerais=Label(self.upperFrame,text="Minerais: ", fg=self.couleurLabelMenu, bg= self.couleurBackgroundMenu).grid(row=0, column=7)
+        self.statsMineraisLabel=Label(self.upperFrame, fg="red", bg= self.couleurBackgroundMenu, textvariable = self.mineraisStats).grid(row=0, column=8)
 
         self.espaceVide3 = Label(self.upperFrame, bg = self.couleurBackgroundMenu,width=self.espacementDonneesMenu).grid(row=0, column=13)
 
-        self.lab_gaz = Label(self.upperFrame, image = self.gas, bg = self.couleurBackgroundMenu)
-        self.lblGaz=Label(self.upperFrame,text="Gaz: ", fg=self.couleurLabelMenu, bg= self.couleurBackgroundMenu)
-        self.statsGazLabel=Label(self.upperFrame, fg="red", bg= self.couleurBackgroundMenu, textvariable = self.gazStats)
-
-        self.lab_gaz.grid(row=0, column=10)
-        self.lblGaz.grid(row=0, column=11)
-        self.statsGazLabel.grid(row=0, column=12)
-
-
-        #Zone Dessous
-        #Cadre perspectives (lowerFrame)
+        self.lab_gaz = Label(self.upperFrame, image = self.gas, bg = self.couleurBackgroundMenu).grid(row=0, column=10)
+        self.lblGaz=Label(self.upperFrame,text="Gaz: ", fg=self.couleurLabelMenu, bg= self.couleurBackgroundMenu).grid(row=0, column=11)
+        self.statsGazLabel=Label(self.upperFrame, fg="red", bg= self.couleurBackgroundMenu, textvariable = self.gazStats).grid(row=0, column=12)
+       
+       
+        #########################################################################################################################################################################
+        ################################################################## FRAME DESSOUS ########################################################################################
+        #########################################################################################################################################################################
+        #Frame qui reçoit TOUT ce qui n'est pas dans le menu
         self.lowerFrame=Frame(self.cadrepartie,width=1100,height=625,bg=self.couleurBackgroundMenu)
         self.lowerFrame.grid(row=2, column=0, sticky="ns")
-        ###########################################################################
-        ###########################################################################
+        
 
-        ###########################################################################
-        ###########################################################################
-        #                              Aire de jeu                                #
-        #                            Ne pas toucher!                              #
-        ###########################################################################
-        #
+        ########################################################## AIRE DE JEU (NE PAS TOUCHER !!!) #############################################################################               
+        #Le canevas (surface de jeu est dans le frame dessous)
         self.canevas=Canvas(self.lowerFrame,width=800,height=600,bg="grey11")
         self.canevas.grid(row=0, column=1, sticky="ns")
-
-        self.canevas.bind("<Button>",self.cliquecosmos) # Event MouseClick li� au canevas (Aire de jeu)
-        ############################################################################
-        #############################################################################
-
-
-
-
-        ###########################################################################
-        #                           Frames de travail                             #
-        #                       (Sous-Zone de "lowerFrame")                       #
-        ###########################################################################
-        ###########################################################################
-
-        ###########################################################################
-        #                           Zone Dessous-Gauche                           #
-        ###########################################################################
-        #lowerLeftFrame
+        self.canevas.bind("<Button>",self.cliquecosmos) # Event MouseClick lie au canevas (Aire de jeu)
+       
+       
+        ################################################################# BANDE COTE GAUCHE ######################################################################################
+        #Le frame gauche est dans le frame dessous
         self.lowerLeftFrame=Frame(self.lowerFrame,width=150,height=625,bg="pink")
         self.lowerLeftFrame.grid(row=0, column=0, sticky="ns")
         self.lowerLeftFrame.columnconfigure(0, minsize=150)
         self.lowerLeftFrame.grid_propagate(0)
-        #self.lowerLeftFrame.rowconfigure(0, minsize=313)
-        #self.lowerLeftFrame.rowconfigure(1, minsize=313)
 
-        #Labels et sous-frames du lowerLeftFrame
+        #Sous-frames du frame gauche (avec leurs labels et leurs boutons)
         #Frames creation et upgrade
         self.creationFrame=Frame(self.lowerLeftFrame,width=150, height=313, bg=self.couleurBackgroundCotes)
         self.creationFrame.grid(row=0, column=0, sticky="ns")
@@ -338,34 +312,20 @@ class Vue():
         self.upgradeFrame=Frame(self.lowerLeftFrame,width=150, height=312, bg=self.couleurBackgroundCotes)
         self.upgradeFrame.grid(row=1, column=0, sticky="ns")
         self.upgradeFrame.grid_propagate(0)
-
         self.creationFrame.columnconfigure(0, minsize=150)
         self.upgradeFrame.columnconfigure(0, minsize=150)
 
         #Label Creation
-        self.creationLabel = Label(self.creationFrame, text=".: CREATION :.", anchor='center', fg="white", bg='#34344f',borderwidth=3, relief="solid")
-        self.creationLabel.grid(row=0, column=0, sticky="we")
-        self.vaisseauLabel = Label(self.creationFrame, text="Vaisseau", anchor='center', fg="white", bg='#34344f')
-        self.vaisseauLabel.grid(row=1, column=0, sticky="we")
-        self.batimentLabel = Label(self.creationFrame, text="Bâtiments", anchor='center', fg="white", bg='#34344f')
-        self.batimentLabel.grid(row=3, column=0, sticky="we")
+        self.creationLabel = Label(self.creationFrame, text=".: CREATION :.", anchor='center', fg="white", bg='#34344f',borderwidth=3, relief="solid").grid(row=0, column=0, sticky="we")
+        self.vaisseauLabel = Label(self.creationFrame, text="Vaisseau", anchor='center', fg="white", bg='#34344f').grid(row=1, column=0, sticky="we")
+        self.batimentLabel = Label(self.creationFrame, text="Bâtiments", anchor='center', fg="white", bg='#34344f').grid(row=3, column=0, sticky="we")
 
         #Label Upgrade
-        self.upgLabel = Label(self.upgradeFrame, text=".: UPGRADE :.", anchor='center', fg="white", bg='#34344f',borderwidth=3, relief="solid")
-        self.upgLabel.grid(row=0, column=0, sticky="we")
-        self.upgVaisseauLabel = Label(self.upgradeFrame, text="Vaisseau", anchor='center', fg="white", bg='#34344f')
-        self.upgVaisseauLabel.grid(row=1, column=0, sticky="we")
-        self.upgBatimentLabel = Label(self.upgradeFrame, text="Bâtiments", anchor='center', fg="white", bg='#34344f')
-        self.upgBatimentLabel.grid(row=3, column=0, sticky="we")
-
-
-
-
-
-
-
-        #Boutons du lowerLeftFrame
-        #Boutons du creationFrame
+        self.upgLabel = Label(self.upgradeFrame, text=".: UPGRADE :.", anchor='center', fg="white", bg='#34344f',borderwidth=3, relief="solid").grid(row=0, column=0, sticky="we")
+        self.upgVaisseauLabel = Label(self.upgradeFrame, text="Vaisseau", anchor='center', fg="white", bg='#34344f').grid(row=1, column=0, sticky="we")
+        self.upgBatimentLabel = Label(self.upgradeFrame, text="Bâtiments", anchor='center', fg="white", bg='#34344f').grid(row=3, column=0, sticky="we")
+        
+        #Boutons de creation
         self.btncreervaisseau=Button(self.creationFrame,image=self.vaisseauMenuGauche,width = "50",height = "50",command=self.creervaisseau,bg =self.couleurBackgroundCotes)
         self.btncreervaisseau.grid(row=2, column=0, sticky="we")
         self.btncreervaisseau.config(height=45)
@@ -390,7 +350,7 @@ class Vue():
         self.tourdefense.config(height=2)
         self.tourdefense.bind("<Button>", self.creerTourDefense)
 
-        #Boutons du upgradeFrame
+        #Boutons upgrade
         self.upgVaisseau=Button(self.upgradeFrame,image=self.spaceshipMenuGauche,bg =self.couleurBackgroundCotes)
         self.upgVaisseau.grid(row=2, column=0, sticky="we")
         self.upgVaisseau.config(height=45)
@@ -400,22 +360,7 @@ class Vue():
         self.upgMines.config(height=45)
         self.upgMines.bind("<Button>",self.upgradeBatiment)
 
-        #self.upgExtracteurs=Button(self.upgradeFrame,image=self.gazCanMenuGauche,bg=self.couleurBackgroundCotes)
-        #self.upgExtracteurs.grid(row=5, column=0, sticky="we")
-        #self.upgExtracteurs.config(height=45)
-
-        #self.upgElectricite=Button(self.upgradeFrame,image=self.electricStationMenuGauche,bg =self.couleurBackgroundCotes)
-        #self.upgElectricite.grid(row=6, column=0, sticky="we")
-        #self.upgElectricite.config(height=45)
-
-
-        #self.cadreinfo=Frame(self.rightFrame,width=200,height=200,bg="blue")
-        #self.cadreinfo.grid(row=0, column=0, sticky="we")
-
-
-
-
-
+        
         ###########################################################################
 
         ###########################################################################
