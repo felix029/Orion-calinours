@@ -38,7 +38,8 @@ class Controleur():
         return monip
 
     def generernom(self):  # generateur de nouveau nom - accelere l'entree de nom pour les tests - parfois � peut generer le meme nom mais c'est rare
-        monnom="jmd_"+str(random.randrange(1000))
+        noms=["SimonCharles69", "Phoenix-O", "Guiyomm", "YAAAAS", "DIEU", "NicolasCage", "JabaTheSlutt", "Jonh-Marque", "TitusPinus", "AccepteToi", "OliPrime", "Tchoin", "LaStrap", "Bo_BB"]
+        monnom=noms.pop(random.randrange(0,13))
         return monnom
 
     def creerpartie(self):
@@ -103,7 +104,7 @@ class Controleur():
             self.cadre=self.cadre+1 # increment du compteur de cadre
             if self.attente==0:
                 self.modele.prochaineaction(self.cadre)    # mise a jour du modele
-                self.vue.afficherpartie(self.modele) # mise a jour de la vue
+                self.vue.afficherpartie(self.modele)       # mise a jour de la vue
             if self.actions: # si on a des actions a partager
                 rep=self.serveur.faireaction([self.monnom,self.cadre,self.actions]) # on les envoie
             else:
