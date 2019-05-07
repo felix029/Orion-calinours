@@ -698,28 +698,29 @@ class Vue():
 
     def afficherBatiment(self):
         for j in self.mod.joueurs:
-            if self.mod.joueurs[j].nom == self.planeteselect.proprietaire:
-                for b in self.planeteselect.batiment:
-                    if b.typeBatiment == "minerai":
-                        self.canevas.create_image(b.x - 25, b.y - 25, image=self.mine1, anchor=NW, tags=("batiment",b.id))
-                        #self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="red",tags=("batiment",b.id)) #Affiche le batiment
-                        #self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="niveau") #affiche le niveau du batiment
-                    elif b.typeBatiment == "gaz":
-                        self.canevas.create_image(b.x - 25, b.y - 25, image=self.gaz1, anchor=NW, tags=("batiment",b.id))
-                        #self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="blue",tags=("batiment",b.id))
-                        #self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="niveau") #affiche le niveau du batiment
-                    elif b.typeBatiment == "energie":
-                        self.canevas.create_image(b.x - 50, b.y - 50, image=self.elec1, anchor=NW, tags=("batiment",b.id))
-                        #self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="yellow",tags=("batiment",b.id))
-                        #self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="black",tags="vitesse") #affiche le niveau du batiment
-                    elif b.typeBatiment == "base":
-                        self.canevas.create_image(b.x - 50, b.y - 50, image=self.base1, anchor=NW, tags=("batiment",b.id))
-                        #self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="purple",tags=("batiment",b.id))
-                        #self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="vitesse") #affiche le niveau du batiment
+            if self.planeteselect != None:
+                if self.mod.joueurs[j].nom == self.planeteselect.proprietaire:
+                    for b in self.planeteselect.batiment:
+                        if b.typeBatiment == "minerai":
+                            self.canevas.create_image(b.x - 25, b.y - 25, image=self.mine1, anchor=NW, tags=("batiment",b.id))
+                            #self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="red",tags=("batiment",b.id)) #Affiche le batiment
+                            #self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="niveau") #affiche le niveau du batiment
+                        elif b.typeBatiment == "gaz":
+                            self.canevas.create_image(b.x - 25, b.y - 25, image=self.gaz1, anchor=NW, tags=("batiment",b.id))
+                            #self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="blue",tags=("batiment",b.id))
+                            #self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="niveau") #affiche le niveau du batiment
+                        elif b.typeBatiment == "energie":
+                            self.canevas.create_image(b.x - 50, b.y - 50, image=self.elec1, anchor=NW, tags=("batiment",b.id))
+                            #self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="yellow",tags=("batiment",b.id))
+                            #self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="black",tags="vitesse") #affiche le niveau du batiment
+                        elif b.typeBatiment == "base":
+                            self.canevas.create_image(b.x - 50, b.y - 50, image=self.base1, anchor=NW, tags=("batiment",b.id))
+                            #self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="purple",tags=("batiment",b.id))
+                            #self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="vitesse") #affiche le niveau du batiment
 
-                for b in self.planeteselect.toursDefense:
-                    self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="green",tags=("batiment",b.id))
-                    self.canevas.create_text(b.x,b.y-20,text=b.niveau,fill="white",tags="vitesse") #affiche le niveau du batiment
+                    for b in self.planeteselect.toursDefense:
+                        self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="green",tags=("batiment",b.id))
+                        self.canevas.create_text(b.x,b.y-20,text=b.niveau,fill="white",tags="vitesse") #affiche le niveau du batiment
 
 
 ################################################################################################ Charles
