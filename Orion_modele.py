@@ -32,6 +32,7 @@ class Planete():
         self.color = "#" + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab)) + str(random.choice(self.colorsTab))
         self.setXY()
         self.batiment=[]
+        self.toursDefense=[] ####ajout GM 29 avril##
         self.etoileparent=etoileparent
 
     #fonction qui va permettre aux planetes de ne pas etre par dessus le soleil
@@ -73,9 +74,6 @@ class Batiment(): #Ajouter le 8 avril par nic
         self.vitesse = 1
         self.nom=""
         self.etat=""
-        self.cout = {"minerai":100,
-                    "gaz":100,
-                    "energie":100}
 
 class TourDefense():   ### à ajouter git
     def __init__(self,nom,plan,x,y):
@@ -94,6 +92,8 @@ class TourDefense():   ### à ajouter git
         self.delaimax=5
         self.cible=None
         self.range=10
+        self.typeBatiment = "tourDefense"
+        self.niveau = 1
 
     def tirer(self):  ###modifications GM 29 avril###
         d=hlp.calcDistance(self.x,self.y,self.cible.x,self.cible.y)
@@ -139,8 +139,7 @@ class Vaisseau():
         self.vitesse=2
         self.cible=None
         self.typecible=""
-        self.range=100
-        self.projectiles=[]
+        self.range=100        self.projectiles=[]
         self.delaidetir=0
         self.delaimax=15 ###à modifier avec le dictionnaire si on fait d'autres vaisseaux
         self.etat="actif"
@@ -159,10 +158,10 @@ class Vaisseau():
                     print("Vaisseau: ", self.cible.id)
                 elif self.cible == Etoile:
                     print("Etoile: ", self.cible.id)
-                elif self.cible == Planete:
-                    print("RESSOURCES...",self.cible.id,self.cible.ressource,self.cible.proprietaire)
-                    self.cible.proprietaire=self.proprietaire                #tempo=input("Continuersvp")
-
+               # elif isinstance(self.cible, Planete):
+                #    if self.cible.proprietaire==" ":
+                 #       self.etat="colonisation"                  #tempo=input("Continuersvp")
+                #if self.etat!="colonisation":
                 self.cible=None
                 #print("Change cible")
         else:
@@ -328,7 +327,6 @@ class Joueur():
         self.energie = 600
         self.gaz = 600
         self.flotte=[]
-        self.ToursDefense=[] ####ajout GM 29 avril##
         self.detruits=[]
         self.cout = {"minerai":[100,"energie"],
                     "gaz":[100,"energie"],
@@ -340,15 +338,8 @@ class Joueur():
                     "colonisateur":[50,"minerai"],
                     "cargo":[50,"minerai"]}
         self.joueurami=[]  ### id des joueurs ###
-        self.cout = {"minerai":[100,self.energie],
-                    "gaz":[100,self.energie],
-                    "energie":[100,self.minerai],
-                    "upgminerai":[500,self.minerai],
-                    "upggaz":[500,self.minerai],
-                    "upgenergie":[500,self.minerai]}
         self.actions={"creervaisseau":self.creervaisseau,
                       "upgBatiment":self.upgBatiment,  #Ajouter le 9 avril par Nic
-                      "vendreBatiment":self.vendreBatiment,  #Ajouter le 9 avril par Nic
                       "creerBatiment":self.creerBatiment,  #Ajouter le 9 avril par Nic
                       "ciblerflotte":self.ciblerflotte,
                       "detruire": self.detruire,
@@ -356,7 +347,8 @@ class Joueur():
                       "modifRessource":self.modifRessource,
                       "cibleretour":self.cibleretour, #Ajout Felix-O 16 avril
                       "versvue1":self.versvue1, #Ajout Felix-O 23 Avril
-                      "versvue0":self.versvue0} #Ajout Felix-O 23 Avril
+                      "versvue0":self.versvue0,
+                      "creerTourDefense":self.creerTourDefense} #Ajout Nick le 30 avril
 
     def creervaisseau(self,idplanete):
         #etoile,cible,type=params
@@ -387,28 +379,46 @@ class Joueur():
             self.minerai -= self.cout[typeBatiment][0]
         else :
             print("MANQUE DE FOND")
+            print(self.minerai)
 
-    #Ajouter le 9 avril par nic
-    def vendreBatiment(self,batiment):
-        self.minerai+=batiment.cout*0.5
-        batiment.etat="detruit"
+    def creerTourDefense(self,params): #Ajouter le 8 avril par nic
+
+        p,x,y = params
+
+        b = TourDefense(self.id,p,x,y)
+        print("tour defense",b.id)
+
+        for i in self.planetescontrolees:
+            if i.id == int(p):
+                i.toursDefense.append(b)
+                self.parent.parent.vue.afficherBatiment()
 
      #Ajouter le 9 avril par Nic
     def upgBatiment(self,idBatiment):
         for p in self.planetescontrolees:
             for b in p.batiment:
-                if int(idBatiment[0]) == b.id:
-                    print(b.typeBatiment)
-                    if self.cout["upg"+str(b.typeBatiment)][0] <= self.cout["upg"+str(b.typeBatiment)][1]:
-                        b.vitesse += 1
-                        print("argent joueur : ", self.cout["upg"+str(b.typeBatiment)][1])
-                        print("cout : ", self.cout["upg"+str(b.typeBatiment)][0])
-                        self.cout["upg"+str(b.typeBatiment)][1] -= self.cout["upg"+str(b.typeBatiment)][0]
-                        self.parent.parent.vue.afficherBatiment()
-                        print("argent joueur apres : ", self.cout["upg"+str(b.typeBatiment)][1])
-                    else:
-                        print("MANQUE DE FOND")
-
+                if int(idBatiment) == b.id:
+                    if self.cout["upg"+str(b.typeBatiment)][1] == "minerai":
+                        if self.minerai >= self.cout["upg"+str(b.typeBatiment)][0]:
+                            self.minerai -= self.cout["upg"+str(b.typeBatiment)][0]
+                            b.vitesse += 1
+                            self.parent.parent.vue.afficherBatiment()
+                        else:
+                            print("MANQUE DE FOND")
+                    elif self.cout["upg"+str(b.typeBatiment)][1] == "energie":
+                        if self.energie >= self.cout["upg"+str(b.typeBatiment)][0]:
+                            self.energie -= self.cout["upg"+str(b.typeBatiment)][0]
+                            b.vitesse += 1
+                            self.parent.parent.vue.afficherBatiment()
+                        else:
+                            print("MANQUE DE FOND")
+                    elif self.cout["upg"+str(b.typeBatiment)][1] == "gaz":
+                        if self.gaz >= self.cout["upg"+str(b.typeBatiment)][0]:
+                            self.gaz -= self.cout["upg"+str(b.typeBatiment)][0]
+                            b.vitesse += 1
+                            self.parent.parent.vue.afficherBatiment()
+                        else:
+                            print("MANQUE DE FOND")
 
     def modifRessource(self):
         #Ajouter le 8 avril par nic ( Gere l'incrémentation des ressources des joueurs avec batiment et diminuer les ressource restante sur la planete du joueur)
@@ -430,6 +440,7 @@ class Joueur():
                         p.gaz -= p.gaz
                 elif b.typeBatiment == "energie":
                     self.energie += b.vitesse
+                print (b.vitesse)
 
     def ciblerflotte(self,ids):
         idori,iddesti,typedestination=ids
@@ -509,8 +520,12 @@ class Joueur():
         self.modifRessource()
         #if self.detruits:
          #   self.detruire()
+        self.colonisation()
         self.detruire()
         for i in self.flotte:
+            if i.etat=="colonisation":
+                i.cible=None
+                i.etat=""
             if i.cible and i.typecible == "Vaisseau":
                 i.tirer()
             elif i.cible:
@@ -551,6 +566,19 @@ class Joueur():
         for i in self.detruits:
             self.flotte.remove(i)
             self.detruits.remove(i)
+
+    def colonisation(self):
+        for i in self.flotte:
+            if i.etat=="colonisation":
+                print(i.cible, "TEST")
+                i.cible.proprietaire=self.nom
+                self.planetescontrolees.append(i.cible)
+                i.cible.batiment.append(Batiment(self.id,i.cible.id,"base",400,300))
+                #i.cible=None
+                #elf.etat=""
+
+
+
 
     #Ajout Felix-O 23 Avril
     def versvue1(self,ids):
@@ -609,10 +637,6 @@ class Joueur():
             flottecur.planetecur = None
             flottecur.cible = None
 
-
-
-
-
 # IA- nouvelle classe de joueur
 class IA(Joueur):
     def __init__(self,parent,nom,planetemere,couleur):
@@ -644,6 +668,16 @@ class IA(Joueur):
                     i.defense()
         else:
             self.creervaisseau(self.planetemere.id)
+
+        #if self.planetemere.batiment:
+        #    print("FULL")
+        #else:
+        #    self.creerBatimentIA("minerai")
+
+    def creerBatimentIA(self,typeBatiment):
+        x = 50
+        y = 50
+        self.parent.parent.creerBatiment(self.planetemere.id,typeBatiment,x,y)
 
 class Modele():
     def __init__(self,parent,joueurs):

@@ -38,7 +38,8 @@ class Controleur():
         return monip
 
     def generernom(self):  # generateur de nouveau nom - accelere l'entree de nom pour les tests - parfois � peut generer le meme nom mais c'est rare
-        monnom="jmd_"+str(random.randrange(1000))
+        noms=["SimonCharles69", "Phoenix-O", "Guiyomm", "YAAAAS", "DIEU", "NicolasCage", "JabaTheSlutt", "Jonh-Marque", "TitusPinus", "AccepteToi", "OliPrime", "Tchoin", "LaStrap", "Bo_BB"]
+        monnom=noms.pop(random.randrange(0,13))
         return monnom
 
     def creerpartie(self):
@@ -154,13 +155,12 @@ class Controleur():
     def creerBatiment(self,p,typeBatiment,x,y):
         self.actions.append([self.monnom,"creerBatiment",[p,typeBatiment,x,y]])
 
-     #Ajouter le 9 avril par Nic
-    def upgBatiment(self,idBatiment):
-        self.actions.append([self.monnom,"upgBatiment",[idBatiment]])
+    def creerTourDefense(self,p,x,y):
+        self.actions.append([self.monnom,"creerTourDefense",[p,x,y]])
 
      #Ajouter le 9 avril par Nic
-    def vendreBatiment(self,batiment):
-        self.actions.append([self.monnom,"vendreBatiment",[batiment]])
+    def upgBatiment(self,idBatiment):
+        self.actions.append([self.monnom,"upgBatiment",idBatiment])
 
     def detruire(self):
         self.actions.append([self.monnom,"detruire",""])
@@ -178,6 +178,10 @@ class Controleur():
     #Ajouter par Felix-O le 23 avril
     def versvue0(self,idflotte,idplanete):
         self.actions.append([self.monnom, "versvue0", [idflotte, idplanete]])
+    #Ajouter par Guillaume le 6 mai
+    def colonisation(self):
+        self.actions.append([self.monnom, "colonisation", ""])
+
 
 if __name__=="__main__":
     c=Controleur()
