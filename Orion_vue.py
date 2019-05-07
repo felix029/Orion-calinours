@@ -45,21 +45,26 @@ class Vue():
 #################################################################################################################################################################################
 #                                                                 IMAGES REDIMENSIONNÉES                                                                                        #
 #################################################################################################################################################################################
+        #Planete du menu
         self.plan = Image.open("./images/planete.png")
         self.resized = self.plan.resize((30, 30),Image.ANTIALIAS)
         self.planete = ImageTk.PhotoImage(self.resized)
-
+        
+        #Electricite du menu
         self.electricite = Image.open("./images/electricite.png")
         self.resized = self.electricite.resize((30, 30),Image.ANTIALIAS)
         self.light = ImageTk.PhotoImage(self.resized)
 
+        #Minerais du menu
         self.rock = Image.open("./images/rock.png")
         self.resized = self.rock.resize((30, 30),Image.ANTIALIAS)
         self.minerais = ImageTk.PhotoImage(self.resized)
 
+        #Gaz du menu
         self.gas = Image.open("./images/gas.png")
         self.resized = self.gas.resize((30, 30),Image.ANTIALIAS)
         self.gas = ImageTk.PhotoImage(self.resized)
+        
         #Boutons vaisseau
         self.vaisseau = Image.open("./images/vaisseau.png")
         self.resized = self.vaisseau.resize((50, 50),Image.ANTIALIAS)
@@ -69,6 +74,7 @@ class Vue():
         self.resized = self.mine.resize((35, 35),Image.ANTIALIAS)
         self.mineMenuGauche = ImageTk.PhotoImage(self.resized)
 
+        #Gaz du bouton
         self.gaz=Image.open("./images/can.png")
         self.resized = self.gaz.resize((45, 45),Image.ANTIALIAS)
         self.gazMenuGauche = ImageTk.PhotoImage(self.resized)
@@ -122,14 +128,17 @@ class Vue():
         self.resized = self.elec1.resize((100,100),Image.ANTIALIAS)
         self.elec1 = ImageTk.PhotoImage(self.resized)
 
+
     def fermerfenetre(self):
         self.parent.fermefenetre()
+
 
     def changecadre(self,cadre):
         if self.cadreactif:
             self.cadreactif.pack_forget()
         self.cadreactif=cadre
         self.cadreactif.pack()
+
 
     def creercadresplash(self,ip,nom):
         #Variables
@@ -154,7 +163,6 @@ class Vue():
         btncreerpartie=Button(text="Creer partie",bg="light grey",command=self.creerpartie)
         btnconnecterpartie=Button(text="Connecter partie",bg="light grey",command=self.connecterpartie)
 
-
         self.canevassplash.create_window(310,150,window=self.nomsplash,width=100,height=30)
         self.canevassplash.create_window(310,210,window=self.ipsplash,width=100,height=30)
         self.canevassplash.create_window(310,270,window=labip,width=100,height=30)
@@ -163,7 +171,6 @@ class Vue():
 
 
     def creercadrelobby(self):
-
         self.cadrelobby=Frame(self.cadreapp)
 
         #Affichage d'un titre
@@ -187,6 +194,7 @@ class Vue():
         self.canevaslobby.create_window(200,300,window=self.nbetoile,width=100,height=30)
         self.canevaslobby.create_window(200,400,window=btnlancerpartie,width=100,height=30)
 
+
     def connecterpartie(self):
         nom=self.nomsplash.get()
         ip=self.ipsplash.get()
@@ -196,8 +204,8 @@ class Vue():
             print("BOUCLEATTENTE de CONNECTER")
             self.parent.boucleattente()
 
-    def creerpartie(self):
 
+    def creerpartie(self):
         nom=self.nomsplash.get()
         ip=self.ipsplash.get()
         if nom and ip:
@@ -207,12 +215,15 @@ class Vue():
             print("BOUCLEATTENTE de CREER")
             self.parent.boucleattente()
 
+
     def lancerpartie(self):
         self.parent.lancerpartie()
+
 
     def affichelisteparticipants(self,lj):
         self.listelobby.delete(0,END)
         self.listelobby.insert(0,lj)
+
 
     def creeraffichercadrepartie(self,mod):
         self.nom=self.parent.monnom
@@ -232,7 +243,7 @@ class Vue():
         
 #################################################################################################################################################################################
 #                                                                                                                                                                               #
-#                                                                    PRINCIPAUX FRAMES                                                                                          #
+#                                                                       PRINCIPAUX FRAMES                                                                                       #
 #                                                                                                                                                                               #
 #################################################################################################################################################################################
         
@@ -361,93 +372,53 @@ class Vue():
         self.upgMines.bind("<Button>",self.upgradeBatiment)
 
         
-        ###########################################################################
-
-        ###########################################################################
-        #                            Zone Dessous-Droite                          #
-        ###########################################################################
-        #lowerRightFrame
+        ################################################################# BANDE COTE DROIT ######################################################################################
+        #Le frame droit est dans le frame dessous
         self.lowerRightFrame=Frame(self.lowerFrame,width=150,height=626,bg=self.couleurBackgroundCotes)
         self.lowerRightFrame.grid(row=0, column=2, sticky="ns")
 
-        #Labels  et sous-frames du lowerRighttFrame
+        #Sous-frames du frame droit (avec leurs labels)
+        #Frames info miniMap et stats
         self.cadreinfogen=Frame(self.lowerRightFrame,width=150,height=200,bg=self.couleurBackgroundCotes)
         self.cadreinfogen.grid(row=0, column=0, sticky="we")
 
-
-        self.lblJoueurs = Label(self.cadreinfogen, text=" .: AUTRES JOUEURS :. ",fg="white", width= 38, height=2, bg=self.couleurTitreCadre,borderwidth=3, relief="solid")
-        self.lblJoueurs.grid(row=0,column=0,sticky = "we")
-        #.lblJoueurs.pack(fill=X)
+        self.lblJoueurs = Label(self.cadreinfogen, text=" .: AUTRES JOUEURS :. ",fg="white", width= 38, height=2, bg=self.couleurTitreCadre,borderwidth=3, relief="solid").grid(row=0,column=0,sticky = "we")
+        
         self.labid=Label(self.cadreinfogen,text=self.nom,fg=mod.joueurs[self.nom].couleur,bg=self.couleurBackgroundCotes)
         self.labid.grid(row=1, column=0, sticky="we")
 
         self.cadreminimap=Frame(self.lowerRightFrame,height=200,width=150,bg=self.couleurBackgroundCotes)
         self.cadreminimap.grid(row=1, column=0, sticky="we")
 
-        self.labelCadreMini = Label(self.cadreminimap, text=".: STATISTIQUES :.",fg="white", width= 25, height=2, bg=self.couleurTitreCadre,borderwidth=3, relief="solid")
-        #self.labelCadreMini.grid(row=0,column=0,sticky="we")
-        self.labelCadreMini.pack(fill=X)
+        self.labelCadreMini = Label(self.cadreminimap, text=".: STATISTIQUES :.",fg="white", width= 25, height=2, bg=self.couleurTitreCadre,borderwidth=3, relief="solid").pack(fill=X)
 
         self.statsFrame = Frame(self.lowerRightFrame, width=150,height=200)
         self.statsFrame.grid(row=2, column=0, sticky="we")
 
         self.canevasMini=Canvas(self.statsFrame,width=150,height=200,bg=self.couleurBackgroundCotes)
         self.canevasMini.pack(fill=X)
-        #self.canevasMini.grid(row=0, column=0, sticky="we")
         self.canevasMini.bind("<Button>",self.moveCanevas)
 
-
-
-        #Boutons du lowerRightFrame
         self.labid.bind("<Button>",self.afficherplanetemere)
         self.canevasMini.bind("<Button>",self.moveCanevas)
 
 
-
-        ##############################################################################
-        #                             Zone Dessous-Dessous                           #
-        ##############################################################################
-        #################################################Charles!!!!!!#####################################################
-        #lowerLowerFrame
+        ###################################################################### BANDE DU BAS #####################################################################################
+        #Le frame du bas est dans le frame dessous
         self.lowerLowerFrame=Frame(self.lowerFrame,width=800,height=75,bg=self.couleurTitreCadre)
         self.lowerLowerFrame.grid(row=1, column=1, sticky="ns")
 
-        #Labels du lowerLeftFrame
-        #Bouton pour modifier la vue
-        #bouton zoom
-        #self.boutonZoom = Button(self.cadreminimap,text="Zoom", bg="LightCyan3", borderwidth=None,font=self.simpleFont, pady=2, width= 25, height=3, cursor="hand2")
+        #Bouton pour modifier la vue (zoom et de-zoom)
         self.boutonZoom = Button(self.lowerLowerFrame,text="Vue suivante", bg=self.couleurTitreCadre, width= 56, height=2, cursor="hand2", activebackground="red", fg="white")
         self.boutonZoom.bind("<Button>")
         self.boutonZoom.grid(row=0, column=1)
-        #bouton d�-zomm
+     
         self.boutonDzoom=Button(self.lowerLowerFrame,text="Vue precedente", bg=self.couleurTitreCadre, width= 56, height=2, cursor="hand2", activebackground="red", fg="white")
         self.boutonDzoom.bind("<Button>")
         self.boutonDzoom.grid(row=0, column=0)
 
 
-
-
-
-        #Boutons du lowerLeftFrame
-
-
-
-
-
-
-        ###############################################################################
-
-
-        #self.cadreinfo=Frame(self.rightFrame,width=200,height=200,bg="blue")
-        #self.cadreinfo.grid(row=0, column=0, sticky="we")
-        #self.cadreinfochoix=Frame(self.cadreinfo,height=200,width=200,bg="red")
-        #self.cadreinfochoix.grid(row=1, column=0, sticky="we")
-        #self.lbselectecible=Label(self.cadreinfo,text="Choisir cible",bg="yellow")
-        #self.lbselectecible.grid(row=3, column=0, sticky="we")
-
-
-
-
+        #########################################################################################################################################################################
         self.afficherdecor(mod)
         self.changecadre(self.cadrepartie)        #Label d'affichage des atrributs d'une planète lors de la VUE_PLANÉTAIRE
         self.textGeneriquePlanete =  StringVar()
@@ -477,6 +448,7 @@ class Vue():
         self.boutonZoom.config(command = lambda: self.zoom(self.mod))
         self.boutonDzoom.config(command = lambda: self.dezoom(self.mod))
         self.etatBouton()
+
 
     def etatBouton(self):
 
@@ -533,8 +505,10 @@ class Vue():
         self.canevas.yview(MOVETO,py)
         print("SCROLL",px,py)
 
+
     def souris(self, event):
         self.posSouris = self.normInterprePos(COORD(event.x, event.y))
+
 
     def zoom (self, mod):
         if self.vueactive == 0:
@@ -546,6 +520,7 @@ class Vue():
             else:
                 print("Aucune planete ou etoile select")
         self.etatBouton()
+
 
     def dezoom (self, mod):
         if self.vueactive == 2:
@@ -696,6 +671,7 @@ class Vue():
             #affiche les batiment
             self.afficherBatiment()
 
+
     def afficherBatiment(self):
         for j in self.mod.joueurs:
             if self.planeteselect != None:
@@ -723,7 +699,6 @@ class Vue():
                         self.canevas.create_text(b.x,b.y-20,text=b.niveau,fill="white",tags="vitesse") #affiche le niveau du batiment
 
 
-################################################################################################ Charles
     def afficheAttributsPlanete(self, maselection, planeteselect=None, etoileselect=None):
 
         tag = self.maselection.tag[1]
@@ -749,6 +724,7 @@ class Vue():
         self.planeteselect.color
 
 ##########################################################################################################
+
 
     def afficherplanetemere(self,evt):
         if self.vueactive == 2:
@@ -787,6 +763,7 @@ class Vue():
                 self.btncreervaisseau.pack_forget()
                 self.maselection=None
 
+
     def creerBatiment(self,evt):
         if self.selectionBatiment != None:
             wid = str(evt.widget)
@@ -799,6 +776,7 @@ class Vue():
                 self.selectionBatiment=[self.batimentChoisi,1]
         else:
             self.selectionBatiment=[self.batimentChoisi,1]
+
 
     def creerTourDefense(self,evt):
         if self.selectionBatiment != None:
@@ -818,15 +796,18 @@ class Vue():
         self.batimentChoisi="minerai"
         self.creerBatiment(evt)
 
+
     def initGaz(self,evt):
         self.selectionBatiment=None
         self.batimentChoisi="gaz"
         self.creerBatiment(evt)
 
+
     def initEnergie(self,evt):
         self.selectionBatiment=None
         self.batimentChoisi="energie"
         self.creerBatiment(evt)
+
 
     def upgradeBatiment(self,evt):
         if self.upgBatiment != None:
@@ -917,63 +898,64 @@ class Vue():
 
 
         #Affichage des AIs
-        for i in self.mod.ias:
-            for j in i.flotte:
-                if self.vueactive == 2:
-                    if j.sysplanetecur == None and j.planetecur == None:
-                        self.canevas.create_rectangle(j.x-5,j.y-5,j.x+5,j.y+5,fill=i.couleur,
-                                            tags=("flotte", str(j.id), j.proprietaire, "artefact"))
-                if self.vueactive == 1:
-                    if j.sysplanetecur == self.etoileselect and j.planetecur == None:
-                        self.canevas.create_rectangle(j.x-7,j.y-7,j.x+7,j.y+7,fill=i.couleur,
-                                                tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+        #for i in self.mod.ias:
+        #    for j in i.flotte:
+        #        if self.vueactive == 2:
+        #            if j.sysplanetecur == None and j.planetecur == None:
+        #                self.canevas.create_rectangle(j.x-5,j.y-5,j.x+5,j.y+5,fill=i.couleur,
+        #                                    tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+        #        if self.vueactive == 1:
+        #            if j.sysplanetecur == self.etoileselect and j.planetecur == None:
+        #                self.canevas.create_rectangle(j.x-7,j.y-7,j.x+7,j.y+7,fill=i.couleur,
+        #                                        tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+        #
 
-                if self.vueactive == 0:
-                    if j.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
-                        self.canevas.create_rectangle(j.x-11,j.y-11,j.x+11,j.y+11,fill=i.couleur,
-                                                tags=("flotte", str(j.id), j.proprietaire, "artefact"))
-                if len(j.explosions) > 0:
-                    for l in j.explosions:
-                        if self.vueactive == 2:
-                            if l.sysplanetecur == None and j.planetecur == None:
-                                self.canevas.create_rectangle(l.x-l.rayon, l.y-l.rayon, l.x+l.rayon, l.y+l.rayon, fill="white",tags=("projectile", l.proprietaire, "artefact"))
+        #        if self.vueactive == 0:
+        #            if j.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
+        #                self.canevas.create_rectangle(j.x-11,j.y-11,j.x+11,j.y+11,fill=i.couleur,
+        #                                        tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+        #        if len(j.explosions) > 0:
+        #            for l in j.explosions:
+        #                if self.vueactive == 2:
+        #                    if l.sysplanetecur == None and j.planetecur == None:
+        #                        self.canevas.create_rectangle(l.x-l.rayon, l.y-l.rayon, l.x+l.rayon, l.y+l.rayon, fill="white",tags=("projectile", l.proprietaire, "artefact"))
+    	#
+        #                elif self.vueactive == 1:
+        #                    if l.sysplanetecur == self.etoileselect and j.planetecur == None:
+        #                        self.canevas.create_rectangle(l.x-40,l.y-40,l.x+40,l.y+40,fill="white", tags=("projectile", l.proprietaire, "artefact"))
+        #
+        #               elif self.vueactive == 0:
+        #                   if l.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
+        #                        self.canevas.create_rectangle(l.x-7,l.y-7,l.x+7,l.y+7,fill="white",tags=("projectile", l.proprietaire, "artefact"))
+        #                j.explosions.remove(l)
 
-                        elif self.vueactive == 1:
-                            if l.sysplanetecur == self.etoileselect and j.planetecur == None:
-                                self.canevas.create_rectangle(l.x-40,l.y-40,l.x+40,l.y+40,fill="white", tags=("projectile", l.proprietaire, "artefact"))
+        #    for k in j.projectiles:
+            #         if self.vueactive == 2:
+            #             if k.sysplanetecur == None and j.planetecur == None:
+            #                     self.canevas.create_rectangle(k.x-2, k.y-2, k.x+2, k.y+2, fill=i.couleur,tags=("projectile", k.proprietaire, "artefact"))
 
-                        elif self.vueactive == 0:
-                            if l.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
-                                self.canevas.create_rectangle(l.x-7,l.y-7,l.x+7,l.y+7,fill="white",tags=("projectile", l.proprietaire, "artefact"))
-                        j.explosions.remove(l)
+            #         if self.vueactive == 1:
+            #             if k.sysplanetecur == self.etoileselect and j.planetecur == None:
+            #                     self.canevas.create_rectangle(k.x-4,k.y-4,k.x+4,k.y+4,fill=i.couleur, tags=("projectile", k.proprietaire, "artefact"))
 
-            for k in j.projectiles:
-                    if self.vueactive == 2:
-                        if k.sysplanetecur == None and j.planetecur == None:
-                                self.canevas.create_rectangle(k.x-2, k.y-2, k.x+2, k.y+2, fill=i.couleur,tags=("projectile", k.proprietaire, "artefact"))
+            #         if self.vueactive == 0:
+            #             if k.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
+            #                     self.canevas.create_rectangle(k.x-7,k.y-7,k.x+7,k.y+7,fill=i.couleur,tags=("projectile", k.proprietaire, "artefact"))
 
-                    if self.vueactive == 1:
-                        if k.sysplanetecur == self.etoileselect and j.planetecur == None:
-                                self.canevas.create_rectangle(k.x-4,k.y-4,k.x+4,k.y+4,fill=i.couleur, tags=("projectile", k.proprietaire, "artefact"))
+            # if len(j.explosions) > 0:
+            #         for l in j.explosions:
+            #             if self.vueactive == 2:
+            #                 if l.sysplanetecur == None and j.planetecur == None:
+            #                     self.canevas.create_rectangle(l.x-l.rayon, l.y-l.rayon, l.x+l.rayon, l.y+l.rayon, fill="white",tags=("projectile", l.proprietaire, "artefact"))
 
-                    if self.vueactive == 0:
-                        if k.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
-                                self.canevas.create_rectangle(k.x-7,k.y-7,k.x+7,k.y+7,fill=i.couleur,tags=("projectile", k.proprietaire, "artefact"))
+            #             elif self.vueactive == 1:
+            #                 if l.sysplanetecur == self.etoileselect and j.planetecur == None:
+            #                     self.canevas.create_rectangle(l.x-40,l.y-40,l.x+40,l.y+40,fill="white", tags=("projectile", l.proprietaire, "artefact"))
 
-            if len(j.explosions) > 0:
-                    for l in j.explosions:
-                        if self.vueactive == 2:
-                            if l.sysplanetecur == None and j.planetecur == None:
-                                self.canevas.create_rectangle(l.x-l.rayon, l.y-l.rayon, l.x+l.rayon, l.y+l.rayon, fill="white",tags=("projectile", l.proprietaire, "artefact"))
-
-                        elif self.vueactive == 1:
-                            if l.sysplanetecur == self.etoileselect and j.planetecur == None:
-                                self.canevas.create_rectangle(l.x-40,l.y-40,l.x+40,l.y+40,fill="white", tags=("projectile", l.proprietaire, "artefact"))
-
-                        elif self.vueactive == 0:
-                            if l.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
-                                self.canevas.create_rectangle(l.x-7,l.y-7,l.x+7,l.y+7,fill="white",tags=("projectile", l.proprietaire, "artefact"))
-                        j.explosions.remove(l)
+            #             elif self.vueactive == 0:
+            #                 if l.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
+            #                     self.canevas.create_rectangle(l.x-7,l.y-7,l.x+7,l.y+7,fill="white",tags=("projectile", l.proprietaire, "artefact"))
+            #             j.explosions.remove(l)
 
 
     def cliquecosmos(self,evt):
@@ -1121,33 +1103,16 @@ class Vue():
             #3- Reprinter les bouton avec une grosseur normale
 
 
-###Code à clearer
-        #if t and t[0]==self.nom:
-        #    self.maselection=self.canevas.find_withtag(CURRENT)#[0]
-        #    self.maselection=[self.nom,t[1],t[2]]  #self.canevas.find_withtag(CURRENT)#[0]
-        #    print(self.maselection)
-        #    if t[1] == "etoile":
-        #        self.montreetoileselection()
-        #    elif t[1] == "flotte":
-        #        self.montreflotteselection()
-        #elif "etoile" in t and t[0]!=self.nom:
-        #    if self.maselection:
-        #        pass # attribuer cette etoile a la cible de la flotte selectionne
-        #        self.parent.ciblerflotte(self.maselection[2],t[2])
-        #    print("Cette etoile ne vous appartient pas - elle est a ",t[0])
-        #    self.maselection=None
-        #    self.lbselectecible.pack_forget()
-        #    self.canevas.delete("marqueur")
-        #else:
-        #    print("Region inconnue")
-        #    self.maselection=None
-        #    self.lbselectecible.pack_forget()
-        #    self.canevas.delete("marqueur")
-
     def montreetoileselection(self):
         self.btncreervaisseau.pack()
         self.btncreerbatiment.pack()
+        
+        
     def montreflotteselection(self):
         self.lbselectecible.pack()
+        
+        
     def afficherartefacts(self,joueurs):
-        pass #print("ARTEFACTS de ",self.nom)
+        pass 
+    
+    

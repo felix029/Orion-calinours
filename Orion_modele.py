@@ -458,13 +458,13 @@ class Joueur():
                             print("GOT TARGET")
                             return
                 elif typedestination == "flotte":
-                    for j in self.parent.ias:
-                        for k in j.flotte:
-                            if k.id == int(iddesti):
-                                print("TARGETED SHIP")
+                    #for j in self.parent.ias:
+                        #for k in j.flotte:
+                        #    if k.id == int(iddesti):
+                        #        print("TARGETED SHIP")
 
-                                i.cible=k
-                                i.typecible="Vaisseau"
+                        #        i.cible=k
+                        #        i.typecible="Vaisseau"
                     for j in self.parent.joueurs:
                         for k in self.parent.joueurs[j].flotte:
                             if self.parent.joueurs[j]!= self:
@@ -485,11 +485,11 @@ class Joueur():
                                 self.typecible=""
                                 print("GOT TARGET")
                                 return
-                for j in self.parent.ias:
-                    for k in j.flotte:
-                        if k.id == int(iddesti):
-                            i.cible=k
-                            i.typecible="Vaisseau"
+                #for j in self.parent.ias:
+                #    for k in j.flotte:
+                #        if k.id == int(iddesti):
+                #            i.cible=k
+                #            i.typecible="Vaisseau"
                 for j in self.parent.joueurs:
                     for k in self.parent.joueurs[j].flotte:
                         if k.id == int(iddesti):
@@ -498,13 +498,13 @@ class Joueur():
 
     def ciblerTourDefense(self):  #### Ajout Guillaume-29 avril, à voir si impact de performance###
         for i in self.ToursDefense:
-            for j in self.parent.ias:
-                if j.id not in self.joueurami:
-                    for k in j.flotte:
-                        d=hlp.calcDistance(i.x,i.y,k.x,k.y)
-                        if d<=i.range:
-                            i.cible=k
-                            i.typecible="Vaisseau" ##peut-être pas nécessaire pour les tours
+            #for j in self.parent.ias:
+            #    if j.id not in self.joueurami:
+            #        for k in j.flotte:
+            #            d=hlp.calcDistance(i.x,i.y,k.x,k.y)
+            #            if d<=i.range:
+            #                i.cible=k
+            #                i.typecible="Vaisseau" ##peut-être pas nécessaire pour les tours
             for j in self.parent.joueurs:
                 if self.parent.joueurs[j].id not in self.joueurami:
                     for k in self.parent.joueurs[j].flotte:
@@ -691,7 +691,7 @@ class Modele():
         self.largeur=800 #self.parent.vue.root.winfo_screenwidth()
         self.hauteur=600 #self.parent.vue.root.winfo_screenheight()
         self.joueurs={}
-        self.ias=[]
+        #self.ias=[]
         self.actionsafaire={}
         self.etoiles=[]
         self.terrain=[]
@@ -755,7 +755,7 @@ class Modele():
      #       self.etoiles.append(Etoile(self.xEtoile[i],self.yEtoile[i],self))
 
     def assignerplanetes(self, joueurs, ias=1):
-        np=len(joueurs)+ias
+        np=len(joueurs)#+ias
         etoilej=[]
         planetej=[]
         while np != 0:
@@ -776,9 +776,9 @@ class Modele():
             self.joueurs[i].planetescontrolees[0].batiment.append(Batiment(self.joueurs[i].id,planetej,"base",400,300))
 
         # IA- creation des ias - max 2
-        couleursia=["orange","green"]
-        for i in range(ias):
-            self.ias.append(IA(self,"IA_"+str(i),planetej.pop(0),couleursia.pop(0)))
+        #couleursia=["orange","green"]
+        #for i in range(ias):
+        #    self.ias.append(IA(self,"IA_"+str(i),planetej.pop(0),couleursia.pop(0)))
 
     def prochaineaction(self,cadre):
         if cadre in self.actionsafaire:
@@ -800,5 +800,5 @@ class Modele():
             self.joueurs[i].prochaineaction()
 
         # IA- appelle prochaine action
-        for i in self.ias:
-            i.prochaineaction()
+        #for i in self.ias:
+        #    i.prochaineaction()
