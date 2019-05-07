@@ -398,6 +398,7 @@ class Vue():
         self.upgMines=Button(self.upgradeFrame,image=self.goldmineMenuGauche,bg =self.couleurBackgroundCotes)
         self.upgMines.grid(row=4, column=0, sticky="we")
         self.upgMines.config(height=45)
+        self.upgMines.bind("<Button>",self.upgradeBatiment)
 
         #self.upgExtracteurs=Button(self.upgradeFrame,image=self.gazCanMenuGauche,bg=self.couleurBackgroundCotes)
         #self.upgExtracteurs.grid(row=5, column=0, sticky="we")
@@ -889,10 +890,8 @@ class Vue():
         self.batimentChoisi="energie"
         self.creerBatiment(evt)
 
-    def upgradeBatiment(self):
+    def upgradeBatiment(self,evt):
         if self.upgBatiment != None:
-            #for j in self.mod.joueurs:
-                #if self.mod.joueurs[j].nom == self.planeteselect.proprietaire:
             self.parent.upgBatiment(self.upgBatiment)
             self.upgBatiment = None
             self.canevas.delete("BatimentSelection")
@@ -1080,7 +1079,6 @@ class Vue():
                 self.canevas.delete("BatimentSelection")
             elif "batiment" in tag:
                 self.upgBatiment = tag[1]
-                print(tag[1])
                 self.canevas.create_oval(evt.x-50,evt.y-50,evt.x+50,evt.y+50,outline="white",tags="BatimentSelection")
 
 
