@@ -645,9 +645,7 @@ class Vue():
                 y=random.randrange(mod.hauteur)
                 self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond"))
                 #Insertion de l'image du soleil
-                self.soleil = ImageTk.PhotoImage(self.resized)                self.canevas.create_image(0, 0, image=self.soleil, anchor=NW, tags=("soleil", "fond"))
-
-                #self.canevas.create_oval(-100, -100, 100, 100, fill="orange", tags=("soleil", "fond"))
+                self.canevas.create_image(0, 0, image=self.soleil, anchor=NW, tags=("soleil", "fond"))
 
             for i in self.etoileselect.planetes:
                 s=i.planetImage
@@ -1109,7 +1107,7 @@ class Vue():
                     self.planeteselect=None
 
             if tag and tag[0] == "flotte":
-                if self.flotteselect == None:                    
+                if self.flotteselect == None:
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
                     print(self.maselection)
                     j=self.mod.joueurs[self.nom]
@@ -1154,7 +1152,7 @@ class Vue():
 
             if tag and tag[0] == "flotte":
 
-                if self.flotteselect == None:                    
+                if self.flotteselect == None:
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
                     print(self.maselection)
                     j=self.mod.joueurs[self.nom]
