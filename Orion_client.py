@@ -38,7 +38,8 @@ class Controleur():
         return monip
 
     def generernom(self):  # generateur de nouveau nom - accelere l'entree de nom pour les tests - parfois � peut generer le meme nom mais c'est rare
-        monnom="jmd_"+str(random.randrange(1000))
+        noms=["SimonCharles69", "Phoenix-O", "Guiyomm", "YAAAAS", "DIEU", "NicolasCage", "JabaTheSlutt", "Jonh-Marque", "TitusPinus", "AccepteToi", "OliPrime", "Tchoin", "LaStrap", "Bo_BB"]
+        monnom=noms.pop(random.randrange(0,13))
         return monnom
 
     def creerpartie(self):
