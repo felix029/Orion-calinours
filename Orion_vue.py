@@ -787,20 +787,14 @@ class Vue():
         self.calculGaz+=0
 
         if tag == "etoile":
-            print(self.etoileselect)
-            print(tag)
             for i in self.etoileselect.planetes:
                 self.calculMinerai+=self.planeteselect.minerai
                 self.calculGaz+=self.planeteselect.gaz
 
-            print(str(self.calculMinerai))
-            print(str(self.calculGaz))
             self.planeteselect.gaz
             self.planeteselect.minerai
 
         if tag == "planete":
-            print(self.planeteselect)
-            print(tag)
             self.planeteselect.gaz
             self.planeteselect.minerai
             self.attributMinerai.set(textvariable = "Minerai : " + str(self.planeteselect.minerai)) #nombre de minerai restant sur la planet a collecter
