@@ -451,6 +451,7 @@ class Joueur():
                     for j in self.parent.etoiles:
                         if j.id== int(iddesti):
                             i.cible=j
+                            self.typecible=""
                             print("GOT TARGET")
                             return
                 elif typedestination == "flotte":
@@ -478,6 +479,7 @@ class Joueur():
                         for j in e.planetes:
                             if j.id == int(iddesti):
                                 i.cible=j
+                                self.typecible=""
                                 print("GOT TARGET")
                                 return
                 for j in self.parent.ias:
