@@ -87,6 +87,7 @@ class TourDefense():   ### à ajouter git
         self.energie=100
         self.typecible=""
         self.projectiles=[]
+        self.explosions=[]
         self.delaidetir=0
         self.delaimax=5
         self.cible=None
@@ -107,12 +108,17 @@ class TourDefense():   ### à ajouter git
             self.delaidetir-=1
 
         else:
+            ex=Explosion(self, self.cible.x,self.cible.y, False)
+            self.explosions.append(ex)
             self.cible=None
             self.delaidetir=0
 
         for i in self.projectiles:
             if i.etat!="detruit":
                 i.deplacer()
+            else:
+                ex=Explosion(self, i.x, i.y, True)
+                self.explosions.append(ex)
 
 class Vaisseau():
 
@@ -133,12 +139,13 @@ class Vaisseau():
         self.vitesse=2
         self.cible=None
         self.typecible=""
-        self.range=10
+        self.range=100
         self.projectiles=[]
         self.delaidetir=0
-        self.delaimax=5 ###à modifier avec le dictionnaire si on fait d'autres vaisseaux
+        self.delaimax=15 ###à modifier avec le dictionnaire si on fait d'autres vaisseaux
         self.etat="actif"
         self.attaquant=None
+        self.explosions=[]
 
     def avancer(self):
         if self.cible:
@@ -167,43 +174,58 @@ class Vaisseau():
             self.avancer()
         elif self.cible.etat!="detruit":
             if self.delaidetir==0:
-                if self.cible.attaquant==None:  ###ok
+                if self.cible.attaquant==None:
                     self.cible.attaquant=self
-                p=Projectile(self.cible,self.x,self.y,self.cible.x,self.cible.y)
+                p=Projectile(self, self.cible,self.x,self.y,self.cible.x,self.cible.y)
                 self.projectiles.append(p)
                 self.delaidetir=self.delaimax
             self.delaidetir-=1
 
-        else:
+        elif self.cible.etat == "detruit":
+            ex=Explosion(self, self.cible.x,self.cible.y, True)
+            self.explosions.append(ex)
             self.cible=None
             self.delaidetir=0
-            self.typecible = None
+            self.typecible=None
 
         for i in self.projectiles:
             if i.etat!="detruit":
                 i.deplacer()
+            else:
+                ex=Explosion(self, i.x, i.y, True)
+                self.explosions.append(ex)
 
     def defense(self):
         d=hlp.calcDistance(self.x,self.y,self.attaquant.x,self.attaquant.y)
         if self.attaquant and self.attaquant.etat!="detruit" and d<=self.range:
             if self.delaidetir==0:
-                p=Projectile(self.attaquant,self.x,self.y,self.attaquant.x,self.attaquant.y)
+                p=Projectile(self, self.attaquant,self.x,self.y,self.attaquant.x,self.attaquant.y)
                 self.projectiles.append(p)
                 self.delaidetir=self.delaimax
             self.delaidetir-=1
 
         elif self.attaquant.etat=="detruit":
+            ex=Explosion(self, self.attaquant.x, self.attaquant.y, False)
+            self.explosions.append(ex)
             self.attaquant=None
             self.delaidetir=0
 
         for i in self.projectiles:
             if i.etat!="detruit":
                 i.deplacer()
+            else:
+                ex=Explosion(self, self.x, self.y, True)
+                self.explosions.append(ex)
 
     def toucher(self,puissance):
         self.energie-=puissance
+        ex=Explosion(self, self.x, self.y, True)
+        self.explosions.append(ex)
         if(self.energie<=0):
+            ex=Explosion(self, self.x, self.y, False)
+            self.explosions.append(ex)
             self.etat="detruit"
+
 
 class Projectile():
     ###définition des types de projectiles [puissance,vitesse, aire d'effet]
@@ -211,14 +233,17 @@ class Projectile():
                     #"normal":[15,25,0],
                     #"grenade":[50,10,50]}
 
-    def __init__(self,cible,x,y,ciblex,cibley):
-        #self.choixprojectile=choixprojectile
+    def __init__(self, parent, cible,x,y,ciblex,cibley):
         self.cible=cible
         self.x=x
         self.y=y
         self.ciblex=ciblex
         self.cibley=cibley
+        self.parent=parent
         self.puissance=20
+        self.proprietaire=self.parent.proprietaire
+        self.sysplanetecur=self.parent.sysplanetecur
+        self.planetecur=self.parent.planetecur
         self.vitesse=5
         self.etat="actif"
         self.angle=hlp.calcAngle(self.x,self.y,self.ciblex,self.cibley)
@@ -231,7 +256,63 @@ class Projectile():
                 self.cible.toucher(self.puissance)
                 print(self.cible.etat)
                 print(self.cible.energie)
-                self.etat="detruit"
+
+
+
+class Explosion():
+
+    def __init__(self, parent, x, y, type):
+        self.parent=parent
+        self.x=x
+        self.y=y
+        self.proprietaire=self.parent.proprietaire
+        self.sysplanetecur=self.parent.sysplanetecur
+        self.planetecur=self.parent.planetecur
+        self.etat="actif"
+        self.vie=40
+        self.etats=[]
+        self.rayon=0
+        self.type = type
+
+        if self.type:
+            self.rayon=5
+        else:
+            self.rayon=20
+
+    # def exploToucher(self):
+    #     e = Eclat(self, 360-(9*1), self.vitesse % 1, self.x, self.y, self.rangeEx)
+    #     self.eclats.append(e)
+
+    # def explose(self):
+    #     self.vie =self.vie-1
+
+    #     if self.vie <=0:
+    #         self.etat="detruit"
+
+
+# class Eclat():
+
+#     def __init__(self, parent, orientation, vitesse, x, y, rangeEx):
+#         self.x=x
+#         self.y=y
+#         self.xdep=x
+#         self.ydep=y
+#         self.parent=parent
+#         self.proprietaire = self.parent.proprietaire
+#         self.sysplanetecur=self.parent.sysplanetecur
+#         self.planetecur=self.parent.planetecur
+#         self.rangeEx = rangeEx/2
+#         self.vitesse=vitesse
+#         self.etat="actif"
+#         self.orientation=orientation
+
+#     def explose(self):
+#             self.x,self.y=hlp.getAngledPoint(self.orientation,self.vitesse, self.x, self.y)
+
+#             if self.y >=(self.ydep+self.rangeEx) and self.x >=(self.xdep+self.rangeEx):
+#                 self.etat="detruit"
+#                 print("explosion morte")
+#                 self.parent.explose()
 
 
 class Joueur():
@@ -258,12 +339,6 @@ class Joueur():
                     "colonisateur":[50,"minerai"],
                     "cargo":[50,"minerai"]}
         self.joueurami=[]  ### id des joueurs ###
-        self.cout = {"minerai":[100,self.energie],
-                    "gaz":[100,self.energie],
-                    "energie":[100,self.minerai],
-                    "upgminerai":[500,self.minerai],
-                    "upggaz":[500,self.minerai],
-                    "upgenergie":[500,self.minerai]}
         self.actions={"creervaisseau":self.creervaisseau,
                       "upgBatiment":self.upgBatiment,  #Ajouter le 9 avril par Nic
                       "creerBatiment":self.creerBatiment,  #Ajouter le 9 avril par Nic
@@ -323,7 +398,7 @@ class Joueur():
     def upgBatiment(self,idBatiment):
         for p in self.planetescontrolees:
             for b in p.batiment:
-                if int(idBatiment[0]) == b.id:
+                if int(idBatiment) == b.id:
                     if self.cout["upg"+str(b.typeBatiment)][1] == "minerai":
                         if self.minerai >= self.cout["upg"+str(b.typeBatiment)][0]:
                             self.minerai -= self.cout["upg"+str(b.typeBatiment)][0]
@@ -477,7 +552,6 @@ class Joueur():
 
         for i in self.flotte:
 
-
             if i.etat=="detruit":
                 self.detruits.append(i)
                 if i.projectiles:  ###assure la destruction des projectiles reliés au vaisseau détruit
@@ -564,10 +638,6 @@ class Joueur():
             flottecur.planetecur = None
             flottecur.cible = None
 
-
-
-
-
 # IA- nouvelle classe de joueur
 class IA(Joueur):
     def __init__(self,parent,nom,planetemere,couleur):
@@ -625,6 +695,8 @@ class Modele():
         self.creeretoiles()
         self.creerterrain()
         self.assignerplanetes(joueurs,2)
+        self.wrongValue=0
+        #self.taileRayon=0
 
     def creerterrain(self):
         self.terrain=[]
@@ -644,9 +716,30 @@ class Modele():
         #self.xEtoile = [nbEtoile+1]
         #self.yEtoile = [nbEtoile+1]
         for i in range(nbEtoile):
-            x=random.randrange(0, self.largeur-10)
-            y=random.randrange(0, self.hauteur-10)
-            self.etoiles.append(Etoile(x,y,self))
+            x=random.randrange(20, self.largeur-20)
+            y=random.randrange(20, self.hauteur-20)
+            verifValue = True
+
+            while verifValue:
+                self.wrongValue=0
+                #self.taileRayon = j.taille
+                for j in self.etoiles:
+                    if x > j.x-40 and x < j.x+40 and y > j.y-40 and y < j.y+40:
+                        self.wrongValue+=1
+
+                if self.wrongValue == 0:
+                    self.etoiles.append(Etoile(x,y,self))
+                    verifValue=False
+                    break
+
+                elif  self.wrongValue >= 1:
+                    x=random.randrange(20,self.largeur-20) #largeur
+                    y=random.randrange(20,self.hauteur-20) #hauteur
+                    self.goodValue=0
+
+
+
+
        #     self.xEtoile[i]=random.randrange(self.largeur-(2*bordure))
         #    self.yEtoile[i]=random.randrange(self.hauteur-(2*bordure))
 #

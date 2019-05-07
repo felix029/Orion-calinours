@@ -358,6 +358,7 @@ class Vue():
         self.upgMines=Button(self.upgradeFrame,image=self.goldmineMenuGauche,bg =self.couleurBackgroundCotes)
         self.upgMines.grid(row=4, column=0, sticky="we")
         self.upgMines.config(height=45)
+        self.upgMines.bind("<Button>",self.upgradeBatiment)
 
         
         ###########################################################################
@@ -591,8 +592,6 @@ class Vue():
                 #Insertion de l'image du soleil
                 self.canevas.create_image(0, 0, image=self.soleil, anchor=NW, tags=("soleil", "fond"))
 
-                #self.canevas.create_oval(-100, -100, 100, 100, fill="orange", tags=("soleil", "fond"))
-
             for i in self.etoileselect.planetes:
                 s=i.planetImage
                 t=i.taille
@@ -699,28 +698,29 @@ class Vue():
 
     def afficherBatiment(self):
         for j in self.mod.joueurs:
-            if self.mod.joueurs[j].nom == self.planeteselect.proprietaire:
-                for b in self.planeteselect.batiment:
-                    if b.typeBatiment == "minerai":
-                        self.canevas.create_image(b.x - 25, b.y - 25, image=self.mine1, anchor=NW, tags=("batiment",b.id))
-                        #self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="red",tags=("batiment",b.id)) #Affiche le batiment
-                        #self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="niveau") #affiche le niveau du batiment
-                    elif b.typeBatiment == "gaz":
-                        self.canevas.create_image(b.x - 25, b.y - 25, image=self.gaz1, anchor=NW, tags=("batiment",b.id))
-                        #self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="blue",tags=("batiment",b.id))
-                        #self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="niveau") #affiche le niveau du batiment
-                    elif b.typeBatiment == "energie":
-                        self.canevas.create_image(b.x - 50, b.y - 50, image=self.elec1, anchor=NW, tags=("batiment",b.id))
-                        #self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="yellow",tags=("batiment",b.id))
-                        #self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="black",tags="vitesse") #affiche le niveau du batiment
-                    elif b.typeBatiment == "base":
-                        self.canevas.create_image(b.x - 50, b.y - 50, image=self.base1, anchor=NW, tags=("batiment",b.id))
-                        #self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="purple",tags=("batiment",b.id))
-                        #self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="vitesse") #affiche le niveau du batiment
+            if self.planeteselect != None:
+                if self.mod.joueurs[j].nom == self.planeteselect.proprietaire:
+                    for b in self.planeteselect.batiment:
+                        if b.typeBatiment == "minerai":
+                            self.canevas.create_image(b.x - 25, b.y - 25, image=self.mine1, anchor=NW, tags=("batiment",b.id))
+                            #self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="red",tags=("batiment",b.id)) #Affiche le batiment
+                            #self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="niveau") #affiche le niveau du batiment
+                        elif b.typeBatiment == "gaz":
+                            self.canevas.create_image(b.x - 25, b.y - 25, image=self.gaz1, anchor=NW, tags=("batiment",b.id))
+                            #self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="blue",tags=("batiment",b.id))
+                            #self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="niveau") #affiche le niveau du batiment
+                        elif b.typeBatiment == "energie":
+                            self.canevas.create_image(b.x - 50, b.y - 50, image=self.elec1, anchor=NW, tags=("batiment",b.id))
+                            #self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="yellow",tags=("batiment",b.id))
+                            #self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="black",tags="vitesse") #affiche le niveau du batiment
+                        elif b.typeBatiment == "base":
+                            self.canevas.create_image(b.x - 50, b.y - 50, image=self.base1, anchor=NW, tags=("batiment",b.id))
+                            #self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="purple",tags=("batiment",b.id))
+                            #self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="vitesse") #affiche le niveau du batiment
 
-                for b in self.planeteselect.toursDefense:
-                    self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="green",tags=("batiment",b.id))
-                    self.canevas.create_text(b.x,b.y-20,text=b.niveau,fill="white",tags="vitesse") #affiche le niveau du batiment
+                    for b in self.planeteselect.toursDefense:
+                        self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="green",tags=("batiment",b.id))
+                        self.canevas.create_text(b.x,b.y-20,text=b.niveau,fill="white",tags="vitesse") #affiche le niveau du batiment
 
 
 ################################################################################################ Charles
@@ -834,10 +834,8 @@ class Vue():
         self.batimentChoisi="energie"
         self.creerBatiment(evt)
 
-    def upgradeBatiment(self):
+    def upgradeBatiment(self,evt):
         if self.upgBatiment != None:
-            #for j in self.mod.joueurs:
-                #if self.mod.joueurs[j].nom == self.planeteselect.proprietaire:
             self.parent.upgBatiment(self.upgBatiment)
             self.upgBatiment = None
             self.canevas.delete("BatimentSelection")
@@ -889,15 +887,42 @@ class Vue():
                         self.canevas.create_rectangle(j.x-7,j.y-7,j.x+7,j.y+7,fill=i.couleur,
                                                 tags=("flotte", str(j.id), j.proprietaire, "artefact"))
 
+
                 if self.vueactive == 0:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
                         self.canevas.create_rectangle(j.x-11,j.y-11,j.x+11,j.y+11,fill=i.couleur,
                                                 tags=("flotte", str(j.id), j.proprietaire, "artefact"))
 
-                #self.canevas.create_rectangle(j.x,j.y,image=self.imgs["vaiss"],
-                #                     tags=(j.proprietaire,"flotte",str(j.id),"artefact"))
+                for k in j.projectiles:
+                    if self.vueactive == 2:
+                        if k.sysplanetecur == None and j.planetecur == None:
+                            self.canevas.create_rectangle(k.x-2, k.y-2, k.x+2, k.y+2, fill=i.couleur,tags=("projectile", k.proprietaire, "artefact"))
+
+                    if self.vueactive == 1:
+                        if k.sysplanetecur == self.etoileselect and j.planetecur == None:
+                            self.canevas.create_rectangle(k.x-4,k.y-4,k.x+4,k.y+4,fill=i.couleur, tags=("projectile", k.proprietaire, "artefact"))
+
+                    if self.vueactive == 0:
+                        if k.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
+                            self.canevas.create_rectangle(k.x-7,k.y-7,k.x+7,k.y+7,fill=i.couleur,tags=("projectile", k.proprietaire, "artefact"))
+
+                if len(j.explosions) > 0:
+                    for l in j.explosions:
+                        if self.vueactive == 2:
+                            if l.sysplanetecur == None and j.planetecur == None:
+                                self.canevas.create_rectangle(l.x-l.rayon, l.y-l.rayon, l.x+l.rayon, l.y+l.rayon, fill="white",tags=("projectile", l.proprietaire, "artefact"))
+
+                        elif self.vueactive == 1:
+                            if l.sysplanetecur == self.etoileselect and j.planetecur == None:
+                                self.canevas.create_rectangle(l.x-40,l.y-40,l.x+40,l.y+40,fill="white", tags=("projectile", l.proprietaire, "artefact"))
+
+                        elif self.vueactive == 0:
+                            if l.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
+                                self.canevas.create_rectangle(l.x-7,l.y-7,l.x+7,l.y+7,fill="white",tags=("projectile", l.proprietaire, "artefact"))
+                        j.explosions.remove(l)
 
 
+        #Affichage des AIs
         for i in self.mod.ias:
             for j in i.flotte:
                 if self.vueactive == 2:
@@ -913,6 +938,49 @@ class Vue():
                     if j.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
                         self.canevas.create_rectangle(j.x-11,j.y-11,j.x+11,j.y+11,fill=i.couleur,
                                                 tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+                if len(j.explosions) > 0:
+                    for l in j.explosions:
+                        if self.vueactive == 2:
+                            if l.sysplanetecur == None and j.planetecur == None:
+                                self.canevas.create_rectangle(l.x-l.rayon, l.y-l.rayon, l.x+l.rayon, l.y+l.rayon, fill="white",tags=("projectile", l.proprietaire, "artefact"))
+
+                        elif self.vueactive == 1:
+                            if l.sysplanetecur == self.etoileselect and j.planetecur == None:
+                                self.canevas.create_rectangle(l.x-40,l.y-40,l.x+40,l.y+40,fill="white", tags=("projectile", l.proprietaire, "artefact"))
+
+                        elif self.vueactive == 0:
+                            if l.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
+                                self.canevas.create_rectangle(l.x-7,l.y-7,l.x+7,l.y+7,fill="white",tags=("projectile", l.proprietaire, "artefact"))
+                        j.explosions.remove(l)
+
+            for k in j.projectiles:
+                    if self.vueactive == 2:
+                        if k.sysplanetecur == None and j.planetecur == None:
+                                self.canevas.create_rectangle(k.x-2, k.y-2, k.x+2, k.y+2, fill=i.couleur,tags=("projectile", k.proprietaire, "artefact"))
+
+                    if self.vueactive == 1:
+                        if k.sysplanetecur == self.etoileselect and j.planetecur == None:
+                                self.canevas.create_rectangle(k.x-4,k.y-4,k.x+4,k.y+4,fill=i.couleur, tags=("projectile", k.proprietaire, "artefact"))
+
+                    if self.vueactive == 0:
+                        if k.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
+                                self.canevas.create_rectangle(k.x-7,k.y-7,k.x+7,k.y+7,fill=i.couleur,tags=("projectile", k.proprietaire, "artefact"))
+
+            if len(j.explosions) > 0:
+                    for l in j.explosions:
+                        if self.vueactive == 2:
+                            if l.sysplanetecur == None and j.planetecur == None:
+                                self.canevas.create_rectangle(l.x-l.rayon, l.y-l.rayon, l.x+l.rayon, l.y+l.rayon, fill="white",tags=("projectile", l.proprietaire, "artefact"))
+
+                        elif self.vueactive == 1:
+                            if l.sysplanetecur == self.etoileselect and j.planetecur == None:
+                                self.canevas.create_rectangle(l.x-40,l.y-40,l.x+40,l.y+40,fill="white", tags=("projectile", l.proprietaire, "artefact"))
+
+                        elif self.vueactive == 0:
+                            if l.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
+                                self.canevas.create_rectangle(l.x-7,l.y-7,l.x+7,l.y+7,fill="white",tags=("projectile", l.proprietaire, "artefact"))
+                        j.explosions.remove(l)
+
 
     def cliquecosmos(self,evt):
         self.btncreervaisseau.pack_forget()
@@ -985,7 +1053,6 @@ class Vue():
                     self.planeteselect=None
 
             if tag and tag[0] == "flotte":
-
                 if self.flotteselect == None:
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
                     print(self.maselection)
@@ -1025,7 +1092,6 @@ class Vue():
                 self.canevas.delete("BatimentSelection")
             elif "batiment" in tag:
                 self.upgBatiment = tag[1]
-                print(tag[1])
                 self.canevas.create_oval(evt.x-50,evt.y-50,evt.x+50,evt.y+50,outline="white",tags="BatimentSelection")
 
 
