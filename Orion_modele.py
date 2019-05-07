@@ -661,6 +661,7 @@ class Modele():
         self.creerterrain()
         self.assignerplanetes(joueurs,2)
         self.wrongValue=0
+        #self.taileRayon=0
 
     def creerterrain(self):
         self.terrain=[]
@@ -686,9 +687,9 @@ class Modele():
 
             while verifValue:
                 self.wrongValue=0
-
+                #self.taileRayon = j.taille
                 for j in self.etoiles:
-                    if(x > j.x-(j.taille/2) or x < j.x +(j.taille/2)) and (y > j.y-(j.taille/2) or y < j.y +(j.taille/2):
+                    if x > j.x-40 and x < j.x+40 and y > j.y-40 and y < j.y+40:
                         self.wrongValue+=1
 
                 if self.wrongValue == 0:
