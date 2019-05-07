@@ -133,7 +133,7 @@ class Vaisseau():
         self.vitesse=2
         self.cible=None
         self.typecible=""
-        self.range=10
+        self.range=50
         self.projectiles=[]
         self.delaidetir=0
         self.delaimax=5 ###à modifier avec le dictionnaire si on fait d'autres vaisseaux
