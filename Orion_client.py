@@ -160,7 +160,7 @@ class Controleur():
 
      #Ajouter le 9 avril par Nic
     def upgBatiment(self,idBatiment):
-        self.actions.append([self.monnom,"upgBatiment",[idBatiment]])
+        self.actions.append([self.monnom,"upgBatiment",idBatiment])
 
     def detruire(self):
         self.actions.append([self.monnom,"detruire",""])

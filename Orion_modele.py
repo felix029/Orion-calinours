@@ -133,7 +133,7 @@ class Vaisseau():
         self.vitesse=2
         self.cible=None
         self.typecible=""
-        self.range=10
+        self.range=50
         self.projectiles=[]
         self.delaidetir=0
         self.delaimax=5 ###à modifier avec le dictionnaire si on fait d'autres vaisseaux
@@ -258,12 +258,6 @@ class Joueur():
                     "colonisateur":[50,"minerai"],
                     "cargo":[50,"minerai"]}
         self.joueurami=[]  ### id des joueurs ###
-        self.cout = {"minerai":[100,self.energie],
-                    "gaz":[100,self.energie],
-                    "energie":[100,self.minerai],
-                    "upgminerai":[500,self.minerai],
-                    "upggaz":[500,self.minerai],
-                    "upgenergie":[500,self.minerai]}
         self.actions={"creervaisseau":self.creervaisseau,
                       "upgBatiment":self.upgBatiment,  #Ajouter le 9 avril par Nic
                       "creerBatiment":self.creerBatiment,  #Ajouter le 9 avril par Nic
@@ -323,7 +317,7 @@ class Joueur():
     def upgBatiment(self,idBatiment):
         for p in self.planetescontrolees:
             for b in p.batiment:
-                if int(idBatiment[0]) == b.id:
+                if int(idBatiment) == b.id:
                     if self.cout["upg"+str(b.typeBatiment)][1] == "minerai":
                         if self.minerai >= self.cout["upg"+str(b.typeBatiment)][0]:
                             self.minerai -= self.cout["upg"+str(b.typeBatiment)][0]
@@ -563,10 +557,6 @@ class Joueur():
             flottecur.y = flottecur.planetecur.y+25
             flottecur.planetecur = None
             flottecur.cible = None
-
-
-
-
 
 # IA- nouvelle classe de joueur
 class IA(Joueur):
