@@ -160,7 +160,6 @@ class Vaisseau():
                 elif self.cible == Etoile:
                     print("Etoile: ", self.cible.id)
                 elif isinstance(self.cible, Planete):
-                    print(self.cible, self.cible.id)
                     if self.cible.proprietaire==" ":
                         self.etat="colonisation"                  #tempo=input("Continuersvp")
                 if self.etat!="colonisation":
@@ -225,7 +224,7 @@ class Vaisseau():
         self.energie-=puissance
         ex=Explosion(self, self.x, self.y, True)
         self.explosions.append(ex)
-        if(self.energie<=0):
+        if self.energie<=0:
             ex=Explosion(self, self.x, self.y, False)
             self.explosions.append(ex)
             self.etat="detruit"
@@ -258,8 +257,7 @@ class Projectile():
             d=hlp.calcDistance(self.x,self.y,self.ciblex,self.cibley)
             if d<=self.vitesse:
                 self.cible.toucher(self.puissance)
-                print(self.cible.etat)
-                print(self.cible.energie)
+                self.etat="detruit"
 
 
 
@@ -558,9 +556,9 @@ class Joueur():
     def detruire(self):
 
         for i in self.flotte:
-
             if i.etat=="detruit":
                 self.detruits.append(i)
+                #self.flotte.remove(i)
                 if i.projectiles:  ###assure la destruction des projectiles reliés au vaisseau détruit
                     for j in i.projectiles:
                         i.projectiles.remove(j)
