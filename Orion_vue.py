@@ -40,11 +40,13 @@ class Vue():
         self.couleurBackgroundCotes = "SteelBlue4"
         self.couleurTitreCadre = "#34344f"
         self.espacementDonneesMenu = 20
+        
 
 
 #################################################################################################################################################################################
 #                                                                 IMAGES REDIMENSIONNÉES                                                                                        #
 #################################################################################################################################################################################
+        
         #Planete du menu
         self.plan = Image.open("./images/planete.png")
         self.resized = self.plan.resize((30, 30),Image.ANTIALIAS)
@@ -144,30 +146,47 @@ class Vue():
         #Variables
         self.texteTitre = "Helvetica 20 bold"
 
-        self.cadresplash=Frame(self.cadreapp)
+        self.cadresplash=Frame(self.cadreapp, bg="midnightblue")
 
         #Affichage d'un titre
-        self.champ_Titre = Label(self.cadresplash,font = self.texteTitre,text = "ORION", anchor = W)
+        self.champ_Titre = Label(self.cadresplash,font = self.texteTitre,fg= "white",bg="midnightblue",text = "ORION",anchor = W)
         self.champ_Titre.pack(side = TOP)
 
-        self.canevassplash=Canvas(self.cadresplash,width=640,height=480,bg="dark blue")
+        #Affichage du corps
+        self.canevassplash=Canvas(self.cadresplash,width=640,height=480)
+        self.filename = PhotoImage(file ="./images/univers.png")
+        self.background_label = Label(self.cadresplash, image=self.filename)
+        self.background_label.place(x=0, y=35, width=645, relheight=1)
         self.canevassplash.pack()
-
+    
+        #Etiquette pour la boite d'info nom
+        self.labelNomJoueur = Label(self.cadresplash, fg= "white",bg="midnightblue",font='Helvetica 10 bold',text="NOM:")
+        self.labelNomJoueur.place(x=266, y=110)
+       
         self.nomsplash=Entry(bg="light grey")
         self.nomsplash.insert(0, nom)
-
+        
+        #Etiquette pour la boite d'info ip serveur
+        self.labelNomJoueur = Label(self.cadresplash, fg= "white",bg="midnightblue",font='Helvetica 10 bold',text="IP SERVEUR:")
+        self.labelNomJoueur.place(x=266, y=200)
+        
         self.ipsplash=Entry(bg="light grey")
         self.ipsplash.insert(0, ip)
 
+        #Etiquette pour la boite d'info ip
+        self.labelNomJoueur = Label(self.cadresplash, fg= "white",bg="midnightblue",font='Helvetica 10 bold',text="IP:")
+        self.labelNomJoueur.place(x=266, y=290)
+        
         labip=Label(text=ip,bg="light grey",borderwidth=0,relief=RIDGE)
         btncreerpartie=Button(text="Creer partie",bg="light grey",command=self.creerpartie)
         btnconnecterpartie=Button(text="Connecter partie",bg="light grey",command=self.connecterpartie)
 
-        self.canevassplash.create_window(310,150,window=self.nomsplash,width=100,height=30)
-        self.canevassplash.create_window(310,210,window=self.ipsplash,width=100,height=30)
-        self.canevassplash.create_window(310,270,window=labip,width=100,height=30)
-        self.canevassplash.create_window(310,330,window=btncreerpartie,width=100,height=30)
-        self.canevassplash.create_window(310,390,window=btnconnecterpartie,width=100,height=30)
+
+        self.canevassplash.create_window(320,110,window=self.nomsplash,width=100,height=30)
+        self.canevassplash.create_window(320,200,window=self.ipsplash,width=100,height=30)
+        self.canevassplash.create_window(320,290,window=labip,width=100,height=30)
+        self.canevassplash.create_window(220,410,window=btncreerpartie,width=100,height=30)
+        self.canevassplash.create_window(420,410,window=btnconnecterpartie,width=100,height=30)
 
 
     def creercadrelobby(self):
