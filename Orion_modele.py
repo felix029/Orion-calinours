@@ -136,7 +136,7 @@ class Vaisseau():
         self.y=planete.y+10
         self.cargo=0
         self.energie=100
-        self.vitesse=2
+        self.vitesse=5
         self.cible=None
         self.typecible=""
         self.range=100
@@ -160,6 +160,7 @@ class Vaisseau():
                 elif self.cible == Etoile:
                     print("Etoile: ", self.cible.id)
                 elif isinstance(self.cible, Planete):
+                    print(self.cible, self.cible.id)
                     if self.cible.proprietaire==" ":
                         self.etat="colonisation"                  #tempo=input("Continuersvp")
                 if self.etat!="colonisation":
@@ -340,9 +341,7 @@ class Joueur():
                     "upgminerai":[500,"minerai"],
                     "upggaz":[500,"minerai"],
                     "upgenergie":[500,"minerai"],
-                    "chasseur":[50,"minerai"],
-                    "colonisateur":[50,"minerai"],
-                    "cargo":[50,"minerai"]}
+                    "vaisseau":[200,"minerai"]}
         self.joueurami=[]  ### id des joueurs ###
         self.actions={"creervaisseau":self.creervaisseau,
                       "upgBatiment":self.upgBatiment,  #Ajouter le 9 avril par Nic
@@ -374,14 +373,18 @@ class Joueur():
     def creervaisseau(self,idplanete):
         #etoile,cible,type=params
         #is type=="explorer":
-        for i in self.parent.etoiles:
-            for j in i.planetes:
-                if j.id == idplanete:
-                    planetevaisseau = j
-                    v=Vaisseau(self.nom,planetevaisseau.etoileparent,planetevaisseau)
-                    print("Vaisseau",v.id)
-                    self.flotte.append(v)
-                    break
+        if self.minerai >= self.cout["vaisseau"][0]:
+            for i in self.parent.etoiles:
+                for j in i.planetes:
+                    if j.id == idplanete:
+                        planetevaisseau = j
+                        v=Vaisseau(self.nom,planetevaisseau.etoileparent,planetevaisseau)
+                        self.minerai -= self.cout["vaisseau"][0]
+                        print("Vaisseau",v.id)
+                        self.flotte.append(v)
+                        break
+        else:
+            print("MANQUE DE FOND")
 
 
     def creerBatiment(self,params): #Ajouter le 8 avril par nic
@@ -591,13 +594,15 @@ class Joueur():
 
     def colonisation(self):
         for i in self.flotte:
-            if i.etat=="colonisation":
+            if i.etat=="colonisation" and i.cible != None:
                 print(i.cible, "TEST")
                 i.cible.proprietaire=self.nom
                 self.planetescontrolees.append(i.cible)
                 i.cible.batiment.append(Batiment(self.id,i.cible.id,"base",400,300))
                 #i.cible=None
                 #elf.etat=""
+            else:
+                i.etat = " "
 
 
 
