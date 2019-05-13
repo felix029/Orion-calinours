@@ -160,21 +160,21 @@ class Vue():
         self.canevassplash.pack()
     
         #Etiquette pour la boite d'info nom
-        self.labelNomJoueur = Label(self.cadresplash, fg= "white",bg="midnightblue",font='Helvetica 10 bold',text="NOM:")
+        self.labelNomJoueur = Label(self.cadresplash, fg= "white",bg="midnightblue",font='Helvetica 9 bold',text="NOM:")
         self.labelNomJoueur.place(x=266, y=110)
        
         self.nomsplash=Entry(bg="light grey")
         self.nomsplash.insert(0, nom)
         
         #Etiquette pour la boite d'info ip serveur
-        self.labelNomJoueur = Label(self.cadresplash, fg= "white",bg="midnightblue",font='Helvetica 10 bold',text="IP SERVEUR:")
+        self.labelNomJoueur = Label(self.cadresplash, fg= "white",bg="midnightblue",font='Helvetica 9 bold',text="IP SERVEUR:")
         self.labelNomJoueur.place(x=266, y=200)
         
         self.ipsplash=Entry(bg="light grey")
         self.ipsplash.insert(0, ip)
 
         #Etiquette pour la boite d'info ip
-        self.labelNomJoueur = Label(self.cadresplash, fg= "white",bg="midnightblue",font='Helvetica 10 bold',text="IP:")
+        self.labelNomJoueur = Label(self.cadresplash, fg= "white",bg="midnightblue",font='Helvetica 9 bold',text="IP:")
         self.labelNomJoueur.place(x=266, y=290)
         
         labip=Label(text=ip,bg="light grey",borderwidth=0,relief=RIDGE)
@@ -190,13 +190,17 @@ class Vue():
 
 
     def creercadrelobby(self):
-        self.cadrelobby=Frame(self.cadreapp)
+        self.cadrelobby=Frame(self.cadreapp,bg="midnightblue")
 
         #Affichage d'un titre
-        self.champ_Titre = Label(self.cadrelobby,font = self.texteTitre,text = "Creation d'une partie", anchor = W)
+        self.champ_Titre = Label(self.cadrelobby,font = self.texteTitre,fg= "white",bg="midnightblue",text = "Création de partie", anchor = W)
         self.champ_Titre.pack(side = TOP)
 
-        self.canevaslobby=Canvas(self.cadrelobby,width=640,height=480,bg="dark blue")
+        #Affichage du corps
+        self.canevaslobby=Canvas(self.cadrelobby,width=640,height=480)
+        self.filename2 = PhotoImage(file ="./images/univers.png")
+        self.background_label2 = Label(self.cadrelobby, image=self.filename2)
+        self.background_label2.place(x=0, y=35, width=645, relheight=1)
         self.canevaslobby.pack()
 
         self.listelobby=Listbox(bg="light grey",borderwidth=0,relief=FLAT)
