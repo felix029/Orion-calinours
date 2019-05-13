@@ -444,7 +444,6 @@ class Joueur():
                         p.gaz -= p.gaz
                 elif b.typeBatiment == "energie":
                     self.energie += b.vitesse
-                print (b.vitesse)
 
     def ciblerflotte(self,ids):
         idori,iddesti,typedestination=ids
