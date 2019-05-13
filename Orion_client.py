@@ -132,7 +132,7 @@ class Controleur():
                 #print("ALERTE EN ATTENTE",self.monnom)
             else:
                 self.attente=0
-            self.vue.root.after(20,self.prochaintour)
+            self.vue.root.after(50,self.prochaintour)
         else:
             print("Aucun serveur connu")
 
