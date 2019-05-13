@@ -384,7 +384,7 @@ class Vue():
         self.electricite.config(height=45)
         self.electricite.bind("<Button>", self.initEnergie)
 
-        self.tourdefense=Button(self.creationFrame,text="Tour Defense")
+        self.tourdefense=Button(self.creationFrame,text="Tour Defense",fg="white",bg =self.couleurBackgroundCotes)
         self.tourdefense.grid(row=7, column=0, sticky="we")
         self.tourdefense.config(height=2)
         self.tourdefense.bind("<Button>", self.creerTourDefense)
