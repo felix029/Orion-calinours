@@ -318,7 +318,8 @@ class Explosion():
 
 
 class Joueur():
-    def __init__(self,parent,nom,planetemere,couleur):
+    def __init__(self,parent,nom,planetemere,couleur,num):
+        self.numNavette = num
         self.id=Id.prochainid()
         self.parent=parent
         self.nom=nom
@@ -331,6 +332,7 @@ class Joueur():
         self.gaz = 600
         self.flotte=[]
         self.detruits=[]
+        self.navetteImage=[]
         self.cout = {"minerai":[100,"energie"],
                     "gaz":[100,"energie"],
                     "energie":[100,"minerai"],
@@ -350,6 +352,21 @@ class Joueur():
                       "versvue1":self.versvue1, #Ajout Felix-O 23 Avril
                       "versvue0":self.versvue0,
                       "creerTourDefense":self.creerTourDefense} #Ajout Nick le 30 avril
+
+        #2- Créer une string représentant le chemin relatif de l'image, et ce, à l'aide du int aléatoire obtenu
+        img="./images/navette"+str(self.numNavette)+".png"
+        #3- Créer une variable image à l'aide de la fonction Image.open qui prend en paramètre le chemin relatif créé à l'étape précédente
+        #       Pour ce faire, on utilise "Image" de la librairie "PIL" que l'on a importé
+        navette = Image.open(img)
+        #4- Redimensionner l'image et stocker le tout dans une nouvelle variable
+        resized = navette.resize((50,50),Image.ANTIALIAS)
+        self.navetteImage.append(ImageTk.PhotoImage(resized))
+        #5- Reformater la variable "Image" en variable "ImageTK" afin que TkInter la supporte, puis stocker le tout dans une variable d'instance "self.planetImage"
+        resized = navette.resize((30,30),Image.ANTIALIAS)
+        self.navetteImage.append(ImageTk.PhotoImage(resized))
+
+        resized = navette.resize((15,15),Image.ANTIALIAS)
+        self.navetteImage.append(ImageTk.PhotoImage(resized))
 
     def creervaisseau(self,idplanete):
         #etoile,cible,type=params
@@ -701,6 +718,7 @@ class Modele():
         self.yEtoile=[]
         self.creeretoiles()
         self.creerterrain()
+        self.numNavette=1
         self.assignerplanetes(joueurs,2)
         self.wrongValue=0
         #self.taileRayon=0
@@ -774,7 +792,8 @@ class Modele():
         couleurs=["red","blue","lightgreen","yellow",
                   "lightblue","pink","gold","purple"]
         for i in joueurs:
-            self.joueurs[i]=Joueur(self,i,planetej.pop(0),couleurs.pop(0))
+            self.joueurs[i]=Joueur(self,i,planetej.pop(0),couleurs.pop(0), self.numNavette)
+            self.numNavette +=1
             self.joueurs[i].planetescontrolees[0].batiment.append(Batiment(self.joueurs[i].id,planetej,"base",400,300))
 
         # IA- creation des ias - max 2

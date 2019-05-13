@@ -40,16 +40,18 @@ class Vue():
         self.couleurBackgroundCotes = "SteelBlue4"
         self.couleurTitreCadre = "#34344f"
         self.espacementDonneesMenu = 20
+        
 
 
 #################################################################################################################################################################################
 #                                                                 IMAGES REDIMENSIONNÉES                                                                                        #
 #################################################################################################################################################################################
+        
         #Planete du menu
         self.plan = Image.open("./images/planete.png")
         self.resized = self.plan.resize((30, 30),Image.ANTIALIAS)
         self.planete = ImageTk.PhotoImage(self.resized)
-        
+
         #Electricite du menu
         self.electricite = Image.open("./images/electricite.png")
         self.resized = self.electricite.resize((30, 30),Image.ANTIALIAS)
@@ -64,7 +66,7 @@ class Vue():
         self.gas = Image.open("./images/gas.png")
         self.resized = self.gas.resize((30, 30),Image.ANTIALIAS)
         self.gas = ImageTk.PhotoImage(self.resized)
-        
+
         #Boutons vaisseau
         self.vaisseau = Image.open("./images/vaisseau.png")
         self.resized = self.vaisseau.resize((50, 50),Image.ANTIALIAS)
@@ -91,13 +93,13 @@ class Vue():
         self.resized = self.goldmine.resize((45, 45),Image.ANTIALIAS)
         self.goldmineMenuGauche = ImageTk.PhotoImage(self.resized)
 
-        self.electricStation=Image.open("./images/electricity.png")
-        self.resized = self.electricStation.resize((85, 45),Image.ANTIALIAS)
-        self.electricStationMenuGauche = ImageTk.PhotoImage(self.resized)
+        #self.electricStation=Image.open("./images/electricity.png")
+        #self.resized = self.electricStation.resize((85, 45),Image.ANTIALIAS)
+        #self.electricStationMenuGauche = ImageTk.PhotoImage(self.resized)
 
-        self.gazCan=Image.open("./images/gaz.png")
-        self.resized = self.gazCan.resize((85, 50),Image.ANTIALIAS)
-        self.gazCanMenuGauche = ImageTk.PhotoImage(self.resized)
+        #self.gazCan=Image.open("./images/gaz.png")
+        #self.resized = self.gazCan.resize((85, 50),Image.ANTIALIAS)
+        #self.gazCanMenuGauche = ImageTk.PhotoImage(self.resized)
 
         #Étoile (vue Galaxie)
         #self.star = Image.open("./images/star.png")
@@ -110,6 +112,7 @@ class Vue():
         self.resized = self.soleil.resize((200,200),Image.ANTIALIAS)
         self.soleil = ImageTk.PhotoImage(self.resized)
 
+        #Bâtiments (vue Planète)
         #Base
         self.base1 = Image.open("./images/batibase1.png")
         self.resized = self.base1.resize((100,100),Image.ANTIALIAS)
@@ -128,6 +131,10 @@ class Vue():
         self.resized = self.elec1.resize((100,100),Image.ANTIALIAS)
         self.elec1 = ImageTk.PhotoImage(self.resized)
 
+        #Navette
+        #self.navette = Image.open("./images/navette1.png")
+        #self.resized = self.elec1.resize((50,50),Image.ANTIALIAS)
+        #self.navette = ImageTk.PhotoImage(self.resized)
 
     def fermerfenetre(self):
         self.parent.fermefenetre()
@@ -144,40 +151,61 @@ class Vue():
         #Variables
         self.texteTitre = "Helvetica 20 bold"
 
-        self.cadresplash=Frame(self.cadreapp)
+        self.cadresplash=Frame(self.cadreapp, bg="midnightblue")
 
         #Affichage d'un titre
-        self.champ_Titre = Label(self.cadresplash,font = self.texteTitre,text = "ORION", anchor = W)
+        self.champ_Titre = Label(self.cadresplash,font = self.texteTitre,fg= "white",bg="midnightblue",text = "ORION",anchor = W)
         self.champ_Titre.pack(side = TOP)
 
-        self.canevassplash=Canvas(self.cadresplash,width=640,height=480,bg="dark blue")
+        #Affichage du corps
+        self.canevassplash=Canvas(self.cadresplash,width=640,height=480)
+        self.filename = PhotoImage(file ="./images/univers.png")
+        self.background_label = Label(self.cadresplash, image=self.filename)
+        self.background_label.place(x=0, y=35, width=645, relheight=1)
         self.canevassplash.pack()
-
+    
+        #Etiquette pour la boite d'info nom
+        self.labelNomJoueur = Label(self.cadresplash, fg= "white",bg="midnightblue",font='Helvetica 9 bold',text="NOM:")
+        self.labelNomJoueur.place(x=266, y=110)
+       
         self.nomsplash=Entry(bg="light grey")
         self.nomsplash.insert(0, nom)
-
+        
+        #Etiquette pour la boite d'info ip serveur
+        self.labelNomJoueur = Label(self.cadresplash, fg= "white",bg="midnightblue",font='Helvetica 9 bold',text="IP SERVEUR:")
+        self.labelNomJoueur.place(x=266, y=200)
+        
         self.ipsplash=Entry(bg="light grey")
         self.ipsplash.insert(0, ip)
 
+        #Etiquette pour la boite d'info ip
+        self.labelNomJoueur = Label(self.cadresplash, fg= "white",bg="midnightblue",font='Helvetica 9 bold',text="IP:")
+        self.labelNomJoueur.place(x=266, y=290)
+        
         labip=Label(text=ip,bg="light grey",borderwidth=0,relief=RIDGE)
         btncreerpartie=Button(text="Creer partie",bg="light grey",command=self.creerpartie)
         btnconnecterpartie=Button(text="Connecter partie",bg="light grey",command=self.connecterpartie)
 
-        self.canevassplash.create_window(310,150,window=self.nomsplash,width=100,height=30)
-        self.canevassplash.create_window(310,210,window=self.ipsplash,width=100,height=30)
-        self.canevassplash.create_window(310,270,window=labip,width=100,height=30)
-        self.canevassplash.create_window(310,330,window=btncreerpartie,width=100,height=30)
-        self.canevassplash.create_window(310,390,window=btnconnecterpartie,width=100,height=30)
+
+        self.canevassplash.create_window(320,110,window=self.nomsplash,width=100,height=30)
+        self.canevassplash.create_window(320,200,window=self.ipsplash,width=100,height=30)
+        self.canevassplash.create_window(320,290,window=labip,width=100,height=30)
+        self.canevassplash.create_window(220,410,window=btncreerpartie,width=100,height=30)
+        self.canevassplash.create_window(420,410,window=btnconnecterpartie,width=100,height=30)
 
 
     def creercadrelobby(self):
-        self.cadrelobby=Frame(self.cadreapp)
+        self.cadrelobby=Frame(self.cadreapp,bg="midnightblue")
 
         #Affichage d'un titre
-        self.champ_Titre = Label(self.cadrelobby,font = self.texteTitre,text = "Creation d'une partie", anchor = W)
+        self.champ_Titre = Label(self.cadrelobby,font = self.texteTitre,fg= "white",bg="midnightblue",text = "Création de partie", anchor = W)
         self.champ_Titre.pack(side = TOP)
 
-        self.canevaslobby=Canvas(self.cadrelobby,width=640,height=480,bg="dark blue")
+        #Affichage du corps
+        self.canevaslobby=Canvas(self.cadrelobby,width=640,height=480)
+        self.filename2 = PhotoImage(file ="./images/univers.png")
+        self.background_label2 = Label(self.cadrelobby, image=self.filename2)
+        self.background_label2.place(x=0, y=35, width=645, relheight=1)
         self.canevaslobby.pack()
 
         self.listelobby=Listbox(bg="light grey",borderwidth=0,relief=FLAT)
@@ -240,21 +268,21 @@ class Vue():
 
         self.planeteselect = j.planetemere
 
-        
+
 #################################################################################################################################################################################
 #                                                                                                                                                                               #
 #                                                                       PRINCIPAUX FRAMES                                                                                       #
 #                                                                                                                                                                               #
 #################################################################################################################################################################################
-        
-        
+
+
         #########################################################################################################################################################################
         ############################################################### ZONE GLOBALE ############################################################################################
         #########################################################################################################################################################################
         self.cadrepartie=Frame(self.cadreapp)
         self.cadrejeu=Frame(self.cadrepartie)
-        
-        
+
+
         #########################################################################################################################################################################
         ################################################################# FRAME MENU ############################################################################################
         #########################################################################################################################################################################
@@ -263,7 +291,7 @@ class Vue():
         self.mineraisStats = StringVar()
         self.gazStats = StringVar()
 
-        #Frame du menu 
+        #Frame du menu
         self.upperFrame=Frame(self.cadrepartie,width=1100,height=50,bg= self.couleurBackgroundMenu)
         self.upperFrame.grid(row=0, column=0, sticky="we")
 
@@ -291,23 +319,23 @@ class Vue():
         self.lab_gaz = Label(self.upperFrame, image = self.gas, bg = self.couleurBackgroundMenu).grid(row=0, column=10)
         self.lblGaz=Label(self.upperFrame,text="Gaz: ", fg=self.couleurLabelMenu, bg= self.couleurBackgroundMenu).grid(row=0, column=11)
         self.statsGazLabel=Label(self.upperFrame, fg="red", bg= self.couleurBackgroundMenu, textvariable = self.gazStats).grid(row=0, column=12)
-       
-       
+
+
         #########################################################################################################################################################################
         ################################################################## FRAME DESSOUS ########################################################################################
         #########################################################################################################################################################################
         #Frame qui reçoit TOUT ce qui n'est pas dans le menu
         self.lowerFrame=Frame(self.cadrepartie,width=1100,height=625,bg=self.couleurBackgroundMenu)
         self.lowerFrame.grid(row=2, column=0, sticky="ns")
-        
 
-        ########################################################## AIRE DE JEU (NE PAS TOUCHER !!!) #############################################################################               
+
+        ########################################################## AIRE DE JEU (NE PAS TOUCHER !!!) #############################################################################
         #Le canevas (surface de jeu est dans le frame dessous)
         self.canevas=Canvas(self.lowerFrame,width=800,height=600,bg="grey11")
         self.canevas.grid(row=0, column=1, sticky="ns")
         self.canevas.bind("<Button>",self.cliquecosmos) # Event MouseClick lie au canevas (Aire de jeu)
-       
-       
+
+
         ################################################################# BANDE COTE GAUCHE ######################################################################################
         #Le frame gauche est dans le frame dessous
         self.lowerLeftFrame=Frame(self.lowerFrame,width=150,height=625,bg="pink")
@@ -335,7 +363,7 @@ class Vue():
         self.upgLabel = Label(self.upgradeFrame, text=".: UPGRADE :.", anchor='center', fg="white", bg='#34344f',borderwidth=3, relief="solid").grid(row=0, column=0, sticky="we")
         self.upgVaisseauLabel = Label(self.upgradeFrame, text="Vaisseau", anchor='center', fg="white", bg='#34344f').grid(row=1, column=0, sticky="we")
         self.upgBatimentLabel = Label(self.upgradeFrame, text="Bâtiments", anchor='center', fg="white", bg='#34344f').grid(row=3, column=0, sticky="we")
-        
+
         #Boutons de creation
         self.btncreervaisseau=Button(self.creationFrame,image=self.vaisseauMenuGauche,width = "50",height = "50",command=self.creervaisseau,bg =self.couleurBackgroundCotes)
         self.btncreervaisseau.grid(row=2, column=0, sticky="we")
@@ -356,7 +384,7 @@ class Vue():
         self.electricite.config(height=45)
         self.electricite.bind("<Button>", self.initEnergie)
 
-        self.tourdefense=Button(self.creationFrame,text="Tour Defense")
+        self.tourdefense=Button(self.creationFrame,text="Tour Defense",fg="white",bg =self.couleurBackgroundCotes)
         self.tourdefense.grid(row=7, column=0, sticky="we")
         self.tourdefense.config(height=2)
         self.tourdefense.bind("<Button>", self.creerTourDefense)
@@ -371,7 +399,7 @@ class Vue():
         self.upgMines.config(height=45)
         self.upgMines.bind("<Button>",self.upgradeBatiment)
 
-        
+
         ################################################################# BANDE COTE DROIT ######################################################################################
         #Le frame droit est dans le frame dessous
         self.lowerRightFrame=Frame(self.lowerFrame,width=150,height=626,bg=self.couleurBackgroundCotes)
@@ -383,7 +411,7 @@ class Vue():
         self.cadreinfogen.grid(row=0, column=0, sticky="we")
 
         self.lblJoueurs = Label(self.cadreinfogen, text=" .: AUTRES JOUEURS :. ",fg="white", width= 38, height=2, bg=self.couleurTitreCadre,borderwidth=3, relief="solid").grid(row=0,column=0,sticky = "we")
-        
+
         self.labid=Label(self.cadreinfogen,text=self.nom,fg=mod.joueurs[self.nom].couleur,bg=self.couleurBackgroundCotes)
         self.labid.grid(row=1, column=0, sticky="we")
 
@@ -412,7 +440,7 @@ class Vue():
         self.boutonZoom = Button(self.lowerLowerFrame,text="Vue suivante", bg=self.couleurTitreCadre, width= 56, height=2, cursor="hand2", activebackground="red", fg="white")
         self.boutonZoom.bind("<Button>")
         self.boutonZoom.grid(row=0, column=1)
-     
+
         self.boutonDzoom=Button(self.lowerLowerFrame,text="Vue precedente", bg=self.couleurTitreCadre, width= 56, height=2, cursor="hand2", activebackground="red", fg="white")
         self.boutonDzoom.bind("<Button>")
         self.boutonDzoom.grid(row=0, column=0)
@@ -854,19 +882,22 @@ class Vue():
             for j in i.flotte:
                 if self.vueactive == 2:
                     if j.sysplanetecur == None and j.planetecur == None:
-                        self.canevas.create_rectangle(j.x-5,j.y-5,j.x+5,j.y+5,fill=i.couleur,
-                                            tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+                        self.canevas.create_image(j.x, j.y, image=i.navetteImage[2], anchor=NW, tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+                        #self.canevas.create_rectangle(j.x-5,j.y-5,j.x+5,j.y+5,fill=i.couleur,
+                                            #tags=("flotte", str(j.id), j.proprietaire, "artefact"))
 
                 if self.vueactive == 1:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == None:
-                        self.canevas.create_rectangle(j.x-7,j.y-7,j.x+7,j.y+7,fill=i.couleur,
-                                                tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+                        self.canevas.create_image(j.x - 7, j.y - 7, image=i.navetteImage[1], anchor=NW, tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+                        #self.canevas.create_rectangle(j.x-7,j.y-7,j.x+7,j.y+7,fill=i.couleur,
+                                                #tags=("flotte", str(j.id), j.proprietaire, "artefact"))
 
 
                 if self.vueactive == 0:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
-                        self.canevas.create_rectangle(j.x-11,j.y-11,j.x+11,j.y+11,fill=i.couleur,
-                                                tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+                        self.canevas.create_image(j.x - 5, j.y - 5, image=i.navetteImage[0], anchor=NW, tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+                        #self.canevas.create_rectangle(j.x-11,j.y-11,j.x+11,j.y+11,fill=i.couleur,
+                                                #tags=("flotte", str(j.id), j.proprietaire, "artefact"))
 
                 for k in j.projectiles:
                     if self.vueactive == 2:
@@ -1106,13 +1137,11 @@ class Vue():
     def montreetoileselection(self):
         self.btncreervaisseau.pack()
         self.btncreerbatiment.pack()
-        
-        
+
+
     def montreflotteselection(self):
         self.lbselectecible.pack()
-        
-        
+
+
     def afficherartefacts(self,joueurs):
-        pass 
-    
-    
+        pass
