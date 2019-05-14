@@ -76,6 +76,11 @@ class Vue():
         self.resized = self.mine.resize((35, 35),Image.ANTIALIAS)
         self.mineMenuGauche = ImageTk.PhotoImage(self.resized)
 
+        #Bouton tour de defense
+        self.defense=Image.open("./images/tourDefense.png")
+        self.resized = self.defense.resize((35, 35),Image.ANTIALIAS)
+        self.tourDefenseMenuGauche = ImageTk.PhotoImage(self.resized)
+        
         #Gaz du bouton
         self.gaz=Image.open("./images/can.png")
         self.resized = self.gaz.resize((45, 45),Image.ANTIALIAS)
@@ -384,9 +389,9 @@ class Vue():
         self.electricite.config(height=45)
         self.electricite.bind("<Button>", self.initEnergie)
 
-        self.tourdefense=Button(self.creationFrame,text="Tour Defense",fg="white",bg =self.couleurBackgroundCotes)
+        self.tourdefense=Button(self.creationFrame,image=self.tourDefenseMenuGauche,fg="white",bg =self.couleurBackgroundCotes)
         self.tourdefense.grid(row=7, column=0, sticky="we")
-        self.tourdefense.config(height=2)
+        self.tourdefense.config(height=45)
         self.tourdefense.bind("<Button>", self.creerTourDefense)
 
         #Boutons upgrade
