@@ -135,6 +135,11 @@ class Vue():
         self.elec1 = Image.open("./images/electric.png")
         self.resized = self.elec1.resize((100,100),Image.ANTIALIAS)
         self.elec1 = ImageTk.PhotoImage(self.resized)
+        
+        #Tour de defense sur planete
+        self.def1=Image.open("./images/tourDefense.png")
+        self.resized = self.def1.resize((35, 35),Image.ANTIALIAS)
+        self.tourDefense = ImageTk.PhotoImage(self.resized)
 
         #Navette
         #self.navette = Image.open("./images/navette1.png")
@@ -729,8 +734,8 @@ class Vue():
                             #self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="vitesse") #affiche le niveau du batiment
 
                     for b in self.planeteselect.toursDefense:
-                        self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="green",tags=("batiment",b.id))
-                        self.canevas.create_text(b.x,b.y-20,text=b.niveau,fill="white",tags="vitesse") #affiche le niveau du batiment
+                        #self.canevas.create_text(b.x,b.y-20,text=b.niveau,fill="white",tags="vitesse") #affiche le niveau du batiment
+                        self.canevas.create_image(b.x-10,b.y-40, image=self.tourDefense,anchor=NW,tags=("batiment",b.id))
 
 
     def afficheAttributsPlanete(self, maselection, planeteselect=None, etoileselect=None):
