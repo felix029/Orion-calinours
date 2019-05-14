@@ -125,9 +125,11 @@ class TourDefense():   ### à ajouter git
         self.delaidetir=0
         self.delaimax=5
         self.cible=None
-        self.range=10
+        self.range=800
         self.typeBatiment = "tourDefense"
         self.niveau = 1
+        self.sysplanetecur=None
+        self.planetecur=plan
 
     def tirer(self):  ###modifications GM 29 avril###
         d=hlp.calcDistance(self.x,self.y,self.cible.x,self.cible.y)
@@ -136,7 +138,7 @@ class TourDefense():   ### à ajouter git
             if self.delaidetir==0:
                 if self.cible.attaquant==None:  ###ok
                     self.cible.attaquant=self
-                p=Projectile(self.cible,self.x,self.y,self.cible.x,self.cible.y)
+                p=Projectile(self, self.cible,self.x,self.y,self.cible.x,self.cible.y)
                 self.projectiles.append(p)
                 self.delaidetir=self.delaimax
             self.delaidetir-=1
@@ -598,6 +600,10 @@ class Joueur():
                         self.flotteretour1(i.id)
             if i.attaquant!=None:
                 i.defense()
+        for i in self.planetescontrolees:
+            for j in i.toursDefense:
+                if j.cible!=None:
+                   j.tirer()
             #else:
             #    i.cible=random.choice(self.parent.planetes)
             #    i.cible=random.choice(self.parent.etoiles)
@@ -671,6 +677,11 @@ class Joueur():
                 flottecur.planetecur = p
                 flottecur.x = random.randrange(self.parent.largeur-50, self.parent.largeur)
                 flottecur.y = random.randrange(self.parent.hauteur-50, self.parent.hauteur)
+                if p.proprietaire!= " ":
+                    if flottecur.proprietaire!=p.proprietaire:
+                        for k in p.toursDefense:
+                            k.cible=flottecur
+                            print(k.cible)
                 break
 
     #Ajout Felix-O 23 Avril
