@@ -39,6 +39,28 @@ class Planete():
         if self.y <=100:
             self.y+=100
 
+class BaleineCosmique():
+    def __init__(self,x,y,parent):
+        self.x = x
+        self.y = y
+        self.parent = parent
+        self.vitesse=1
+        self.cibleX=None
+        self.cibleY=None
+
+    def deplacerBaleine(self):
+        if self.cibleX == None or self.cibleY == None:
+            self.cibleX=random.randrange(800)
+            self.cibleY=random.randrange(600)
+        else:
+            x=self.cibleX
+            y=self.cibleY
+            ang=hlp.calcAngle(self.x,self.y,x,y)
+            x1,y1=hlp.getAngledPoint(ang,self.vitesse,self.x,self.y)
+            self.x,self.y=x1,y1
+            if hlp.calcDistance(self.x,self.y,x,y) <=self.vitesse:
+                 self.cibleX=None
+                 self.cibleY=None
 
 class Etoile():
     def __init__(self,x,y,parent):
@@ -70,6 +92,7 @@ class Batiment(): #Ajouter le 8 avril par nic
         self.vitesse = 1
         self.nom=""
         self.etat=""
+
 
 class TourDefense():   ### à ajouter git
     def __init__(self,nom,plan,x,y):
@@ -731,6 +754,7 @@ class Modele():
         self.numNavette=1
         self.assignerplanetes(joueurs,2)
         self.wrongValue=0
+        self.baleine=BaleineCosmique(0,0,self)
         #self.taileRayon=0
 
     def creerterrain(self):
@@ -829,6 +853,8 @@ class Modele():
 
         for i in self.joueurs:
             self.joueurs[i].prochaineaction()
+
+        self.baleine.deplacerBaleine()
 
         # IA- appelle prochaine action
         #for i in self.ias:
