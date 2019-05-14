@@ -40,13 +40,13 @@ class Vue():
         self.couleurBackgroundCotes = "SteelBlue4"
         self.couleurTitreCadre = "#34344f"
         self.espacementDonneesMenu = 20
-        
+
 
 
 #################################################################################################################################################################################
 #                                                                 IMAGES REDIMENSIONNÉES                                                                                        #
 #################################################################################################################################################################################
-        
+
         #Planete du menu
         self.plan = Image.open("./images/planete.png")
         self.resized = self.plan.resize((30, 30),Image.ANTIALIAS)
@@ -163,25 +163,25 @@ class Vue():
         self.background_label = Label(self.cadresplash, image=self.filename)
         self.background_label.place(x=0, y=35, width=645, relheight=1)
         self.canevassplash.pack()
-    
+
         #Etiquette pour la boite d'info nom
         self.labelNomJoueur = Label(self.cadresplash, fg= "white",bg="midnightblue",font='Helvetica 9 bold',text="NOM:")
         self.labelNomJoueur.place(x=266, y=110)
-       
+
         self.nomsplash=Entry(bg="light grey")
         self.nomsplash.insert(0, nom)
-        
+
         #Etiquette pour la boite d'info ip serveur
         self.labelNomJoueur = Label(self.cadresplash, fg= "white",bg="midnightblue",font='Helvetica 9 bold',text="IP SERVEUR:")
         self.labelNomJoueur.place(x=266, y=200)
-        
+
         self.ipsplash=Entry(bg="light grey")
         self.ipsplash.insert(0, ip)
 
         #Etiquette pour la boite d'info ip
         self.labelNomJoueur = Label(self.cadresplash, fg= "white",bg="midnightblue",font='Helvetica 9 bold',text="IP:")
         self.labelNomJoueur.place(x=266, y=290)
-        
+
         labip=Label(text=ip,bg="light grey",borderwidth=0,relief=RIDGE)
         btncreerpartie=Button(text="Creer partie",bg="light grey",command=self.creerpartie)
         btnconnecterpartie=Button(text="Connecter partie",bg="light grey",command=self.connecterpartie)
@@ -596,7 +596,7 @@ class Vue():
                 self.canevas.create_image(0, 0, image=self.soleil, anchor=NW, tags=("soleil", "fond"))
 
             for i in self.etoileselect.planetes:
-                s=i.planetImage
+                #s=i.planeteImages[0]
                 t=i.taille
                 """
                 if s == 1:
@@ -659,7 +659,7 @@ class Vue():
                 #self.planet10 = ImageTk.PhotoImage(self.resized)
 
                 # Afficher l'image de chaque planètes du array "planetes" de l'étoile sélectionnée
-                self.canevas.create_image(i.x - t, i.y - t, image=i.planetImage, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+                self.canevas.create_image(i.x - t, i.y - t, image=i.planeteImages[0], anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
                 #self.canevas.create_oval(i.x-t,i.y-t,i.x+t,i.y+t,fill="grey80",
                 #                       tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
 
@@ -693,8 +693,9 @@ class Vue():
             self.canevas.create_oval(mod.largeur-40, mod.hauteur-40, mod.largeur+40, mod.hauteur+40,fill="purple", tags=("retour1"))
 
             t=self.planeteselect.taille
-            self.canevas.create_oval(mod.largeur/2-(t*20),mod.hauteur/2-(t*20),mod.largeur/2+(t*20),mod.hauteur/2+(t*20), width=2, outline="white", fill=self.planeteselect.color,
-                                    tags=("planetezoom", str(self.planeteselect.id), self.planeteselect.proprietaire, str(self.etoileselect.id)))
+            self.canevas.create_image((mod.largeur-550)/2, (mod.hauteur-550)/2, image=self.planeteselect.planeteImages[1], anchor=NW, tags=("planetezoom", str(self.planeteselect.id), self.planeteselect.proprietaire, str(self.etoileselect.id)))
+            #self.canevas.create_oval(mod.largeur/2-(t*20),mod.hauteur/2-(t*20),mod.largeur/2+(t*20),mod.hauteur/2+(t*20), width=2, outline="white", fill=self.planeteselect.color,
+                                   #tags=("planetezoom", str(self.planeteselect.id), self.planeteselect.proprietaire, str(self.etoileselect.id)))
 
             #affiche les batiment
             self.afficherBatiment()
@@ -706,7 +707,7 @@ class Vue():
                 if self.mod.joueurs[j].nom == self.planeteselect.proprietaire:
                     for b in self.planeteselect.batiment:
                         if b.typeBatiment == "minerai":
-                            self.canevas.create_image(b.x - 25, b.y - 25, image=self.mine1, anchor=NW, tags=("batiment",b.id))
+                            self.canevas.create_image(b.x - 20, b.y - 20, image=self.mine1, anchor=NW, tags=("batiment",b.id))
                             #self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="red",tags=("batiment",b.id)) #Affiche le batiment
                             #self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="niveau") #affiche le niveau du batiment
                         elif b.typeBatiment == "gaz":
