@@ -10,17 +10,28 @@ class Planete():
         self.x=x
         self.y=y
         self.taille=random.randrange(13,17)
+        self.planeteImages=[];
         #1- Génèrer un int aléatoire pour choisir une image de planète
-        planetImage=random.randrange(1,11)
+        planetImage=random.randrange(1,8)
         #2- Créer une string représentant le chemin relatif de l'image, et ce, à l'aide du int aléatoire obtenu
         img="./images/planet"+str(planetImage)+".png"
         #3- Créer une variable image à l'aide de la fonction Image.open qui prend en paramètre le chemin relatif créé à l'étape précédente
         #       Pour ce faire, on utilise "Image" de la librairie "PIL" que l'on a importé
         planet1 = Image.open(img)
         #4- Redimensionner l'image et stocker le tout dans une nouvelle variable
-        resized = planet1.resize((self.taille+30,self.taille+30),Image.ANTIALIAS)
+        #Vue système solaire
+        resized = planet1.resize((self.taille+50,self.taille+50),Image.ANTIALIAS)
+        self.planeteImages.append(ImageTk.PhotoImage(resized))
+        #Vue planete
+        resized = planet1.resize((550,550),Image.ANTIALIAS)
+        self.planeteImages.append(ImageTk.PhotoImage(resized))
+        #resized = planet1.resize((self.taille+50,self.taille+50),Image.ANTIALIAS)
         #5- Reformater la variable "Image" en variable "ImageTK" afin que TkInter la supporte, puis stocker le tout dans une variable d'instance "self.planetImage"
-        self.planetImage = ImageTk.PhotoImage(resized)
+        #self.planetImage = ImageTk.PhotoImage(resized)
+
+
+
+
         self.gaz=random.randrange(4000, 10000)
         self.minerai=random.randrange(4000, 10000)
         self.proprietaire = " "
@@ -75,10 +86,14 @@ class Etoile():
         self.creerplanetes()
 
     def creerplanetes(self):
-        numRand = random.randrange(7,10)
+        bufferX=0
+        bufferY=0
+        numRand = random.randrange(5,8)
         for i in range(numRand):
-            planX=random.randrange(150, 200)+(i*60)
-            planY=random.randrange(150, 200)+(i*random.randrange(20,40))+10
+            planX=random.randrange(150, 200)+bufferX
+            planY=random.randrange(150, 200)+bufferY
+            bufferX+=90
+            bufferY+=75
             self.planetes.append(Planete(planX, planY, self))
 
 class Batiment(): #Ajouter le 8 avril par nic
@@ -391,7 +406,7 @@ class Joueur():
         resized = navette.resize((15,15),Image.ANTIALIAS)
         self.navetteImage.append(ImageTk.PhotoImage(resized))
 
-        
+
 
     def creervaisseau(self,idplanete):
         #etoile,cible,type=params

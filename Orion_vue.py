@@ -79,7 +79,7 @@ class Vue():
         self.defense=Image.open("./images/tourDefense.png")
         self.resized = self.defense.resize((35, 35),Image.ANTIALIAS)
         self.tourDefenseMenuGauche = ImageTk.PhotoImage(self.resized)
-        
+
         #Gaz du bouton
         self.gaz=Image.open("./images/can.png")
         self.resized = self.gaz.resize((45, 45),Image.ANTIALIAS)
@@ -134,7 +134,7 @@ class Vue():
         self.elec1 = Image.open("./images/electric.png")
         self.resized = self.elec1.resize((100,100),Image.ANTIALIAS)
         self.elec1 = ImageTk.PhotoImage(self.resized)
-        
+
         #Tour de defense sur planete
         self.def1=Image.open("./images/tourDefense.png")
         self.resized = self.def1.resize((35, 35),Image.ANTIALIAS)
@@ -183,14 +183,14 @@ class Vue():
         #Etiquette pour la boite d'info ip serveur
         self.labelIpServeur = Label(self.cadresplash, fg= "white",bg="midnightblue",font='Helvetica 9 bold',text="IP SERVEUR:")
         self.labelIpServeur.place(x=266, y=200)
-        
+
         self.ipsplash=Entry(bg="light grey")
         self.ipsplash.insert(0, ip)
 
         #Etiquette pour la boite d'info ip
         self.labelIP = Label(self.cadresplash, fg= "white",bg="midnightblue",font='Helvetica 9 bold',text="IP:")
         self.labelIP.place(x=266, y=290)
-        
+
         labip=Label(text=ip,bg="light grey",borderwidth=0,relief=RIDGE)
         btncreerpartie=Button(text="Creer partie",bg="light grey",command=self.creerpartie)
         btnconnecterpartie=Button(text="Connecter partie",bg="light grey",command=self.connecterpartie)
@@ -218,23 +218,23 @@ class Vue():
         self.canevaslobby.pack()
 
         self.listelobby=Listbox(bg="light grey",borderwidth=0,relief=FLAT)
-        
+
         self.labelEspace = Label(self.cadrelobby, fg= "white",bg="midnightblue",font='Helvetica 9 bold',text="ESPACE")
         self.labelEspace.place(x=150, y=160)
         self.largeespace=Entry(bg="light grey")
         self.largeespace.insert(0, 1000)
-        
+
         self.labelHaut = Label(self.cadrelobby, fg= "white",bg="midnightblue",font='Helvetica 9 bold',text="HAUTE")
         self.labelHaut.place(x=150, y=230)
         self.hautespace=Entry(bg="light grey")
         self.hautespace.insert(0, 800)
-        
+
         self.labelNbEtoile = Label(self.cadrelobby, fg= "white",bg="midnightblue",font='Helvetica 9 bold',text="NOMBRE D'ÉTOILES")
         self.labelNbEtoile.place(x=140, y=300)
         self.nbetoile=Entry(bg="light grey")
         self.nbetoile.insert(0, 100)
-        
-        
+
+
         btnlancerpartie=Button(text="Lancer partie",bg="light grey",command=self.lancerpartie)
         self.canevaslobby.create_window(440,240,window=self.listelobby,width=200,height=400)
         self.canevaslobby.create_window(200,155,window=self.largeespace,width=100,height=30)
@@ -616,7 +616,7 @@ class Vue():
                 self.canevas.create_image(0, 0, image=self.soleil, anchor=NW, tags=("soleil", "fond"))
 
             for i in self.etoileselect.planetes:
-                s=i.planetImage
+                #s=i.planeteImages[0]
                 t=i.taille
                 """
                 if s == 1:
@@ -679,7 +679,7 @@ class Vue():
                 #self.planet10 = ImageTk.PhotoImage(self.resized)
 
                 # Afficher l'image de chaque planètes du array "planetes" de l'étoile sélectionnée
-                self.canevas.create_image(i.x - t, i.y - t, image=i.planetImage, anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
+                self.canevas.create_image(i.x - t, i.y - t, image=i.planeteImages[0], anchor=NW, tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
                 #self.canevas.create_oval(i.x-t,i.y-t,i.x+t,i.y+t,fill="grey80",
                 #                       tags=("planete", str(i.id), i.proprietaire, str(self.etoileselect.id)))
 
@@ -713,8 +713,9 @@ class Vue():
             self.canevas.create_oval(mod.largeur-40, mod.hauteur-40, mod.largeur+40, mod.hauteur+40,fill="purple", tags=("retour1"))
 
             t=self.planeteselect.taille
-            self.canevas.create_oval(mod.largeur/2-(t*20),mod.hauteur/2-(t*20),mod.largeur/2+(t*20),mod.hauteur/2+(t*20), width=2, outline="white", fill=self.planeteselect.color,
-                                    tags=("planetezoom", str(self.planeteselect.id), self.planeteselect.proprietaire, str(self.etoileselect.id)))
+            self.canevas.create_image((mod.largeur-550)/2, (mod.hauteur-550)/2, image=self.planeteselect.planeteImages[1], anchor=NW, tags=("planetezoom", str(self.planeteselect.id), self.planeteselect.proprietaire, str(self.etoileselect.id)))
+            #self.canevas.create_oval(mod.largeur/2-(t*20),mod.hauteur/2-(t*20),mod.largeur/2+(t*20),mod.hauteur/2+(t*20), width=2, outline="white", fill=self.planeteselect.color,
+                                   #tags=("planetezoom", str(self.planeteselect.id), self.planeteselect.proprietaire, str(self.etoileselect.id)))
 
             #affiche les batiment
             self.afficherBatiment()
@@ -726,7 +727,7 @@ class Vue():
                 if self.mod.joueurs[j].nom == self.planeteselect.proprietaire:
                     for b in self.planeteselect.batiment:
                         if b.typeBatiment == "minerai":
-                            self.canevas.create_image(b.x - 25, b.y - 25, image=self.mine1, anchor=NW, tags=("batiment",b.id))
+                            self.canevas.create_image(b.x - 20, b.y - 20, image=self.mine1, anchor=NW, tags=("batiment",b.id))
                             #self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="red",tags=("batiment",b.id)) #Affiche le batiment
                             #self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="niveau") #affiche le niveau du batiment
                         elif b.typeBatiment == "gaz":
@@ -869,7 +870,7 @@ class Vue():
         #Vérification si le joueur à recu une demande d'alliance
         if self.mod.joueurs[self.nom].demandes:
             self.demandeAmi(self.mod.joueurs[self.nom].demandes.pop(0))
-            
+
         for j in self.mod.joueurs:
             if self.mod.joueurs[j].nom == self.nom:
                 self.planetConquisesStats.set(len(self.mod.joueurs[j].planetescontrolees))
@@ -1238,7 +1239,7 @@ class Vue():
         positionDown = int(self.root.winfo_screenheight()/2 - self.hauteur/2)
 
         demandeami = StringVar()
-        
+
         nom=""
 
         for j in self.mod.joueurs:
