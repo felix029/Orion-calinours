@@ -333,6 +333,7 @@ class Joueur():
         self.flotte=[]
         self.detruits=[]
         self.navetteImage=[]
+        self.demandes=[]
         self.cout = {"minerai":[100,"energie"],
                     "gaz":[100,"energie"],
                     "energie":[100,"minerai"],
@@ -351,7 +352,8 @@ class Joueur():
                       "cibleretour":self.cibleretour, #Ajout Felix-O 16 avril
                       "versvue1":self.versvue1, #Ajout Felix-O 23 Avril
                       "versvue0":self.versvue0,
-                      "creerTourDefense":self.creerTourDefense} #Ajout Nick le 30 avril
+                      "creerTourDefense":self.creerTourDefense,#Ajout Nick le 30 avril
+                      "demandeAmi":self.demandeAmi} #Ajout Felix-O 14 mai
 
         #2- Créer une string représentant le chemin relatif de l'image, et ce, à l'aide du int aléatoire obtenu
         img="./images/navette"+str(self.numNavette)+".png"
@@ -367,6 +369,8 @@ class Joueur():
 
         resized = navette.resize((15,15),Image.ANTIALIAS)
         self.navetteImage.append(ImageTk.PhotoImage(resized))
+
+        
 
     def creervaisseau(self,idplanete):
         #etoile,cible,type=params
@@ -666,6 +670,12 @@ class Joueur():
             flottecur.y = flottecur.planetecur.y+25
             flottecur.planetecur = None
             flottecur.cible = None
+
+    #Ajout Felix-O 14 mai
+    def demandeAmi(self, infos):
+        idjoueur=infos
+        print("Dans demande ami modele" + self.nom)
+        self.demandes.append(idjoueur)
 
 # IA- nouvelle classe de joueur
 class IA(Joueur):
