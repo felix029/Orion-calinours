@@ -543,8 +543,8 @@ class Joueur():
         self.modifRessource()
         #if self.detruits:
          #   self.detruire()
-        self.colonisation()
         self.detruire()
+        self.colonisation()
         for i in self.flotte:
             if i.etat=="colonisation":
                 i.cible=None
