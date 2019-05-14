@@ -21,10 +21,6 @@ class Planete():
         resized = planet1.resize((self.taille+30,self.taille+30),Image.ANTIALIAS)
         #5- Reformater la variable "Image" en variable "ImageTK" afin que TkInter la supporte, puis stocker le tout dans une variable d'instance "self.planetImage"
         self.planetImage = ImageTk.PhotoImage(resized)
-
-
-
-
         self.gaz=random.randrange(4000, 10000)
         self.minerai=random.randrange(4000, 10000)
         self.proprietaire = " "
