@@ -381,7 +381,7 @@ class Joueur():
         resized = navette.resize((15,15),Image.ANTIALIAS)
         self.navetteImage.append(ImageTk.PhotoImage(resized))
 
-        
+
 
     def creervaisseau(self,idplanete):
         #etoile,cible,type=params
