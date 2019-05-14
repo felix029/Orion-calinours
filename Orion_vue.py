@@ -195,7 +195,6 @@ class Vue():
         btncreerpartie=Button(text="Creer partie",bg="light grey",command=self.creerpartie)
         btnconnecterpartie=Button(text="Connecter partie",bg="light grey",command=self.connecterpartie)
 
-
         self.canevassplash.create_window(320,110,window=self.nomsplash,width=100,height=30)
         self.canevassplash.create_window(320,200,window=self.ipsplash,width=100,height=30)
         self.canevassplash.create_window(320,290,window=labip,width=100,height=30)
