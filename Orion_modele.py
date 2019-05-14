@@ -585,6 +585,11 @@ class Joueur():
                     if j.etat=="detruit":
                         i.projectiles.remove(j)
 
+            if isinstance(i.cible, Vaisseau):
+                if i.cible.etat == "detruit":
+                    for j in i.projectiles:
+                        i.projectiles.remove(j)
+
 
         for i in self.detruits:
             self.flotte.remove(i)
