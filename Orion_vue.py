@@ -856,6 +856,10 @@ class Vue():
         self.canevas.delete("artefact")
         self.etatBouton()
 
+        #Vérification si le joueur à recu une demande d'alliance
+        if self.mod.joueurs[self.nom].demandes:
+            self.demandeAmi(self.mod.joueurs[self.nom].demandes.pop(0))
+            
         for j in self.mod.joueurs:
             if self.mod.joueurs[j].nom == self.nom:
                 self.planetConquisesStats.set(len(self.mod.joueurs[j].planetescontrolees))
@@ -934,6 +938,7 @@ class Vue():
                             if l.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
                                 self.canevas.create_rectangle(l.x-7,l.y-7,l.x+7,l.y+7,fill="white",tags=("projectile", l.proprietaire, "artefact"))
                         j.explosions.remove(l)
+
 
 
         #Affichage des AIs
@@ -1168,6 +1173,12 @@ class Vue():
 
                 self.maselection = None
 
+            if tag and tag[0] == "planetezoom":
+                if self.flotteselect != None:
+                    j = self.mod.joueurs[self.nom]
+                    if tag[2] != self.nom and tag[2] not in j.joueurami:
+                        self.amiOuAttaque(self.planeteselect.proprietaire)
+
             if tag and tag[0] == "retour1":
                 if self.flotteselect != None:
                     self.parent.cibleretour(self.flotteselect.id)
@@ -1191,3 +1202,46 @@ class Vue():
 
     def afficherartefacts(self,joueurs):
         pass
+
+    def amiOuAttaque(self, nomjoueur):
+        positionRight = int(self.root.winfo_screenwidth()/2 - self.largeur/2)
+        positionDown = int(self.root.winfo_screenheight()/2 - self.hauteur/2)
+
+        self.popChoix = Toplevel(master=self.canevas, width=80, height=80)
+        self.popChoix.geometry("+{}+{}".format(positionRight,positionDown))
+        self.popChoix.title("Amitiée/Attaque")
+        self.popChoix.grid()
+
+        self.msg = Message(self.popChoix, text="Faites un choix", width=80, anchor=CENTER).grid(row=0, columnspan=2)
+
+        self.btnAmi = Button(self.popChoix, text = "Ajouter un ami", width = 40, command = lambda: self.parent.demandeAmi(nomjoueur, self.mod.joueurs[self.nom].id)).grid(row=1, column=0)
+        self.btnAttaque = Button(self.popChoix, text= "Attaquer", width = 40, command = lambda: self.popChoix.destroy()).grid(row=1, column=1) #COMMANDE À MODIFIER
+
+
+    def demandeAmi(self, idjoueur):
+        positionRight = int(self.root.winfo_screenwidth()/2 - self.largeur/2)
+        positionDown = int(self.root.winfo_screenheight()/2 - self.hauteur/2)
+
+        demandeami = StringVar()
+        
+        nom=""
+
+        for j in self.mod.joueurs:
+            if self.mod.joueurs[j].id == idjoueur:
+                nom=self.mod.joueurs[j].nom
+                break
+
+        demandeami.set("Vous avez reçu une demande d'alliance de " + nom)
+
+        self.popAmi = Toplevel(master=self.canevas, width=80, height=80)
+        self.popAmi.geometry("+{}+{}".format(positionRight,positionDown))
+        self.popAmi.title("Demande d'alliance")
+        self.popAmi.grid()
+
+        self.msg = Label(self.popAmi, textvariable=demandeami, width=80).grid(row=0, columnspan=2)
+
+        self.btnAccepter = Button(self.popAmi, text = "Accepter", width = 40, command = lambda: self.popAmi.destroy()).grid(row=1, column=0) #COMMANDES À MODIFIER
+        self.btnRefuser = Button(self.popAmi, text= "Refuser", width = 40, command = lambda: self.popAmi.destroy()).grid(row=1, column=1)
+
+    def planeteDefense(self):
+        popDefense = Toplevel(master=self.canevas, padx=100, pady=60)
