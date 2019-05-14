@@ -27,15 +27,12 @@ class Planete():
         self.planeteImages.append(ImageTk.PhotoImage(resized))
         #resized = planet1.resize((self.taille+50,self.taille+50),Image.ANTIALIAS)
         #5- Reformater la variable "Image" en variable "ImageTK" afin que TkInter la supporte, puis stocker le tout dans une variable d'instance "self.planetImage"
-<<<<<<< HEAD
         #self.planetImage = ImageTk.PhotoImage(resized)
 
 
 
 
-=======
-        self.planetImage = ImageTk.PhotoImage(resized)
->>>>>>> encerclage des planète, des étoiles et des mines qui fonctionne
+
         self.gaz=random.randrange(4000, 10000)
         self.minerai=random.randrange(4000, 10000)
         self.proprietaire = " "
