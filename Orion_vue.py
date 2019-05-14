@@ -20,7 +20,6 @@ class Vue():
         self.maselection=None
         #self.posSouris=None
         self.root.title(os.path.basename(sys.argv[0]))
-        #self.modele=self.parent.modele
         self.nom=""
         self.cadreapp=Frame(self.root,width=800,height=600)
         self.cadreapp.pack()
@@ -40,13 +39,13 @@ class Vue():
         self.couleurBackgroundCotes = "SteelBlue4"
         self.couleurTitreCadre = "#34344f"
         self.espacementDonneesMenu = 20
-        
+
 
 
 #################################################################################################################################################################################
 #                                                                 IMAGES REDIMENSIONNÉES                                                                                        #
 #################################################################################################################################################################################
-        
+
         #Planete du menu
         self.plan = Image.open("./images/planete.png")
         self.resized = self.plan.resize((30, 30),Image.ANTIALIAS)
@@ -76,6 +75,11 @@ class Vue():
         self.resized = self.mine.resize((35, 35),Image.ANTIALIAS)
         self.mineMenuGauche = ImageTk.PhotoImage(self.resized)
 
+        #Bouton tour de defense
+        self.defense=Image.open("./images/tourDefense.png")
+        self.resized = self.defense.resize((35, 35),Image.ANTIALIAS)
+        self.tourDefenseMenuGauche = ImageTk.PhotoImage(self.resized)
+        
         #Gaz du bouton
         self.gaz=Image.open("./images/can.png")
         self.resized = self.gaz.resize((45, 45),Image.ANTIALIAS)
@@ -130,6 +134,11 @@ class Vue():
         self.elec1 = Image.open("./images/electric.png")
         self.resized = self.elec1.resize((100,100),Image.ANTIALIAS)
         self.elec1 = ImageTk.PhotoImage(self.resized)
+        
+        #Tour de defense sur planete
+        self.def1=Image.open("./images/tourDefense.png")
+        self.resized = self.def1.resize((35, 35),Image.ANTIALIAS)
+        self.tourDefense = ImageTk.PhotoImage(self.resized)
 
         #Navette
         #self.navette = Image.open("./images/navette1.png")
@@ -163,25 +172,25 @@ class Vue():
         self.background_label = Label(self.cadresplash, image=self.filename)
         self.background_label.place(x=0, y=35, width=645, relheight=1)
         self.canevassplash.pack()
-    
+
         #Etiquette pour la boite d'info nom
         self.labelNomJoueur = Label(self.cadresplash, fg= "white",bg="midnightblue",font='Helvetica 9 bold',text="NOM:")
         self.labelNomJoueur.place(x=266, y=110)
-       
+
         self.nomsplash=Entry(bg="light grey")
         self.nomsplash.insert(0, nom)
-        
+
         #Etiquette pour la boite d'info ip serveur
         self.labelNomJoueur = Label(self.cadresplash, fg= "white",bg="midnightblue",font='Helvetica 9 bold',text="IP SERVEUR:")
         self.labelNomJoueur.place(x=266, y=200)
-        
+
         self.ipsplash=Entry(bg="light grey")
         self.ipsplash.insert(0, ip)
 
         #Etiquette pour la boite d'info ip
         self.labelNomJoueur = Label(self.cadresplash, fg= "white",bg="midnightblue",font='Helvetica 9 bold',text="IP:")
         self.labelNomJoueur.place(x=266, y=290)
-        
+
         labip=Label(text=ip,bg="light grey",borderwidth=0,relief=RIDGE)
         btncreerpartie=Button(text="Creer partie",bg="light grey",command=self.creerpartie)
         btnconnecterpartie=Button(text="Connecter partie",bg="light grey",command=self.connecterpartie)
@@ -384,9 +393,9 @@ class Vue():
         self.electricite.config(height=45)
         self.electricite.bind("<Button>", self.initEnergie)
 
-        self.tourdefense=Button(self.creationFrame,text="Tour Defense",fg="white",bg =self.couleurBackgroundCotes)
+        self.tourdefense=Button(self.creationFrame,image=self.tourDefenseMenuGauche,fg="white",bg =self.couleurBackgroundCotes)
         self.tourdefense.grid(row=7, column=0, sticky="we")
-        self.tourdefense.config(height=2)
+        self.tourdefense.config(height=45)
         self.tourdefense.bind("<Button>", self.creerTourDefense)
 
         #Boutons upgrade
@@ -575,7 +584,7 @@ class Vue():
 
         self.canevas.delete(ALL)
         if self.vueactive == 2: #vue de la galaxy
-            for i in range(len(mod.etoiles)*5):
+            for i in range(len(mod.etoiles)*50):
                 x=random.randrange(mod.largeur)
                 y=random.randrange(mod.hauteur)
                 self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond"))
@@ -588,7 +597,7 @@ class Vue():
 
         if self.vueactive == 1: #vue systeme solaire
             #self.etoileselect = random.choice(mod.etoiles)
-            for i in range(len(mod.etoiles)*5):
+            for i in range(len(mod.etoiles)*20):
                 x=random.randrange(mod.largeur)
                 y=random.randrange(mod.hauteur)
                 self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond"))
@@ -684,7 +693,7 @@ class Vue():
 
 
         if self.vueactive == 0: #vue plan�te
-            for i in range(len(mod.etoiles)*4):
+            for i in range(len(mod.etoiles)*15):
                 x=random.randrange(mod.largeur)
                 y=random.randrange(mod.hauteur)
                 self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond"))
@@ -723,8 +732,8 @@ class Vue():
                             #self.canevas.create_text(b.x,b.y-20,text=b.vitesse,fill="white",tags="vitesse") #affiche le niveau du batiment
 
                     for b in self.planeteselect.toursDefense:
-                        self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="green",tags=("batiment",b.id))
-                        self.canevas.create_text(b.x,b.y-20,text=b.niveau,fill="white",tags="vitesse") #affiche le niveau du batiment
+                        #self.canevas.create_text(b.x,b.y-20,text=b.niveau,fill="white",tags="vitesse") #affiche le niveau du batiment
+                        self.canevas.create_image(b.x-10,b.y-40, image=self.tourDefense,anchor=NW,tags=("batiment",b.id))
 
 
     def afficheAttributsPlanete(self, maselection, planeteselect=None, etoileselect=None):
@@ -762,12 +771,11 @@ class Vue():
                 if j.planetemere in i.planetes:
                     etoileplanetemere = i
                     break
-
             couleur=j.couleur
-            x=etoileplanetemere.x
-            y=etoileplanetemere.y
-            t=30
-            self.canevas.create_oval(x-t,y-t,x+t,y+t,dash=(3,3),width=2,outline=couleur,
+            x=etoileplanetemere.x+8
+            y=etoileplanetemere.y+8
+            t=etoileplanetemere.taille+15
+            self.canevas.create_oval(x-t-2,y-t-2,x+t+2,y+t+2,dash=(3,3),width=2,outline=couleur,
                                  tags=("planetemere","marqueur"))
 
         if self.vueactive == 1:
@@ -775,12 +783,11 @@ class Vue():
 
             if self.etoileselect == j.planetemere.etoileparent:
                 couleur=j.couleur
-                x=j.planetemere.x+(j.planetemere.taille)
-                y=j.planetemere.y+(j.planetemere.taille)
-                t=35
+                x=j.planetemere.x+(j.planetemere.taille)-10
+                y=j.planetemere.y+(j.planetemere.taille)-10
+                t=j.planetemere.taille+20
                 self.canevas.create_oval(x-t,y-t,x+t,y+t,dash=(3,3),width=2,outline=couleur,
                                  tags=("planetemere","marqueur"))
-
 
     def creervaisseau(self):
         if self.vueactive == 0:
@@ -997,7 +1004,6 @@ class Vue():
     def cliquecosmos(self,evt):
         self.btncreervaisseau.pack_forget()
         tag=self.canevas.gettags(CURRENT)
-
         if self.vueactive == 2:
             if tag and tag[0] == "etoile":
                     self.maselection=[tag[0], tag[1]]
@@ -1102,9 +1108,48 @@ class Vue():
             if self.upgBatiment != None:
                 self.upgBatiment = None
                 self.canevas.delete("BatimentSelection")
+
             elif "batiment" in tag:
+                #self.canevas.create_oval(evt.x-50,evt.y-50,evt.x+50,evt.y+50,outline="white",tags="BatimentSelection")
                 self.upgBatiment = tag[1]
-                self.canevas.create_oval(evt.x-50,evt.y-50,evt.x+50,evt.y+50,outline="white",tags="BatimentSelection")
+                for e in self.mod.joueurs:
+                    couleur = self.mod.joueurs[e].couleur
+                    for p in self.mod.joueurs[e].planetescontrolees:
+                        for b in p.batiment:
+                            print("oui3")
+                            print(self.upgBatiment)
+                            print(b.id)
+                            if str(b.id)==str(self.upgBatiment):
+                                print("oui4")
+                                if b.typeBatiment == "minerai":
+                                    t=45
+                                    x=b.x+10
+                                    y=b.y+10
+                                    self.canevas.create_oval(x-t,y-t,x+t,y+t,dash=(3,3),width=2,outline=couleur,
+                                            tags=("BatimentSelection"))
+                                elif b.typeBatiment == "gaz":
+                                    t=40
+                                    x=b.x+12
+                                    y=b.y+14
+                                    self.canevas.create_oval(x-t,y-t,x+t,y+t,dash=(3,3),width=2,outline=couleur,
+                                            tags=("BatimentSelection"))
+                                elif b.typeBatiment == "energie":
+                                    t=55
+                                    x=b.x+15
+                                    y=b.y+27
+                                    self.canevas.create_oval(b.x-t,b.y-t,b.x+t,b.y+t,dash=(3,3),width=2,outline=couleur,
+                                            tags=("BatimentSelection"))
+                                elif b.typeBatiment == "base":
+                                    t=50
+                                    self.canevas.create_oval(b.x-t,b.y-t,b.x+t,b.y+t,dash=(3,3),width=2,outline=couleur,
+                                            tags=("BatimentSelection"))
+                                break
+
+                #for b in self.planeteselect.toursDefense:
+                #    self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="green",tags=("batiment",b.id))
+                #    self.canevas.create_text(b.x,b.y-20,text=b.niveau,fill="white",tags="vitesse") #affiche le niveau du batiment
+
+
 
 
 
