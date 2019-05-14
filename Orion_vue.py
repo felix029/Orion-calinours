@@ -913,7 +913,7 @@ class Vue():
                             if tags:
                                 if tags[0] == "flotte":
                                     j.etat = "detruit"
-                        
+
                 if self.vueactive == 1:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == None:
                         self.canevas.create_image(j.x - 7, j.y - 7, image=i.navetteImage[1], anchor=NW, tags=("flotte", str(j.id), j.proprietaire, "artefact"))
