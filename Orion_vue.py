@@ -897,7 +897,9 @@ class Vue():
             #                                     tags=("select","marqueur"))
         #else:
         #    self.canevas.delete("marqueur")
-
+        if self.vueactive == 2:
+            self.canevas.delete("baleine")
+            self.canevas.create_rectangle(mod.baleine.x-50,mod.baleine.y-50,mod.baleine.x+50,mod.baleine.y+50,fill="blue",tags="baleine")
 
         for i in self.mod.joueurs.keys():
             i=mod.joueurs[i]
@@ -905,15 +907,18 @@ class Vue():
                 if self.vueactive == 2:
                     if j.sysplanetecur == None and j.planetecur == None:
                         self.canevas.create_image(j.x, j.y, image=i.navetteImage[2], anchor=NW, tags=("flotte", str(j.id), j.proprietaire, "artefact"))
-                        #self.canevas.create_rectangle(j.x-5,j.y-5,j.x+5,j.y+5,fill=i.couleur,
-                                            #tags=("flotte", str(j.id), j.proprietaire, "artefact"))
-
+                        items=self.canevas.find_enclosed(self.mod.baleine.x-50,self.mod.baleine.y-50,self.mod.baleine.x+50,self.mod.baleine.y+50)
+                        for k in items:
+                            tags=self.canevas.gettags(k)
+                            if tags:
+                                if tags[0] == "flotte":
+                                    j.etat = "detruit"
+                        
                 if self.vueactive == 1:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == None:
                         self.canevas.create_image(j.x - 7, j.y - 7, image=i.navetteImage[1], anchor=NW, tags=("flotte", str(j.id), j.proprietaire, "artefact"))
                         #self.canevas.create_rectangle(j.x-7,j.y-7,j.x+7,j.y+7,fill=i.couleur,
                                                 #tags=("flotte", str(j.id), j.proprietaire, "artefact"))
-
 
                 if self.vueactive == 0:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
