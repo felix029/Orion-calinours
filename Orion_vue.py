@@ -1192,9 +1192,14 @@ class Vue():
                 self.maselection = None
 
             if tag and tag[0] == "batiment":
-                for b in planeteselect.batiment:
-                    if b.id = tag[1]:
+
+                typeBatiment = ""
+
+                for b in self.planeteselect.batiment:
+
+                    if str(b.id) == str(tag[1]):
                         typeBatiment = b.typeBatiment
+
                         break
 
                 if self.flotteselect != None and typeBatiment == "base":
@@ -1285,7 +1290,7 @@ class Vue():
             self.msg = Label(self.popRep, textvariable=demandeami, width=80).grid(row=0, columnspan=2)
 
             self.btnOk = Button(self.popRep, text = "Ok", width = 80, command = lambda: self.popRep.destroy()).grid(row=1, column=0)
-        
+
         elif rep == 2:
             print("Rien pour le moment")
 
