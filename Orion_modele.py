@@ -30,7 +30,6 @@ class Planete():
         #self.planetImage = ImageTk.PhotoImage(resized)
 
 
-
         self.gaz=random.randrange(4000, 10000)
         self.minerai=random.randrange(4000, 10000)
         self.proprietaire = " "
