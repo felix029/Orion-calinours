@@ -181,16 +181,16 @@ class Vue():
         self.nomsplash.insert(0, nom)
 
         #Etiquette pour la boite d'info ip serveur
-        self.labelNomJoueur = Label(self.cadresplash, fg= "white",bg="midnightblue",font='Helvetica 9 bold',text="IP SERVEUR:")
-        self.labelNomJoueur.place(x=266, y=200)
-
+        self.labelIpServeur = Label(self.cadresplash, fg= "white",bg="midnightblue",font='Helvetica 9 bold',text="IP SERVEUR:")
+        self.labelIpServeur.place(x=266, y=200)
+        
         self.ipsplash=Entry(bg="light grey")
         self.ipsplash.insert(0, ip)
 
         #Etiquette pour la boite d'info ip
-        self.labelNomJoueur = Label(self.cadresplash, fg= "white",bg="midnightblue",font='Helvetica 9 bold',text="IP:")
-        self.labelNomJoueur.place(x=266, y=290)
-
+        self.labelIP = Label(self.cadresplash, fg= "white",bg="midnightblue",font='Helvetica 9 bold',text="IP:")
+        self.labelIP.place(x=266, y=290)
+        
         labip=Label(text=ip,bg="light grey",borderwidth=0,relief=RIDGE)
         btncreerpartie=Button(text="Creer partie",bg="light grey",command=self.creerpartie)
         btnconnecterpartie=Button(text="Connecter partie",bg="light grey",command=self.connecterpartie)
@@ -218,17 +218,28 @@ class Vue():
         self.canevaslobby.pack()
 
         self.listelobby=Listbox(bg="light grey",borderwidth=0,relief=FLAT)
-        self.nbetoile=Entry(bg="light grey")
-        self.nbetoile.insert(0, 100)
+        
+        self.labelEspace = Label(self.cadrelobby, fg= "white",bg="midnightblue",font='Helvetica 9 bold',text="ESPACE")
+        self.labelEspace.place(x=150, y=160)
         self.largeespace=Entry(bg="light grey")
         self.largeespace.insert(0, 1000)
+        
+        self.labelHaut = Label(self.cadrelobby, fg= "white",bg="midnightblue",font='Helvetica 9 bold',text="HAUTE")
+        self.labelHaut.place(x=150, y=230)
         self.hautespace=Entry(bg="light grey")
         self.hautespace.insert(0, 800)
+        
+        self.labelNbEtoile = Label(self.cadrelobby, fg= "white",bg="midnightblue",font='Helvetica 9 bold',text="NOMBRE D'ÉTOILES")
+        self.labelNbEtoile.place(x=140, y=300)
+        self.nbetoile=Entry(bg="light grey")
+        self.nbetoile.insert(0, 100)
+        
+        
         btnlancerpartie=Button(text="Lancer partie",bg="light grey",command=self.lancerpartie)
         self.canevaslobby.create_window(440,240,window=self.listelobby,width=200,height=400)
-        self.canevaslobby.create_window(200,200,window=self.largeespace,width=100,height=30)
-        self.canevaslobby.create_window(200,250,window=self.hautespace,width=100,height=30)
-        self.canevaslobby.create_window(200,300,window=self.nbetoile,width=100,height=30)
+        self.canevaslobby.create_window(200,155,window=self.largeespace,width=100,height=30)
+        self.canevaslobby.create_window(200,225,window=self.hautespace,width=100,height=30)
+        self.canevaslobby.create_window(200,295,window=self.nbetoile,width=100,height=30)
         self.canevaslobby.create_window(200,400,window=btnlancerpartie,width=100,height=30)
 
 
