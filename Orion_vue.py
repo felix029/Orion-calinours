@@ -606,7 +606,7 @@ class Vue():
 
             for i in mod.etoiles:
                 t=i.taille
-                self.canevas.create_image(i.x - t, i.y - t, image=self.starImage, anchor=NW, tags=("etoile", str(i.id)))
+                self.canevas.create_image(i.x - t, i.y - t, image=self.starImage, anchor=CENTER, tags=("etoile", str(i.id)))
                 #self.canevas.create_oval(i.x-t,i.y-t,i.x+t,i.y+t,fill="grey80",
                                        #tags=("etoile", str(i.id)))
 

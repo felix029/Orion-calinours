@@ -88,7 +88,7 @@ class Etoile():
     def creerplanetes(self):
         bufferX=0
         bufferY=0
-        numRand = random.randrange(5,8)
+        numRand = random.randrange(5,7)
         for i in range(numRand):
             planX=random.randrange(150, 200)+bufferX
             planY=random.randrange(150, 200)+bufferY
