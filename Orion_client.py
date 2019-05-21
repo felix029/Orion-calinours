@@ -51,6 +51,7 @@ class Controleur():
 
             pid = Popen([sys.executable, dir_path + '/Orion_serveur.py'],shell=1).pid # on lance l'application serveur
             self.egoserveur=1 # on note que c'est soi qui, ayant demarre le serveur, aura le privilege de lancer la simulation
+            self.vue.btnlancerpartie.config(state=NORMAL)
             self.tempo=1 # on change d'etat pour s'inscrire automatiquement
                          # (parce que dans ce type de programme on prend pour acquis que celui qui prepare la simulation veut aussi y participer)
 
