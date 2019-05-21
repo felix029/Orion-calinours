@@ -10,7 +10,7 @@ class Planete():
         self.x=x
         self.y=y
         self.taille=random.randrange(13,17)
-        self.planeteImages=[];
+        self.planeteImages=[]
         #1- Génèrer un int aléatoire pour choisir une image de planète
         planetImage=random.randrange(1,7)
         #2- Créer une string représentant le chemin relatif de l'image, et ce, à l'aide du int aléatoire obtenu
@@ -63,6 +63,7 @@ class BaleineCosmique():
         if self.cibleX == None or self.cibleY == None:
             self.cibleX=random.randrange(800)
             self.cibleY=random.randrange(600)
+            print(self.parent.parent.monnom,self.cibleX, self.cibleY)
         else:
             x=self.cibleX
             y=self.cibleY
@@ -72,6 +73,7 @@ class BaleineCosmique():
             if hlp.calcDistance(self.x,self.y,x,y) <=self.vitesse:
                  self.cibleX=None
                  self.cibleY=None
+            
 
 class Etoile():
     def __init__(self,x,y,parent):
@@ -773,13 +775,16 @@ class IA(Joueur):
 
 class Modele():
     def __init__(self,parent,joueurs):
+        self.baleine=BaleineCosmique(0,0,self)
+        self.etoiles=[]
+        self.decoEtoileX=[]
+        self.decoEtoileY=[]
         self.parent=parent
         self.largeur=800 #self.parent.vue.root.winfo_screenwidth()
         self.hauteur=600 #self.parent.vue.root.winfo_screenheight()
         self.joueurs={}
         #self.ias=[]
         self.actionsafaire={}
-        self.etoiles=[]
         self.terrain=[]
         self.xEtoile=[]
         self.yEtoile=[]
@@ -788,7 +793,6 @@ class Modele():
         self.numNavette=1
         self.assignerplanetes(joueurs,2)
         self.wrongValue=0
-        self.baleine=BaleineCosmique(0,0,self)
         #self.taileRayon=0
 
     def creerterrain(self):
@@ -803,11 +807,17 @@ class Modele():
                     ligne.append(0)
             self.terrain.append(ligne)
 
+    def faireDecoEtoile(self):
+        for i in range(len(self.etoiles)*50):
+            self.decoEtoileX.append(random.randrange(self.largeur))
+            self.decoEtoileY.append(random.randrange(self.hauteur))
+
     def creeretoiles(self):
         bordure=0
         nbEtoile = 12
         #self.xEtoile = [nbEtoile+1]
         #self.yEtoile = [nbEtoile+1]
+        
         for i in range(nbEtoile):
             x=random.randrange(20, self.largeur-20)
             y=random.randrange(20, self.hauteur-20)
@@ -829,7 +839,7 @@ class Modele():
                     x=random.randrange(20,self.largeur-20) #largeur
                     y=random.randrange(20,self.hauteur-20) #hauteur
                     self.goodValue=0
-
+        self.faireDecoEtoile()
 
 
 
