@@ -123,7 +123,7 @@ class TourDefense():   ### à ajouter git
         self.projectiles=[]
         self.explosions=[]
         self.delaidetir=0
-        self.delaimax=5
+        self.delaimax=20
         self.cible=None
         self.range=800
         self.typeBatiment = "tourDefense"
@@ -148,6 +148,8 @@ class TourDefense():   ### à ajouter git
             self.explosions.append(ex)
             self.cible=None
             self.delaidetir=0
+            for p in self.projectiles:
+                p.etat="detruit"
 
         for i in self.projectiles:
             if i.etat!="detruit":
@@ -634,6 +636,13 @@ class Joueur():
                     for j in i.projectiles:
                         i.projectiles.remove(j)
 
+        for i in self.planetescontrolees:
+            if i.toursDefense != None:
+                for j in i.toursDefense:
+                    if j.projectiles != None:
+                        for k in j.projectiles:
+                            if k.etat == "detruit":
+                                j.projectiles.remove(k)
 
         for i in self.detruits:
             self.flotte.remove(i)
