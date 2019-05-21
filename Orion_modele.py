@@ -609,8 +609,6 @@ class Joueur():
             #    i.cible=random.choice(self.parent.planetes)
             #    i.cible=random.choice(self.parent.etoiles)
 
-
-
     def prochaineaction2(self):
         for i in self.flotte:
             i.avancer()
