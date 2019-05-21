@@ -5,6 +5,7 @@ import random
 import os,os.path
 from PIL.ImageOps import expand
 from PIL._imaging import font
+#from resizeimage import resizeimage
 #from numpy.distutils.conv_template import file
 
 class Vue():
@@ -606,12 +607,16 @@ class Vue():
 
             for i in mod.etoiles:
                 t=i.taille
+<<<<<<< HEAD
                 self.canevas.create_image(i.x - t, i.y - t, image=self.starImage, anchor=CENTER, tags=("etoile", str(i.id)))
                 #self.canevas.create_oval(i.x-t,i.y-t,i.x+t,i.y+t,fill="grey80",
                                        #tags=("etoile", str(i.id)))
+=======
+                self.canevas.create_image(i.x - t, i.y - t, image=self.starImage, anchor=NW, tags=("etoile", str(i.id)))
+
+>>>>>>> modification etoiles
 
         if self.vueactive == 1: #vue systeme solaire
-            #self.etoileselect = random.choice(mod.etoiles)
             for i in range(len(mod.etoiles)*20):
                 x=random.randrange(mod.largeur)
                 y=random.randrange(mod.hauteur)
@@ -1138,12 +1143,11 @@ class Vue():
                     for p in self.mod.joueurs[e].planetescontrolees:
                         for b in p.batiment:
                             print(self.upgBatiment)
-                            print(b.id)
                             if str(b.id)==str(self.upgBatiment):
                                 if b.typeBatiment == "minerai":
                                     t=45
-                                    x=b.x+10
-                                    y=b.y+10
+                                    x=b.x+17
+                                    y=b.y+12
                                     self.canevas.create_oval(x-t,y-t,x+t,y+t,dash=(3,3),width=2,outline=couleur,
                                             tags=("BatimentSelection"))
                                 elif b.typeBatiment == "gaz":
@@ -1167,10 +1171,6 @@ class Vue():
                 #for b in self.planeteselect.toursDefense:
                 #    self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="green",tags=("batiment",b.id))
                 #    self.canevas.create_text(b.x,b.y-20,text=b.niveau,fill="white",tags="vitesse") #affiche le niveau du batiment
-
-
-
-
 
             if tag and tag[0] == "flotte":
 

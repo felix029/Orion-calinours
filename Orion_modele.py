@@ -87,6 +87,8 @@ class Etoile():
         self.hauteur = parent.hauteur
         self.creerplanetes()
 
+        self.starImages=[]
+
     def creerplanetes(self):
         bufferX=0
         bufferY=0
@@ -318,41 +320,6 @@ class Explosion():
             self.rayon=5
         else:
             self.rayon=20
-
-    # def exploToucher(self):
-    #     e = Eclat(self, 360-(9*1), self.vitesse % 1, self.x, self.y, self.rangeEx)
-    #     self.eclats.append(e)
-
-    # def explose(self):
-    #     self.vie =self.vie-1
-
-    #     if self.vie <=0:
-    #         self.etat="detruit"
-
-
-# class Eclat():
-
-#     def __init__(self, parent, orientation, vitesse, x, y, rangeEx):
-#         self.x=x
-#         self.y=y
-#         self.xdep=x
-#         self.ydep=y
-#         self.parent=parent
-#         self.proprietaire = self.parent.proprietaire
-#         self.sysplanetecur=self.parent.sysplanetecur
-#         self.planetecur=self.parent.planetecur
-#         self.rangeEx = rangeEx/2
-#         self.vitesse=vitesse
-#         self.etat="actif"
-#         self.orientation=orientation
-
-#     def explose(self):
-#             self.x,self.y=hlp.getAngledPoint(self.orientation,self.vitesse, self.x, self.y)
-
-#             if self.y >=(self.ydep+self.rangeEx) and self.x >=(self.xdep+self.rangeEx):
-#                 self.etat="detruit"
-#                 print("explosion morte")
-#                 self.parent.explose()
 
 
 class Joueur():
@@ -814,7 +781,6 @@ class Modele():
 
             while verifValue:
                 self.wrongValue=0
-                #self.taileRayon = j.taille
                 for j in self.etoiles:
                     if x > j.x-40 and x < j.x+40 and y > j.y-40 and y < j.y+40:
                         self.wrongValue+=1
