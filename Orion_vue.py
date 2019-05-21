@@ -1189,11 +1189,10 @@ class Vue():
                 typeBatiment = ""
 
                 for b in self.planeteselect.batiment:
-
                     if str(b.id) == str(tag[1]):
                         typeBatiment = b.typeBatiment
-            
                         break
+                        
                 if self.flotteselect != None and typeBatiment == "base":
                     j = self.mod.joueurs[self.nom]
 
