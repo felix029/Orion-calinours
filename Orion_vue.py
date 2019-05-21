@@ -140,6 +140,11 @@ class Vue():
         self.resized = self.def1.resize((35, 35),Image.ANTIALIAS)
         self.tourDefense = ImageTk.PhotoImage(self.resized)
 
+        #Baleine cosmique
+        self.baleine=Image.open("./images/baleine.png")
+        self.resized = self.baleine.resize((150, 150),Image.ANTIALIAS)
+        self.baleine = ImageTk.PhotoImage(self.resized)
+
         #Navette
         #self.navette = Image.open("./images/navette1.png")
         #self.resized = self.elec1.resize((50,50),Image.ANTIALIAS)
@@ -194,7 +199,6 @@ class Vue():
         labip=Label(text=ip,bg="light grey",borderwidth=0,relief=RIDGE)
         btncreerpartie=Button(text="Creer partie",bg="light grey",command=self.creerpartie)
         btnconnecterpartie=Button(text="Connecter partie",bg="light grey",command=self.connecterpartie)
-
 
         self.canevassplash.create_window(320,110,window=self.nomsplash,width=100,height=30)
         self.canevassplash.create_window(320,200,window=self.ipsplash,width=100,height=30)
@@ -900,7 +904,8 @@ class Vue():
         #    self.canevas.delete("marqueur")
         if self.vueactive == 2:
             self.canevas.delete("baleine")
-            self.canevas.create_rectangle(mod.baleine.x-50,mod.baleine.y-50,mod.baleine.x+50,mod.baleine.y+50,fill="blue",tags="baleine")
+            #self.canevas.create_rectangle(mod.baleine.x-50,mod.baleine.y-50,mod.baleine.x+50,mod.baleine.y+50,fill="blue",tags="baleine")
+            self.canevas.create_image(mod.baleine.x, mod.baleine.y, image=self.baleine, anchor=CENTER, tags="baleine")
 
         for i in self.mod.joueurs.keys():
             i=mod.joueurs[i]
@@ -914,7 +919,7 @@ class Vue():
                             if tags:
                                 if tags[0] == "flotte":
                                     j.etat = "detruit"
-                        
+
                 if self.vueactive == 1:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == None:
                         self.canevas.create_image(j.x - 7, j.y - 7, image=i.navetteImage[1], anchor=NW, tags=("flotte", str(j.id), j.proprietaire, "artefact"))
