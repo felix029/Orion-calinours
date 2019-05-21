@@ -10,10 +10,6 @@ class Planete():
         self.x=x
         self.y=y
         self.taille=random.randrange(13,17)
-<<<<<<< HEAD
-=======
-
->>>>>>> 0733fb74882d8c2826b48e7c6ef57c4ab30134d8
         self.planeteImages=[]
         #1- Génèrer un int aléatoire pour choisir une image de planète
 

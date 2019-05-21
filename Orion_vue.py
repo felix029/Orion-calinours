@@ -608,20 +608,11 @@ class Vue():
                 self.canevas.create_image(i.x - t, i.y - t, image=self.starImage, anchor=CENTER, tags=("etoile", str(i.id)))
 
         if self.vueactive == 1: #vue systeme solaire
-<<<<<<< HEAD
             #self.etoileselect = random.choice(mod.etoiles)
             for i in range(len(self.mod.decoEtoileX)):
                 self.canevas.create_oval(self.mod.decoEtoileX[i],self.mod.decoEtoileY[i],self.mod.decoEtoileX[i]+1,self.mod.decoEtoileY[i]+1,fill="white",tags=("fond"))
             #Insertion de l'image du soleil
             self.canevas.create_image(0, 0, image=self.soleil, anchor=NW, tags=("soleil", "fond"))
-=======
-            for i in range(len(mod.etoiles)*20):
-                x=random.randrange(mod.largeur)
-                y=random.randrange(mod.hauteur)
-                self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond"))
-                #Insertion de l'image du soleil
-                self.canevas.create_image(0, 0, image=self.soleil, anchor=NW, tags=("soleil", "fond"))
->>>>>>> 0733fb74882d8c2826b48e7c6ef57c4ab30134d8
 
             for i in self.etoileselect.planetes:
                 #s=i.planeteImages[0]
