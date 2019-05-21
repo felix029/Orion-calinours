@@ -140,6 +140,11 @@ class Vue():
         self.resized = self.def1.resize((35, 35),Image.ANTIALIAS)
         self.tourDefense = ImageTk.PhotoImage(self.resized)
 
+        #Baleine cosmique
+        self.baleine=Image.open("./images/baleine.png")
+        self.resized = self.baleine.resize((150, 150),Image.ANTIALIAS)
+        self.baleine = ImageTk.PhotoImage(self.resized)
+
         #Navette
         #self.navette = Image.open("./images/navette1.png")
         #self.resized = self.elec1.resize((50,50),Image.ANTIALIAS)
@@ -899,7 +904,8 @@ class Vue():
         #    self.canevas.delete("marqueur")
         if self.vueactive == 2:
             self.canevas.delete("baleine")
-            self.canevas.create_rectangle(mod.baleine.x-50,mod.baleine.y-50,mod.baleine.x+50,mod.baleine.y+50,fill="blue",tags="baleine")
+            #self.canevas.create_rectangle(mod.baleine.x-50,mod.baleine.y-50,mod.baleine.x+50,mod.baleine.y+50,fill="blue",tags="baleine")
+            self.canevas.create_image(mod.baleine.x, mod.baleine.y, image=self.baleine, anchor=CENTER, tags="baleine")
 
         for i in self.mod.joueurs.keys():
             i=mod.joueurs[i]
