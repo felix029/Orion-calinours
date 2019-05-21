@@ -956,6 +956,12 @@ class Vue():
                         j.explosions.remove(l)
 
 
+                if self.vueactive == 0:
+                    for b in self.planeteselect.toursDefense:
+                        for p in b.projectiles:
+                            if p.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
+                                self.canevas.create_rectangle(k.x-7,k.y-7,k.x+7,k.y+7,fill=i.couleur,tags=("projectile", k.proprietaire, "artefact"))
+                                print("AILLE")
 
         #Affichage des AIs
         #for i in self.mod.ias:
