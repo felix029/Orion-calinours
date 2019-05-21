@@ -140,6 +140,11 @@ class Vue():
         self.resized = self.def1.resize((35, 35),Image.ANTIALIAS)
         self.tourDefense = ImageTk.PhotoImage(self.resized)
 
+        #Baleine cosmique
+        self.baleine=Image.open("./images/baleine.png")
+        self.resized = self.baleine.resize((150, 150),Image.ANTIALIAS)
+        self.baleine = ImageTk.PhotoImage(self.resized)
+
         #Navette
         #self.navette = Image.open("./images/navette1.png")
         #self.resized = self.elec1.resize((50,50),Image.ANTIALIAS)
@@ -194,7 +199,6 @@ class Vue():
         labip=Label(text=ip,bg="light grey",borderwidth=0,relief=RIDGE)
         btncreerpartie=Button(text="Creer partie",bg="light grey",command=self.creerpartie)
         btnconnecterpartie=Button(text="Connecter partie",bg="light grey",command=self.connecterpartie)
-
 
         self.canevassplash.create_window(320,110,window=self.nomsplash,width=100,height=30)
         self.canevassplash.create_window(320,200,window=self.ipsplash,width=100,height=30)
@@ -602,7 +606,7 @@ class Vue():
 
             for i in mod.etoiles:
                 t=i.taille
-                self.canevas.create_image(i.x - t, i.y - t, image=self.starImage, anchor=NW, tags=("etoile", str(i.id)))
+                self.canevas.create_image(i.x - t, i.y - t, image=self.starImage, anchor=CENTER, tags=("etoile", str(i.id)))
                 #self.canevas.create_oval(i.x-t,i.y-t,i.x+t,i.y+t,fill="grey80",
                                        #tags=("etoile", str(i.id)))
 
@@ -902,7 +906,10 @@ class Vue():
             #                                     tags=("select","marqueur"))
         #else:
         #    self.canevas.delete("marqueur")
-
+        if self.vueactive == 2:
+            self.canevas.delete("baleine")
+            #self.canevas.create_rectangle(mod.baleine.x-50,mod.baleine.y-50,mod.baleine.x+50,mod.baleine.y+50,fill="blue",tags="baleine")
+            self.canevas.create_image(mod.baleine.x, mod.baleine.y, image=self.baleine, anchor=CENTER, tags="baleine")
 
         for i in self.mod.joueurs.keys():
             i=mod.joueurs[i]
@@ -910,15 +917,18 @@ class Vue():
                 if self.vueactive == 2:
                     if j.sysplanetecur == None and j.planetecur == None:
                         self.canevas.create_image(j.x, j.y, image=i.navetteImage[2], anchor=NW, tags=("flotte", str(j.id), j.proprietaire, "artefact"))
-                        #self.canevas.create_rectangle(j.x-5,j.y-5,j.x+5,j.y+5,fill=i.couleur,
-                                            #tags=("flotte", str(j.id), j.proprietaire, "artefact"))
+                        items=self.canevas.find_enclosed(self.mod.baleine.x-50,self.mod.baleine.y-50,self.mod.baleine.x+50,self.mod.baleine.y+50)
+                        for k in items:
+                            tags=self.canevas.gettags(k)
+                            if tags:
+                                if tags[0] == "flotte":
+                                    j.etat = "detruit"
 
                 if self.vueactive == 1:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == None:
                         self.canevas.create_image(j.x - 7, j.y - 7, image=i.navetteImage[1], anchor=NW, tags=("flotte", str(j.id), j.proprietaire, "artefact"))
                         #self.canevas.create_rectangle(j.x-7,j.y-7,j.x+7,j.y+7,fill=i.couleur,
                                                 #tags=("flotte", str(j.id), j.proprietaire, "artefact"))
-
 
                 if self.vueactive == 0:
                     if j.sysplanetecur == self.etoileselect and j.planetecur == self.planeteselect:
@@ -1036,7 +1046,6 @@ class Vue():
                                 self.parent.versvue1(self.flotteselect.id, self.etoileselect.id)
                         else:
                             self.parent.ciblerflotte(self.flotteselect.id, self.etoileselect.id, "etoile")
-                            print(self.flotteselect.id, self.etoileselect.id)
 
                         self.flotteselect = None
                         self.etoileselect = None
@@ -1053,9 +1062,6 @@ class Vue():
                             break
                 elif self.flotteselect != None:
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
-
-                    print("Dans le else de flotte vue 2")
-
                     self.parent.ciblerflotte(self.flotteselect.id, self.maselection[1], "flotte")
                     self.flotteselect = None
 
@@ -1098,7 +1104,6 @@ class Vue():
                             break
                 elif self.flotteselect != None:
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
-                    print("Dans le else de flotte vue 1")
                     self.parent.ciblerflotte(self.flotteselect.id, self.maselection[1], "flotte")
                     self.flotteselect = None
 
@@ -1132,11 +1137,9 @@ class Vue():
                     couleur = self.mod.joueurs[e].couleur
                     for p in self.mod.joueurs[e].planetescontrolees:
                         for b in p.batiment:
-                            print("oui3")
                             print(self.upgBatiment)
                             print(b.id)
                             if str(b.id)==str(self.upgBatiment):
-                                print("oui4")
                                 if b.typeBatiment == "minerai":
                                     t=45
                                     x=b.x+10
@@ -1182,21 +1185,27 @@ class Vue():
                             break
                 elif self.flotteselect != None:
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
-                    print("Dans le else de flotte vue 0")
+
                     self.parent.ciblerflotte(self.flotteselect.id, self.maselection[1], "flotte")
                     self.flotteselect = None
 
                 self.maselection = None
 
             if tag and tag[0] == "batiment":
-                for b in planeteselect.batiment:
-                    if b.id = tag[1]:
-                        typeBatiment = b.typeBatiment
-                        break
+                
+                typeBatiment = ""
 
+                for b in self.planeteselect.batiment:
+
+                    if str(b.id) == str(tag[1]):
+                        typeBatiment = b.typeBatiment
+            
+                        break
                 if self.flotteselect != None and typeBatiment == "base":
                     j = self.mod.joueurs[self.nom]
+
                     if tag[2] != self.nom and tag[2] not in j.joueurami:
+
                         self.amiOuAttaque(self.planeteselect.proprietaire)
 
             if tag and tag[0] == "retour1":

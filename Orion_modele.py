@@ -10,9 +10,11 @@ class Planete():
         self.x=x
         self.y=y
         self.taille=random.randrange(13,17)
+
         self.planeteImages=[]
         #1- Génèrer un int aléatoire pour choisir une image de planète
-        planetImage=random.randrange(1,8)
+
+        planetImage=random.randrange(1,7)
         #2- Créer une string représentant le chemin relatif de l'image, et ce, à l'aide du int aléatoire obtenu
         img="./images/planet"+str(planetImage)+".png"
         #3- Créer une variable image à l'aide de la fonction Image.open qui prend en paramètre le chemin relatif créé à l'étape précédente
@@ -50,6 +52,28 @@ class Planete():
         if self.y <=100:
             self.y+=100
 
+class BaleineCosmique():
+    def __init__(self,x,y,parent):
+        self.x = x
+        self.y = y
+        self.parent = parent
+        self.vitesse=1
+        self.cibleX=None
+        self.cibleY=None
+
+    def deplacerBaleine(self):
+        if self.cibleX == None or self.cibleY == None:
+            self.cibleX=random.randrange(800)
+            self.cibleY=random.randrange(600)
+        else:
+            x=self.cibleX
+            y=self.cibleY
+            ang=hlp.calcAngle(self.x,self.y,x,y)
+            x1,y1=hlp.getAngledPoint(ang,self.vitesse,self.x,self.y)
+            self.x,self.y=x1,y1
+            if hlp.calcDistance(self.x,self.y,x,y) <=self.vitesse:
+                 self.cibleX=None
+                 self.cibleY=None
 
 class Etoile():
     def __init__(self,x,y,parent):
@@ -66,7 +90,7 @@ class Etoile():
     def creerplanetes(self):
         bufferX=0
         bufferY=0
-        numRand = random.randrange(5,8)
+        numRand = random.randrange(5,7)
         for i in range(numRand):
             planX=random.randrange(150, 200)+bufferX
             planY=random.randrange(150, 200)+bufferY
@@ -86,6 +110,7 @@ class Batiment(): #Ajouter le 8 avril par nic
         self.nom=""
         self.etat=""
 
+
 class TourDefense():   ### à ajouter git
     def __init__(self,nom,plan,x,y):
         self.id=Id.prochainid()
@@ -102,9 +127,11 @@ class TourDefense():   ### à ajouter git
         self.delaidetir=0
         self.delaimax=5
         self.cible=None
-        self.range=10
+        self.range=800
         self.typeBatiment = "tourDefense"
         self.niveau = 1
+        self.sysplanetecur=None
+        self.planetecur=plan
 
     def tirer(self):  ###modifications GM 29 avril###
         d=hlp.calcDistance(self.x,self.y,self.cible.x,self.cible.y)
@@ -113,7 +140,7 @@ class TourDefense():   ### à ajouter git
             if self.delaidetir==0:
                 if self.cible.attaquant==None:  ###ok
                     self.cible.attaquant=self
-                p=Projectile(self.cible,self.x,self.y,self.cible.x,self.cible.y)
+                p=Projectile(self, self.cible,self.x,self.y,self.cible.x,self.cible.y)
                 self.projectiles.append(p)
                 self.delaidetir=self.delaimax
             self.delaidetir-=1
@@ -577,6 +604,10 @@ class Joueur():
                         self.flotteretour1(i.id)
             if i.attaquant!=None:
                 i.defense()
+        for i in self.planetescontrolees:
+            for j in i.toursDefense:
+                if j.cible!=None:
+                   j.tirer()
             #else:
             #    i.cible=random.choice(self.parent.planetes)
             #    i.cible=random.choice(self.parent.etoiles)
@@ -635,8 +666,8 @@ class Joueur():
         for e in self.parent.etoiles:
             if e.id == idetoile:
                 flottecur.sysplanetecur = e
-                flottecur.x = self.parent.largeur-30
-                flottecur.y = self.parent.hauteur-30
+                flottecur.x = self.parent.largeur-60
+                flottecur.y = self.parent.hauteur-60
                 break
 
     #Ajout Felix-O 23 Avril
@@ -650,8 +681,13 @@ class Joueur():
         for p in syscur.planetes:
             if p.id == idplanete:
                 flottecur.planetecur = p
-                flottecur.x = self.parent.largeur-30
-                flottecur.y = self.parent.hauteur-30
+                flottecur.x = self.parent.largeur-60
+                flottecur.y = self.parent.hauteur-60
+                if p.proprietaire!= " ":
+                    if flottecur.proprietaire!=p.proprietaire:
+                        for k in p.toursDefense:
+                            k.cible=flottecur
+                            print(k.cible)
                 break
 
     #Ajout Felix-O 23 Avril
@@ -662,8 +698,8 @@ class Joueur():
                 flottecur = i
                 break
         if flottecur.sysplanetecur != None:
-            flottecur.x = flottecur.sysplanetecur.x-25
-            flottecur.y = flottecur.sysplanetecur.y-25
+            flottecur.x = flottecur.sysplanetecur.x-60
+            flottecur.y = flottecur.sysplanetecur.y-60
             flottecur.sysplanetecur = None
             flottecur.cible = None
 
@@ -677,8 +713,8 @@ class Joueur():
                 break
 
         if flottecur.planetecur != None:
-            flottecur.x = flottecur.planetecur.x-25
-            flottecur.y = flottecur.planetecur.y-25
+            flottecur.x = flottecur.planetecur.x-35
+            flottecur.y = flottecur.planetecur.y-35
             flottecur.planetecur = None
             flottecur.cible = None
 
@@ -753,6 +789,7 @@ class Modele():
         self.numNavette=1
         self.assignerplanetes(joueurs,2)
         self.wrongValue=0
+        self.baleine=BaleineCosmique(0,0,self)
         #self.taileRayon=0
 
     def creerterrain(self):
@@ -851,6 +888,8 @@ class Modele():
 
         for i in self.joueurs:
             self.joueurs[i].prochaineaction()
+
+        self.baleine.deplacerBaleine()
 
         # IA- appelle prochaine action
         #for i in self.ias:
