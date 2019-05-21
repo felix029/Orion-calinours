@@ -235,12 +235,12 @@ class Vue():
         self.nbetoile.insert(0, 100)
 
 
-        btnlancerpartie=Button(text="Lancer partie",bg="light grey",command=self.lancerpartie)
+        self.btnlancerpartie=Button(text="Lancer partie",bg="light grey",state=DISABLED,command=self.lancerpartie)
         self.canevaslobby.create_window(440,240,window=self.listelobby,width=200,height=400)
         self.canevaslobby.create_window(200,155,window=self.largeespace,width=100,height=30)
         self.canevaslobby.create_window(200,225,window=self.hautespace,width=100,height=30)
         self.canevaslobby.create_window(200,295,window=self.nbetoile,width=100,height=30)
-        self.canevaslobby.create_window(200,400,window=btnlancerpartie,width=100,height=30)
+        self.canevaslobby.create_window(200,400,window=self.btnlancerpartie,width=100,height=30)
 
 
     def connecterpartie(self):
