@@ -5,6 +5,7 @@ import random
 import os,os.path
 from PIL.ImageOps import expand
 from PIL._imaging import font
+#from resizeimage import resizeimage
 #from numpy.distutils.conv_template import file
 
 class Vue():
@@ -239,12 +240,12 @@ class Vue():
         self.nbetoile.insert(0, 100)
 
 
-        btnlancerpartie=Button(text="Lancer partie",bg="light grey",command=self.lancerpartie)
+        self.btnlancerpartie=Button(text="Lancer partie",bg="light grey",state=DISABLED,command=self.lancerpartie)
         self.canevaslobby.create_window(440,240,window=self.listelobby,width=200,height=400)
         self.canevaslobby.create_window(200,155,window=self.largeespace,width=100,height=30)
         self.canevaslobby.create_window(200,225,window=self.hautespace,width=100,height=30)
         self.canevaslobby.create_window(200,295,window=self.nbetoile,width=100,height=30)
-        self.canevaslobby.create_window(200,400,window=btnlancerpartie,width=100,height=30)
+        self.canevaslobby.create_window(200,400,window=self.btnlancerpartie,width=100,height=30)
 
 
     def connecterpartie(self):
@@ -604,16 +605,23 @@ class Vue():
 
             for i in mod.etoiles:
                 t=i.taille
-                self.canevas.create_image(i.x - t, i.y - t, image=self.starImage, anchor=NW, tags=("etoile", str(i.id)))
-                #self.canevas.create_oval(i.x-t,i.y-t,i.x+t,i.y+t,fill="grey80",
-                                       #tags=("etoile", str(i.id)))
+                self.canevas.create_image(i.x - t, i.y - t, image=self.starImage, anchor=CENTER, tags=("etoile", str(i.id)))
 
         if self.vueactive == 1: #vue systeme solaire
+<<<<<<< HEAD
             #self.etoileselect = random.choice(mod.etoiles)
             for i in range(len(self.mod.decoEtoileX)):
                 self.canevas.create_oval(self.mod.decoEtoileX[i],self.mod.decoEtoileY[i],self.mod.decoEtoileX[i]+1,self.mod.decoEtoileY[i]+1,fill="white",tags=("fond"))
             #Insertion de l'image du soleil
             self.canevas.create_image(0, 0, image=self.soleil, anchor=NW, tags=("soleil", "fond"))
+=======
+            for i in range(len(mod.etoiles)*20):
+                x=random.randrange(mod.largeur)
+                y=random.randrange(mod.hauteur)
+                self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond"))
+                #Insertion de l'image du soleil
+                self.canevas.create_image(0, 0, image=self.soleil, anchor=NW, tags=("soleil", "fond"))
+>>>>>>> 0733fb74882d8c2826b48e7c6ef57c4ab30134d8
 
             for i in self.etoileselect.planetes:
                 #s=i.planeteImages[0]
@@ -781,10 +789,10 @@ class Vue():
                     etoileplanetemere = i
                     break
             couleur=j.couleur
-            x=etoileplanetemere.x+8
-            y=etoileplanetemere.y+8
-            t=etoileplanetemere.taille+15
-            self.canevas.create_oval(x-t-2,y-t-2,x+t+2,y+t+2,dash=(3,3),width=2,outline=couleur,
+            x=etoileplanetemere.x
+            y=etoileplanetemere.y
+            t=etoileplanetemere.taille
+            self.canevas.create_oval(x-(t *2)-2 ,y-(t *2)-2,x+t/2,y+t/2,dash=(3,3),width=2,outline=couleur,
                                  tags=("planetemere","marqueur"))
 
         if self.vueactive == 1:
@@ -792,10 +800,10 @@ class Vue():
 
             if self.etoileselect == j.planetemere.etoileparent:
                 couleur=j.couleur
-                x=j.planetemere.x+(j.planetemere.taille)-10
-                y=j.planetemere.y+(j.planetemere.taille)-10
-                t=j.planetemere.taille+20
-                self.canevas.create_oval(x-t,y-t,x+t,y+t,dash=(3,3),width=2,outline=couleur,
+                x=j.planetemere.x
+                y=j.planetemere.y
+                t=j.planetemere.taille
+                self.canevas.create_oval(x-t-10,y-t-10,x+t*4,y+t*4,dash=(3,3),width=2,outline=couleur,
                                  tags=("planetemere","marqueur"))
 
     def creervaisseau(self):
@@ -867,6 +875,10 @@ class Vue():
         #Vérification si le joueur à recu une demande d'alliance
         if self.mod.joueurs[self.nom].demandes:
             self.demandeAmi(self.mod.joueurs[self.nom].demandes.pop(0))
+
+        if self.mod.joueurs[self.nom].repDemande > 0:
+            self.confirmDemande(self.mod.joueurs[self.nom].repDemande)
+            self.mod.joueurs[self.nom].repDemande = 0
 
         for j in self.mod.joueurs:
             if self.mod.joueurs[j].nom == self.nom:
@@ -1041,7 +1053,6 @@ class Vue():
                                 self.parent.versvue1(self.flotteselect.id, self.etoileselect.id)
                         else:
                             self.parent.ciblerflotte(self.flotteselect.id, self.etoileselect.id, "etoile")
-                            print(self.flotteselect.id, self.etoileselect.id)
 
                         self.flotteselect = None
                         self.etoileselect = None
@@ -1058,9 +1069,6 @@ class Vue():
                             break
                 elif self.flotteselect != None:
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
-
-                    print("Dans le else de flotte vue 2")
-
                     self.parent.ciblerflotte(self.flotteselect.id, self.maselection[1], "flotte")
                     self.flotteselect = None
 
@@ -1103,7 +1111,6 @@ class Vue():
                             break
                 elif self.flotteselect != None:
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
-                    print("Dans le else de flotte vue 1")
                     self.parent.ciblerflotte(self.flotteselect.id, self.maselection[1], "flotte")
                     self.flotteselect = None
 
@@ -1137,15 +1144,12 @@ class Vue():
                     couleur = self.mod.joueurs[e].couleur
                     for p in self.mod.joueurs[e].planetescontrolees:
                         for b in p.batiment:
-                            print("oui3")
                             print(self.upgBatiment)
-                            print(b.id)
                             if str(b.id)==str(self.upgBatiment):
-                                print("oui4")
                                 if b.typeBatiment == "minerai":
                                     t=45
-                                    x=b.x+10
-                                    y=b.y+10
+                                    x=b.x+17
+                                    y=b.y+12
                                     self.canevas.create_oval(x-t,y-t,x+t,y+t,dash=(3,3),width=2,outline=couleur,
                                             tags=("BatimentSelection"))
                                 elif b.typeBatiment == "gaz":
@@ -1170,10 +1174,6 @@ class Vue():
                 #    self.canevas.create_rectangle(b.x-10,b.y,b.x+10,b.y-40, fill="green",tags=("batiment",b.id))
                 #    self.canevas.create_text(b.x,b.y-20,text=b.niveau,fill="white",tags="vitesse") #affiche le niveau du batiment
 
-
-
-
-
             if tag and tag[0] == "flotte":
 
                 if self.flotteselect == None:
@@ -1187,16 +1187,27 @@ class Vue():
                             break
                 elif self.flotteselect != None:
                     self.maselection=[tag[0], tag[1], tag[2], tag[3]]
-                    print("Dans le else de flotte vue 0")
+
                     self.parent.ciblerflotte(self.flotteselect.id, self.maselection[1], "flotte")
                     self.flotteselect = None
 
                 self.maselection = None
 
-            if tag and tag[0] == "planetezoom":
-                if self.flotteselect != None:
+            if tag and tag[0] == "batiment":
+                
+                typeBatiment = ""
+
+                for b in self.planeteselect.batiment:
+
+                    if str(b.id) == str(tag[1]):
+                        typeBatiment = b.typeBatiment
+            
+                        break
+                if self.flotteselect != None and typeBatiment == "base":
                     j = self.mod.joueurs[self.nom]
+
                     if tag[2] != self.nom and tag[2] not in j.joueurami:
+
                         self.amiOuAttaque(self.planeteselect.proprietaire)
 
             if tag and tag[0] == "retour1":
@@ -1229,12 +1240,12 @@ class Vue():
 
         self.popChoix = Toplevel(master=self.canevas, width=80, height=80)
         self.popChoix.geometry("+{}+{}".format(positionRight,positionDown))
-        self.popChoix.title("Amitiée/Attaque")
+        self.popChoix.title("Alliance/Attaque")
         self.popChoix.grid()
 
         self.msg = Message(self.popChoix, text="Faites un choix", width=80, anchor=CENTER).grid(row=0, columnspan=2)
 
-        self.btnAmi = Button(self.popChoix, text = "Ajouter un ami", width = 40, command = lambda: self.parent.demandeAmi(nomjoueur, self.mod.joueurs[self.nom].id)).grid(row=1, column=0)
+        self.btnAmi = Button(self.popChoix, text = "Ajouter un allié", width = 40, command = lambda: self.parent.demandeAmi(nomjoueur, self.mod.joueurs[self.nom].id)).grid(row=1, column=0)
         self.btnAttaque = Button(self.popChoix, text= "Attaquer", width = 40, command = lambda: self.popChoix.destroy()).grid(row=1, column=1) #COMMANDE À MODIFIER
 
 
@@ -1244,14 +1255,14 @@ class Vue():
 
         demandeami = StringVar()
 
-        nom=""
+        nomjoueur=""
 
         for j in self.mod.joueurs:
             if self.mod.joueurs[j].id == idjoueur:
-                nom=self.mod.joueurs[j].nom
+                nomjoueur=self.mod.joueurs[j].nom
                 break
 
-        demandeami.set("Vous avez reçu une demande d'alliance de " + nom)
+        demandeami.set("Vous avez reçu une demande d'alliance de " + nomjoueur)
 
         self.popAmi = Toplevel(master=self.canevas, width=80, height=80)
         self.popAmi.geometry("+{}+{}".format(positionRight,positionDown))
@@ -1260,8 +1271,31 @@ class Vue():
 
         self.msg = Label(self.popAmi, textvariable=demandeami, width=80).grid(row=0, columnspan=2)
 
-        self.btnAccepter = Button(self.popAmi, text = "Accepter", width = 40, command = lambda: self.popAmi.destroy()).grid(row=1, column=0) #COMMANDES À MODIFIER
+        self.btnAccepter = Button(self.popAmi, text = "Accepter", width = 40, command = lambda: self.parent.demandeAccept(nomjoueur, self.nom)).grid(row=1, column=0) #COMMANDES À MODIFIER
         self.btnRefuser = Button(self.popAmi, text= "Refuser", width = 40, command = lambda: self.popAmi.destroy()).grid(row=1, column=1)
+
+    def confirmDemande(self, rep):
+        if rep == 1:
+            positionRight = int(self.root.winfo_screenwidth()/2 - self.largeur/2)
+            positionDown = int(self.root.winfo_screenheight()/2 - self.hauteur/2)
+
+            demandeami = StringVar()
+
+            nomjoueur=self.mod.joueurs[self.nom].joueurami[-1].nom
+
+            demandeami.set(nomjoueur + " est maintenant votre allié.")
+
+            self.popRep = Toplevel(master=self.canevas, width=80, height=80)
+            self.popRep.geometry("+{}+{}".format(positionRight,positionDown))
+            self.popRep.title("Demande d'alliance")
+            self.popRep.grid()
+
+            self.msg = Label(self.popRep, textvariable=demandeami, width=80).grid(row=0, columnspan=2)
+
+            self.btnOk = Button(self.popRep, text = "Ok", width = 80, command = lambda: self.popRep.destroy()).grid(row=1, column=0)
+        
+        elif rep == 2:
+            print("Rien pour le moment")
 
     def planeteDefense(self):
         popDefense = Toplevel(master=self.canevas, padx=100, pady=60)

@@ -51,6 +51,7 @@ class Controleur():
 
             pid = Popen([sys.executable, dir_path + '/Orion_serveur.py'],shell=1).pid # on lance l'application serveur
             self.egoserveur=1 # on note que c'est soi qui, ayant demarre le serveur, aura le privilege de lancer la simulation
+            self.vue.btnlancerpartie.config(state=NORMAL)
             self.tempo=1 # on change d'etat pour s'inscrire automatiquement
                          # (parce que dans ce type de programme on prend pour acquis que celui qui prepare la simulation veut aussi y participer)
 
@@ -186,6 +187,11 @@ class Controleur():
     def demandeAmi(self,nom,idjoueur):
         self.actions.append([nom, "demandeAmi", idjoueur])
         self.vue.popChoix.destroy()
+
+    def demandeAccept(self,nom,joueur):
+        self.actions.append([nom, "demandeAccept", joueur])
+        self.actions.append([joueur, "demandeAccept", nom])
+        self.vue.popAmi.destroy()
 
 if __name__=="__main__":
     c=Controleur()
