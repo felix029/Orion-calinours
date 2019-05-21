@@ -607,14 +607,7 @@ class Vue():
 
             for i in mod.etoiles:
                 t=i.taille
-<<<<<<< HEAD
                 self.canevas.create_image(i.x - t, i.y - t, image=self.starImage, anchor=CENTER, tags=("etoile", str(i.id)))
-                #self.canevas.create_oval(i.x-t,i.y-t,i.x+t,i.y+t,fill="grey80",
-                                       #tags=("etoile", str(i.id)))
-=======
-                self.canevas.create_image(i.x - t, i.y - t, image=self.starImage, anchor=NW, tags=("etoile", str(i.id)))
-
->>>>>>> modification etoiles
 
         if self.vueactive == 1: #vue systeme solaire
             for i in range(len(mod.etoiles)*20):
@@ -795,8 +788,8 @@ class Vue():
             couleur=j.couleur
             x=etoileplanetemere.x
             y=etoileplanetemere.y
-            t=etoileplanetemere.taille*2
-            self.canevas.create_oval(x-t,y-t,x+t-8,y+t-8,dash=(3,3),width=2,outline=couleur,
+            t=etoileplanetemere.taille
+            self.canevas.create_oval(x-(t *2)-2 ,y-(t *2)-2,x+t/2,y+t/2,dash=(3,3),width=2,outline=couleur,
                                  tags=("planetemere","marqueur"))
 
         if self.vueactive == 1:
@@ -806,8 +799,8 @@ class Vue():
                 couleur=j.couleur
                 x=j.planetemere.x
                 y=j.planetemere.y
-                t=j.planetemere.taille*2
-                self.canevas.create_oval(x-t-10,y-t-10,x+t-10,y+t-10,dash=(3,3),width=2,outline=couleur,
+                t=j.planetemere.taille
+                self.canevas.create_oval(x-t-10,y-t-10,x+t*4,y+t*4,dash=(3,3),width=2,outline=couleur,
                                  tags=("planetemere","marqueur"))
 
     def creervaisseau(self):

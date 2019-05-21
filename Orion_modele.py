@@ -772,8 +772,8 @@ class Modele():
         #self.xEtoile = [nbEtoile+1]
         #self.yEtoile = [nbEtoile+1]
         for i in range(nbEtoile):
-            x=random.randrange(20, self.largeur-20)
-            y=random.randrange(20, self.hauteur-20)
+            x=random.randrange(60, self.largeur-60)
+            y=random.randrange(60, self.hauteur-60)
             verifValue = True
 
             while verifValue:
