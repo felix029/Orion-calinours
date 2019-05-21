@@ -12,7 +12,7 @@ class Planete():
         self.taille=random.randrange(13,17)
         self.planeteImages=[];
         #1- Génèrer un int aléatoire pour choisir une image de planète
-        planetImage=random.randrange(1,8)
+        planetImage=random.randrange(1,7)
         #2- Créer une string représentant le chemin relatif de l'image, et ce, à l'aide du int aléatoire obtenu
         img="./images/planet"+str(planetImage)+".png"
         #3- Créer une variable image à l'aide de la fonction Image.open qui prend en paramètre le chemin relatif créé à l'étape précédente
