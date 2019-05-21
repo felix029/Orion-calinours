@@ -871,6 +871,10 @@ class Vue():
         if self.mod.joueurs[self.nom].demandes:
             self.demandeAmi(self.mod.joueurs[self.nom].demandes.pop(0))
 
+        if self.mod.joueurs[self.nom].repDemande > 0:
+            self.confirmDemande(self.mod.joueurs[self.nom].repDemande)
+            self.mod.joueurs[self.nom].repDemande = 0
+
         for j in self.mod.joueurs:
             if self.mod.joueurs[j].nom == self.nom:
                 self.planetConquisesStats.set(len(self.mod.joueurs[j].planetescontrolees))
@@ -1184,8 +1188,13 @@ class Vue():
 
                 self.maselection = None
 
-            if tag and tag[0] == "planetezoom":
-                if self.flotteselect != None:
+            if tag and tag[0] == "batiment":
+                for b in planeteselect.batiment:
+                    if b.id = tag[1]:
+                        typeBatiment = b.typeBatiment
+                        break
+
+                if self.flotteselect != None and typeBatiment == "base":
                     j = self.mod.joueurs[self.nom]
                     if tag[2] != self.nom and tag[2] not in j.joueurami:
                         self.amiOuAttaque(self.planeteselect.proprietaire)
@@ -1220,12 +1229,12 @@ class Vue():
 
         self.popChoix = Toplevel(master=self.canevas, width=80, height=80)
         self.popChoix.geometry("+{}+{}".format(positionRight,positionDown))
-        self.popChoix.title("Amitiée/Attaque")
+        self.popChoix.title("Alliance/Attaque")
         self.popChoix.grid()
 
         self.msg = Message(self.popChoix, text="Faites un choix", width=80, anchor=CENTER).grid(row=0, columnspan=2)
 
-        self.btnAmi = Button(self.popChoix, text = "Ajouter un ami", width = 40, command = lambda: self.parent.demandeAmi(nomjoueur, self.mod.joueurs[self.nom].id)).grid(row=1, column=0)
+        self.btnAmi = Button(self.popChoix, text = "Ajouter un allié", width = 40, command = lambda: self.parent.demandeAmi(nomjoueur, self.mod.joueurs[self.nom].id)).grid(row=1, column=0)
         self.btnAttaque = Button(self.popChoix, text= "Attaquer", width = 40, command = lambda: self.popChoix.destroy()).grid(row=1, column=1) #COMMANDE À MODIFIER
 
 
@@ -1235,14 +1244,14 @@ class Vue():
 
         demandeami = StringVar()
 
-        nom=""
+        nomjoueur=""
 
         for j in self.mod.joueurs:
             if self.mod.joueurs[j].id == idjoueur:
-                nom=self.mod.joueurs[j].nom
+                nomjoueur=self.mod.joueurs[j].nom
                 break
 
-        demandeami.set("Vous avez reçu une demande d'alliance de " + nom)
+        demandeami.set("Vous avez reçu une demande d'alliance de " + nomjoueur)
 
         self.popAmi = Toplevel(master=self.canevas, width=80, height=80)
         self.popAmi.geometry("+{}+{}".format(positionRight,positionDown))
@@ -1251,8 +1260,31 @@ class Vue():
 
         self.msg = Label(self.popAmi, textvariable=demandeami, width=80).grid(row=0, columnspan=2)
 
-        self.btnAccepter = Button(self.popAmi, text = "Accepter", width = 40, command = lambda: self.popAmi.destroy()).grid(row=1, column=0) #COMMANDES À MODIFIER
+        self.btnAccepter = Button(self.popAmi, text = "Accepter", width = 40, command = lambda: self.parent.demandeAccept(nomjoueur, self.nom)).grid(row=1, column=0) #COMMANDES À MODIFIER
         self.btnRefuser = Button(self.popAmi, text= "Refuser", width = 40, command = lambda: self.popAmi.destroy()).grid(row=1, column=1)
+
+    def confirmDemande(self, rep):
+        if rep == 1:
+            positionRight = int(self.root.winfo_screenwidth()/2 - self.largeur/2)
+            positionDown = int(self.root.winfo_screenheight()/2 - self.hauteur/2)
+
+            demandeami = StringVar()
+
+            nomjoueur=self.mod.joueurs[self.nom].joueurami[-1].nom
+
+            demandeami.set(nomjoueur + " est maintenant votre allié.")
+
+            self.popRep = Toplevel(master=self.canevas, width=80, height=80)
+            self.popRep.geometry("+{}+{}".format(positionRight,positionDown))
+            self.popRep.title("Demande d'alliance")
+            self.popRep.grid()
+
+            self.msg = Label(self.popRep, textvariable=demandeami, width=80).grid(row=0, columnspan=2)
+
+            self.btnOk = Button(self.popRep, text = "Ok", width = 80, command = lambda: self.popRep.destroy()).grid(row=1, column=0)
+        
+        elif rep == 2:
+            print("Rien pour le moment")
 
     def planeteDefense(self):
         popDefense = Toplevel(master=self.canevas, padx=100, pady=60)

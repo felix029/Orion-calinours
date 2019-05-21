@@ -10,7 +10,7 @@ class Planete():
         self.x=x
         self.y=y
         self.taille=random.randrange(13,17)
-        self.planeteImages=[];
+        self.planeteImages=[]
         #1- Génèrer un int aléatoire pour choisir une image de planète
         planetImage=random.randrange(1,8)
         #2- Créer une string représentant le chemin relatif de l'image, et ce, à l'aide du int aléatoire obtenu
@@ -32,7 +32,7 @@ class Planete():
 
 
 
-        self.gaz=random.randrange(4000, 10000)
+        self.gaz=random.randrange(4000, 10000) 
         self.minerai=random.randrange(4000, 10000)
         self.proprietaire = " "
         self.colorsTab = [self.minerai%10, random.randrange(4000,10000)%10, self.gaz%10, self.minerai%10, random.randrange(4000,10000)%10, self.gaz%10]
@@ -345,6 +345,7 @@ class Joueur():
         self.detruits=[]
         self.navetteImage=[]
         self.demandes=[]
+        self.repDemande = 0
         self.cout = {"minerai":[100,"energie"],
                     "gaz":[100,"energie"],
                     "energie":[100,"minerai"],
@@ -364,7 +365,8 @@ class Joueur():
                       "versvue1":self.versvue1, #Ajout Felix-O 23 Avril
                       "versvue0":self.versvue0,
                       "creerTourDefense":self.creerTourDefense,#Ajout Nick le 30 avril
-                      "demandeAmi":self.demandeAmi} #Ajout Felix-O 14 mai
+                      "demandeAmi":self.demandeAmi, #Ajout Felix-O 14 mai
+                      "demandeAccept":self.demandeAccept} 
 
         #2- Créer une string représentant le chemin relatif de l'image, et ce, à l'aide du int aléatoire obtenu
         img="./images/navette"+str(self.numNavette)+".png"
@@ -568,7 +570,7 @@ class Joueur():
                 i.tirer()
             elif i.cible:
                 i.avancer()
-                if i.x >= 796 and i.y >= 596:
+                if i.x >= 785 and i.y >= 585:
                     if i.sysplanetecur != None and i.planetecur == None:
                         self.flotteretour2(i.id)
                     elif i.sysplanetecur != None and i.planetecur != None:
@@ -633,8 +635,8 @@ class Joueur():
         for e in self.parent.etoiles:
             if e.id == idetoile:
                 flottecur.sysplanetecur = e
-                flottecur.x = random.randrange(self.parent.largeur-50, self.parent.largeur)
-                flottecur.y = random.randrange(self.parent.hauteur-50, self.parent.hauteur)
+                flottecur.x = self.parent.largeur-30
+                flottecur.y = self.parent.hauteur-30
                 break
 
     #Ajout Felix-O 23 Avril
@@ -648,8 +650,8 @@ class Joueur():
         for p in syscur.planetes:
             if p.id == idplanete:
                 flottecur.planetecur = p
-                flottecur.x = random.randrange(self.parent.largeur-50, self.parent.largeur)
-                flottecur.y = random.randrange(self.parent.hauteur-50, self.parent.hauteur)
+                flottecur.x = self.parent.largeur-30
+                flottecur.y = self.parent.hauteur-30
                 break
 
     #Ajout Felix-O 23 Avril
@@ -660,8 +662,8 @@ class Joueur():
                 flottecur = i
                 break
         if flottecur.sysplanetecur != None:
-            flottecur.x = flottecur.sysplanetecur.x+25
-            flottecur.y = flottecur.sysplanetecur.y+25
+            flottecur.x = flottecur.sysplanetecur.x-25
+            flottecur.y = flottecur.sysplanetecur.y-25
             flottecur.sysplanetecur = None
             flottecur.cible = None
 
@@ -675,16 +677,22 @@ class Joueur():
                 break
 
         if flottecur.planetecur != None:
-            flottecur.x = flottecur.planetecur.x+25
-            flottecur.y = flottecur.planetecur.y+25
+            flottecur.x = flottecur.planetecur.x-25
+            flottecur.y = flottecur.planetecur.y-25
             flottecur.planetecur = None
             flottecur.cible = None
 
     #Ajout Felix-O 14 mai
     def demandeAmi(self, infos):
         idjoueur=infos
-        print("Dans demande ami modele" + self.nom)
         self.demandes.append(idjoueur)
+
+    def demandeAccept(self, infos):
+        idjoueur=infos
+        j = self.parent.joueurs[idjoueur]
+        self.joueurami.append(j)
+        self.repDemande = 1
+
 
 # IA- nouvelle classe de joueur
 class IA(Joueur):

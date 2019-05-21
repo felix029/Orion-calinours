@@ -187,6 +187,11 @@ class Controleur():
         self.actions.append([nom, "demandeAmi", idjoueur])
         self.vue.popChoix.destroy()
 
+    def demandeAccept(self,nom,joueur):
+        self.actions.append([nom, "demandeAccept", joueur])
+        self.actions.append([joueur, "demandeAccept", nom])
+        self.vue.popAmi.destroy()
+
 if __name__=="__main__":
     c=Controleur()
     print("End Orion_mini")
