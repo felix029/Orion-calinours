@@ -793,10 +793,10 @@ class Vue():
                     etoileplanetemere = i
                     break
             couleur=j.couleur
-            x=etoileplanetemere.x+8
-            y=etoileplanetemere.y+8
-            t=etoileplanetemere.taille+15
-            self.canevas.create_oval(x-t-2,y-t-2,x+t+2,y+t+2,dash=(3,3),width=2,outline=couleur,
+            x=etoileplanetemere.x
+            y=etoileplanetemere.y
+            t=etoileplanetemere.taille*2
+            self.canevas.create_oval(x-t,y-t,x+t-8,y+t-8,dash=(3,3),width=2,outline=couleur,
                                  tags=("planetemere","marqueur"))
 
         if self.vueactive == 1:
@@ -804,10 +804,10 @@ class Vue():
 
             if self.etoileselect == j.planetemere.etoileparent:
                 couleur=j.couleur
-                x=j.planetemere.x+(j.planetemere.taille)-10
-                y=j.planetemere.y+(j.planetemere.taille)-10
-                t=j.planetemere.taille+20
-                self.canevas.create_oval(x-t,y-t,x+t,y+t,dash=(3,3),width=2,outline=couleur,
+                x=j.planetemere.x
+                y=j.planetemere.y
+                t=j.planetemere.taille*2
+                self.canevas.create_oval(x-t-10,y-t-10,x+t-10,y+t-10,dash=(3,3),width=2,outline=couleur,
                                  tags=("planetemere","marqueur"))
 
     def creervaisseau(self):
