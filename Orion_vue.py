@@ -600,22 +600,19 @@ class Vue():
 
         self.canevas.delete(ALL)
         if self.vueactive == 2: #vue de la galaxy
-            for i in range(len(mod.etoiles)*50):
-                x=random.randrange(mod.largeur)
-                y=random.randrange(mod.hauteur)
-                self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond"))
+            for i in range(len(self.mod.decoEtoileX)):
+                self.canevas.create_oval(self.mod.decoEtoileX[i],self.mod.decoEtoileY[i],self.mod.decoEtoileX[i]+1,self.mod.decoEtoileY[i]+1,fill="white",tags=("fond"))
 
             for i in mod.etoiles:
                 t=i.taille
                 self.canevas.create_image(i.x - t, i.y - t, image=self.starImage, anchor=CENTER, tags=("etoile", str(i.id)))
 
         if self.vueactive == 1: #vue systeme solaire
-            for i in range(len(mod.etoiles)*20):
-                x=random.randrange(mod.largeur)
-                y=random.randrange(mod.hauteur)
-                self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond"))
-                #Insertion de l'image du soleil
-                self.canevas.create_image(0, 0, image=self.soleil, anchor=NW, tags=("soleil", "fond"))
+            #self.etoileselect = random.choice(mod.etoiles)
+            for i in range(len(self.mod.decoEtoileX)):
+                self.canevas.create_oval(self.mod.decoEtoileX[i],self.mod.decoEtoileY[i],self.mod.decoEtoileX[i]+1,self.mod.decoEtoileY[i]+1,fill="white",tags=("fond"))
+            #Insertion de l'image du soleil
+            self.canevas.create_image(0, 0, image=self.soleil, anchor=NW, tags=("soleil", "fond"))
 
             for i in self.etoileselect.planetes:
                 #s=i.planeteImages[0]
@@ -706,11 +703,8 @@ class Vue():
 
 
         if self.vueactive == 0: #vue plan�te
-            for i in range(len(mod.etoiles)*15):
-                x=random.randrange(mod.largeur)
-                y=random.randrange(mod.hauteur)
-                self.canevas.create_oval(x,y,x+1,y+1,fill="white",tags=("fond"))
-
+            for i in range(len(self.mod.decoEtoileX)):
+                self.canevas.create_oval(self.mod.decoEtoileX[i],self.mod.decoEtoileY[i],self.mod.decoEtoileX[i]+1,self.mod.decoEtoileY[i]+1,fill="white",tags=("fond"))
             #affichage de l'espace ou envoyer un vaisseau pour le retourner a la vue 1
             self.canevas.create_oval(mod.largeur-40, mod.hauteur-40, mod.largeur+40, mod.hauteur+40,fill="purple", tags=("retour1"))
 
@@ -963,6 +957,12 @@ class Vue():
                         j.explosions.remove(l)
 
 
+        if self.vueactive == 0:
+            for b in self.planeteselect.toursDefense:
+                print ( "Etape 1")
+                for p in b.projectiles:
+                    print("Etape 2")
+                    self.canevas.create_rectangle(p.x-7,p.y-7,p.x+7,p.y+7,fill=i.couleur,tags=("projectile", p.proprietaire, "artefact"))
 
         #Affichage des AIs
         #for i in self.mod.ias:
