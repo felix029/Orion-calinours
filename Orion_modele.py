@@ -525,10 +525,11 @@ class Joueur():
                     for j in self.parent.joueurs:
                         for k in self.parent.joueurs[j].flotte:
                             if self.parent.joueurs[j]!= self:
-                                if k.id == int(iddesti):
-                                    print("TARGETED SHIP")
-                                    i.cible=k
-                                    i.typecible="Vaisseau"
+                                if self.parent.joueurs[j] not in self.joueurami:
+                                    if k.id == int(iddesti):
+                                        print("TARGETED SHIP")
+                                        i.cible=k
+                                        i.typecible="Vaisseau"
 
     def ciblerflotteplanete(self,ids):
         idori,iddesti,etoile=ids
