@@ -499,7 +499,7 @@ class Joueur():
                         #        i.typecible="Vaisseau"
                     for j in self.parent.joueurs:
                         for k in self.parent.joueurs[j].flotte:
-                            if self.parent.joueurs[j]!= self:
+                            if self.parent.joueurs[j]!= self and self.parent.joueurs[j] not in self.joueurami:
                                 if k.id == int(iddesti):
                                     print("TARGETED SHIP")
                                     i.cible=k

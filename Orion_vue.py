@@ -1187,15 +1187,14 @@ class Vue():
                 typeBatiment = ""
 
                 for b in self.planeteselect.batiment:
-
                     if str(b.id) == str(tag[1]):
                         typeBatiment = b.typeBatiment
-            
                         break
+                        
                 if self.flotteselect != None and typeBatiment == "base":
                     j = self.mod.joueurs[self.nom]
 
-                    if tag[2] != self.nom and tag[2] not in j.joueurami:
+                    if tag[2] != self.nom and self.mod.joueurs[self.planeteselect.proprietaire] not in j.joueurami:
 
                         self.amiOuAttaque(self.planeteselect.proprietaire)
 
