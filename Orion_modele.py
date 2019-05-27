@@ -651,12 +651,14 @@ class Joueur():
     def versvue0(self,ids):
         idflotte,idplanete=ids
         ami = False
+        syscur = None
+        flottecur = None
         for i in self.flotte:
             if i.id == idflotte:
                 flottecur = i
                 syscur = flottecur.sysplanetecur
                 break
-        if syscur != None:
+        if syscur != None and flottecur != None:
             for p in syscur.planetes:
                 if p.id == idplanete:
                     flottecur.planetecur = p
