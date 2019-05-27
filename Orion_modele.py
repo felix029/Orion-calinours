@@ -649,6 +649,7 @@ class Joueur():
     #Ajout Felix-O 23 Avril
     def versvue0(self,ids):
         idflotte,idplanete=ids
+        ami = False
         for i in self.flotte:
             if i.id == idflotte:
                 flottecur = i
@@ -660,7 +661,14 @@ class Joueur():
                 flottecur.x = self.parent.largeur-60
                 flottecur.y = self.parent.hauteur-60
                 if p.proprietaire!= " ":
-                    if flottecur.proprietaire!=p.proprietaire:
+                    print(self.joueurami)
+                    print("TEST")
+                    for j in self.joueurami:
+                        print(j.nom)
+                        print(p.proprietaire)
+                        if flottecur.proprietaire!=p.proprietaire and p.proprietaire == j.nom:
+                            ami = True
+                    if ami == False:    
                         for k in p.toursDefense:
                             k.cible=flottecur
                             print(k.cible)
