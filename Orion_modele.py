@@ -434,27 +434,28 @@ class Joueur():
         for p in self.planetescontrolees:
             for b in p.batiment:
                 if int(idBatiment) == b.id:
-                    if self.cout["upg"+str(b.typeBatiment)][1] == "minerai":
-                        if self.minerai >= self.cout["upg"+str(b.typeBatiment)][0]:
-                            self.minerai -= self.cout["upg"+str(b.typeBatiment)][0]
-                            b.vitesse += 1
-                            self.parent.parent.vue.afficherBatiment()
-                        else:
-                            print("MANQUE DE FOND")
-                    elif self.cout["upg"+str(b.typeBatiment)][1] == "energie":
-                        if self.energie >= self.cout["upg"+str(b.typeBatiment)][0]:
-                            self.energie -= self.cout["upg"+str(b.typeBatiment)][0]
-                            b.vitesse += 1
-                            self.parent.parent.vue.afficherBatiment()
-                        else:
-                            print("MANQUE DE FOND")
-                    elif self.cout["upg"+str(b.typeBatiment)][1] == "gaz":
-                        if self.gaz >= self.cout["upg"+str(b.typeBatiment)][0]:
-                            self.gaz -= self.cout["upg"+str(b.typeBatiment)][0]
-                            b.vitesse += 1
-                            self.parent.parent.vue.afficherBatiment()
-                        else:
-                            print("MANQUE DE FOND")
+                    if b.typeBatiment != "base":
+                        if self.cout["upg"+str(b.typeBatiment)][1] == "minerai":
+                            if self.minerai >= self.cout["upg"+str(b.typeBatiment)][0]:
+                                self.minerai -= self.cout["upg"+str(b.typeBatiment)][0]
+                                b.vitesse += 1
+                                self.parent.parent.vue.afficherBatiment()
+                            else:
+                                print("MANQUE DE FOND")
+                        elif self.cout["upg"+str(b.typeBatiment)][1] == "energie":
+                            if self.energie >= self.cout["upg"+str(b.typeBatiment)][0]:
+                                self.energie -= self.cout["upg"+str(b.typeBatiment)][0]
+                                b.vitesse += 1
+                                self.parent.parent.vue.afficherBatiment()
+                            else:
+                                print("MANQUE DE FOND")
+                        elif self.cout["upg"+str(b.typeBatiment)][1] == "gaz":
+                            if self.gaz >= self.cout["upg"+str(b.typeBatiment)][0]:
+                                self.gaz -= self.cout["upg"+str(b.typeBatiment)][0]
+                                b.vitesse += 1
+                                self.parent.parent.vue.afficherBatiment()
+                            else:
+                                print("MANQUE DE FOND")
 
     def modifRessource(self):
         #Ajouter le 8 avril par nic ( Gere l'incrémentation des ressources des joueurs avec batiment et diminuer les ressource restante sur la planete du joueur)
