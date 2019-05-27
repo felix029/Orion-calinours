@@ -959,9 +959,7 @@ class Vue():
 
         if self.vueactive == 0:
             for b in self.planeteselect.toursDefense:
-                print ( "Etape 1")
                 for p in b.projectiles:
-                    print("Etape 2")
                     self.canevas.create_rectangle(p.x-7,p.y-7,p.x+7,p.y+7,fill=i.couleur,tags=("projectile", p.proprietaire, "artefact"))
 
         #Affichage des AIs
