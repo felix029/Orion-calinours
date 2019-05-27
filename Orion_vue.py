@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from tkinter import *
 from PIL import Image, ImageOps, ImageTk, ImageChops
-import random
 import os,os.path
 from PIL.ImageOps import expand
 from PIL._imaging import font
