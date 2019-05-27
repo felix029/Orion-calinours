@@ -654,26 +654,23 @@ class Joueur():
         for i in self.flotte:
             if i.id == idflotte:
                 flottecur = i
+                syscur = flottecur.sysplanetecur
                 break
-        syscur = flottecur.sysplanetecur
-        for p in syscur.planetes:
-            if p.id == idplanete:
-                flottecur.planetecur = p
-                flottecur.x = self.parent.largeur-60
-                flottecur.y = self.parent.hauteur-60
-                if p.proprietaire!= " ":
-                    print(self.joueurami)
-                    print("TEST")
-                    for j in self.joueurami:
-                        print(j.nom)
-                        print(p.proprietaire)
-                        if flottecur.proprietaire!=p.proprietaire and p.proprietaire == j.nom:
-                            ami = True
-                    if ami == False:    
-                        for k in p.toursDefense:
-                            k.cible=flottecur
-                            print(k.cible)
-                break
+        if syscur != None:
+            for p in syscur.planetes:
+                if p.id == idplanete:
+                    flottecur.planetecur = p
+                    flottecur.x = self.parent.largeur-60
+                    flottecur.y = self.parent.hauteur-60
+                    if p.proprietaire!= " ":
+                        for j in self.joueurami:
+                            if flottecur.proprietaire!=p.proprietaire and p.proprietaire == j.nom:
+                                ami = True
+                        if ami == False:    
+                            for k in p.toursDefense:
+                                k.cible=flottecur
+                                print(k.cible)
+                    break
 
     #Ajout Felix-O 23 Avril
     def flotteretour2(self,id):
