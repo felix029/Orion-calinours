@@ -363,7 +363,8 @@ class Joueur():
                       "versvue0":self.versvue0,
                       "creerTourDefense":self.creerTourDefense,#Ajout Nick le 30 avril
                       "demandeAmi":self.demandeAmi, #Ajout Felix-O 14 mai
-                      "demandeAccept":self.demandeAccept} 
+                      "demandeAccept":self.demandeAccept, #Ajout Felix-O 14 mai
+                      "demandeRef":self.demandeRef} #Ajout Felix-O 27 mai
 
         #2- Créer une string représentant le chemin relatif de l'image, et ce, à l'aide du int aléatoire obtenu
         img="./images/navette"+str(self.numNavette)+".png"
@@ -723,6 +724,10 @@ class Joueur():
         j = self.parent.joueurs[idjoueur]
         self.joueurami.append(j)
         self.repDemande = 1
+
+    #Ajout Felix-O le 27 mai
+    def demandeRef(self, SemiUselessArgThatDoesNothingGoodElseThanMakingTheCodeWorkDontDeleteItNoTimeToRefactorYeehaw):
+        self.repDemande = 2
 
 
 # IA- nouvelle classe de joueur

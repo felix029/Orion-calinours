@@ -1228,13 +1228,13 @@ class Vue():
 
         self.popChoix = Toplevel(master=self.canevas, width=80, height=80)
         self.popChoix.geometry("+{}+{}".format(positionRight,positionDown))
-        self.popChoix.title("Alliance/Attaque")
+        self.popChoix.title("Ajout d'un allié")
         self.popChoix.grid()
 
         self.msg = Message(self.popChoix, text="Faites un choix", width=80, anchor=CENTER).grid(row=0, columnspan=2)
 
         self.btnAmi = Button(self.popChoix, text = "Ajouter un allié", width = 40, command = lambda: self.parent.demandeAmi(nomjoueur, self.mod.joueurs[self.nom].id)).grid(row=1, column=0)
-        self.btnAttaque = Button(self.popChoix, text= "Attaquer", width = 40, command = lambda: self.popChoix.destroy()).grid(row=1, column=1) #COMMANDE À MODIFIER
+        self.btnAttaque = Button(self.popChoix, text= "Annuler", width = 40, command = lambda: self.popChoix.destroy()).grid(row=1, column=1) #COMMANDE À MODIFIER
 
 
     def demandeAmi(self, idjoueur):
@@ -1259,8 +1259,8 @@ class Vue():
 
         self.msg = Label(self.popAmi, textvariable=demandeami, width=80).grid(row=0, columnspan=2)
 
-        self.btnAccepter = Button(self.popAmi, text = "Accepter", width = 40, command = lambda: self.parent.demandeAccept(nomjoueur, self.nom)).grid(row=1, column=0) #COMMANDES À MODIFIER
-        self.btnRefuser = Button(self.popAmi, text= "Refuser", width = 40, command = lambda: self.popAmi.destroy()).grid(row=1, column=1)
+        self.btnAccepter = Button(self.popAmi, text = "Accepter", width = 40, command = lambda: self.parent.demandeAccept(nomjoueur, self.nom)).grid(row=1, column=0)
+        self.btnRefuser = Button(self.popAmi, text= "Refuser", width = 40, command = lambda: self.parent.demandeRef(nomjoueur)).grid(row=1, column=1)
 
     def confirmDemande(self, rep):
         if rep == 1:
@@ -1283,7 +1283,17 @@ class Vue():
             self.btnOk = Button(self.popRep, text = "Ok", width = 80, command = lambda: self.popRep.destroy()).grid(row=1, column=0)
         
         elif rep == 2:
-            print("Rien pour le moment")
+            positionRight = int(self.root.winfo_screenwidth()/2 - self.largeur/2)
+            positionDown = int(self.root.winfo_screenheight()/2 - self.hauteur/2)
+
+            self.popRep = Toplevel(master=self.canevas, width=80, height=80)
+            self.popRep.geometry("+{}+{}".format(positionRight,positionDown))
+            self.popRep.title("Demande d'alliance")
+            self.popRep.grid()
+
+            self.msg = Label(self.popRep, text="Demande d'alliance refusée.", width=80).grid(row=0, columnspan=2)
+
+            self.btnOk = Button(self.popRep, text = "Ok", width = 80, command = lambda: self.popRep.destroy()).grid(row=1, column=0)
 
     def planeteDefense(self):
         popDefense = Toplevel(master=self.canevas, padx=100, pady=60)
