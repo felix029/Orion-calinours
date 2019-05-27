@@ -636,16 +636,18 @@ class Joueur():
     #Ajout Felix-O 23 Avril
     def versvue1(self,ids):
         idflotte,idetoile=ids
+        flottecur = None
         for i in self.flotte:
             if i.id == idflotte:
                 flottecur = i
                 break
-        for e in self.parent.etoiles:
-            if e.id == idetoile:
-                flottecur.sysplanetecur = e
-                flottecur.x = self.parent.largeur-60
-                flottecur.y = self.parent.hauteur-60
-                break
+        if flottecur != None:
+            for e in self.parent.etoiles:
+                if e.id == idetoile:
+                    flottecur.sysplanetecur = e
+                    flottecur.x = self.parent.largeur-60
+                    flottecur.y = self.parent.hauteur-60
+                    break
 
     #Ajout Felix-O 23 Avril
     def versvue0(self,ids):
