@@ -211,37 +211,35 @@ class Vaisseau():
         else:
             print("PAS DE CIBLE")
 
-    def tirer(self):
-        
-        if self.cible.sysplanetecur == self.sysplanetecur and self.cible.planetecur == self.planetecur:
-            d=hlp.calcDistance(self.x,self.y,self.cible.x,self.cible.y)
-            if self.cible and d>self.range:
-                self.avancer()
-            elif isinstance(self.cible,Vaisseau):
-                if self.cible.etat!="detruit":
-                    if self.delaidetir==0:
-                        if self.cible.attaquant==None:
-                            self.cible.attaquant=self
-                        p=Projectile(self, self.cible,self.x,self.y,self.cible.x,self.cible.y)
-                        self.projectiles.append(p)
-                        self.delaidetir=self.delaimax
-                    self.delaidetir-=1
+    def tirer(self):  
+        d=hlp.calcDistance(self.x,self.y,self.cible.x,self.cible.y)
+        if self.cible and d>self.range:
+            self.avancer()
+        elif isinstance(self.cible,Vaisseau):
+            if self.cible.etat!="detruit":
+                if self.delaidetir==0:
+                    if self.cible.attaquant==None:
+                        self.cible.attaquant=self
+                    p=Projectile(self, self.cible,self.x,self.y,self.cible.x,self.cible.y)
+                    self.projectiles.append(p)
+                    self.delaidetir=self.delaimax
+                self.delaidetir-=1
 
-                elif self.cible.etat == "detruit":
-                    ex=Explosion(self, self.cible.x,self.cible.y, True)
+            elif self.cible.etat == "detruit":
+                ex=Explosion(self, self.cible.x,self.cible.y, True)
+                self.explosions.append(ex)
+                self.cible=None
+                self.delaidetir=0
+                self.typecible=None
+
+            for i in self.projectiles:
+                if i.etat!="detruit":
+                    i.deplacer()
+                else:
+                    ex=Explosion(self, i.x, i.y, True)
                     self.explosions.append(ex)
-                    self.cible=None
-                    self.delaidetir=0
-                    self.typecible=None
-
-                for i in self.projectiles:
-                    if i.etat!="detruit":
-                        i.deplacer()
-                    else:
-                        ex=Explosion(self, i.x, i.y, True)
-                        self.explosions.append(ex)
-            else:
-                self.typecible=""
+        else:
+            self.typecible=""
 
     def defense(self):
         d=hlp.calcDistance(self.x,self.y,self.attaquant.x,self.attaquant.y)
